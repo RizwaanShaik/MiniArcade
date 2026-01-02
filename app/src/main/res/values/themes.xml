@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.CousinArcade" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.MiniArcade" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary colors -->
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
@@ -99,13 +99,13 @@
         <item name="android:textStyle">bold</item>
     </style>
     <!-- Splash Theme -->
-    <style name="Theme.CousinArcade.Splash" parent="Theme.CousinArcade">
+    <style name="Theme.MiniArcade.Splash" parent="Theme.MiniArcade">
         <item name="android:windowBackground">@color/background_dark</item>
         <item name="android:windowContentTransitions">true</item>
     </style>
     
     <!-- Dialog Theme - Dark themed dialogs -->
-    <style name="Theme.CousinArcade.Dialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+    <style name="Theme.MiniArcade.Dialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorSecondary">@color/secondary</item>
         <item name="colorSurface">@color/surface_elevated</item>

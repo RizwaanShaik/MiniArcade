@@ -1,0 +1,442 @@
+package com.rizwaan.miniarcade.ui.games
+
+import android.animation.ValueAnimator
+import android.graphics.Color
+import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.view.Gravity
+import android.view.View
+import android.view.animation.LinearInterpolator
+import android.widget.FrameLayout
+import android.widget.TextView
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
+import com.rizwaan.miniarcade.R
+import com.rizwaan.miniarcade.data.local.PreferencesManager
+import com.rizwaan.miniarcade.data.models.GameScore
+import com.rizwaan.miniarcade.data.models.GameType
+import com.rizwaan.miniarcade.data.repository.FirebaseRepository
+import com.rizwaan.miniarcade.databinding.ActivityColorGameBinding
+import com.rizwaan.miniarcade.databinding.DialogGameOverBinding
+import com.rizwaan.miniarcade.util.SoundManager
+import kotlinx.coroutines.launch
+import kotlin.random.Random
+
+class ColorGameActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityColorGameBinding
+    private lateinit var prefsManager: PreferencesManager
+    private lateinit var firebaseRepo: FirebaseRepository
+    private lateinit var soundManager: SoundManager
+    
+    private val handler = Handler(Looper.getMainLooper())
+    
+    private var isPlaying = false
+    private var score = 0L
+    private var lives = 3
+    private var currentLevel = 1
+    private var targetColor: GameColor? = null
+    private var spawnDelay = 1200L
+    private var fallDuration = 3000L
+    private var gameStartTime = 0L
+    private val activeObjects = mutableListOf<ObjectData>()
+    
+    data class ObjectData(
+        val view: View,
+        val type: String, // "target", "other", "bomb"
+        val animator: ValueAnimator,
+        var handled: Boolean = false
+    )
+    
+    private val colors = listOf(
+        GameColor("RED", "🔴", Color.parseColor("#FF5252")),
+        GameColor("BLUE", "🔵", Color.parseColor("#2196F3")),
+        GameColor("GREEN", "🟢", Color.parseColor("#4CAF50")),
+        GameColor("YELLOW", "🟡", Color.parseColor("#FFD740"))
+    )
+    
+    data class GameColor(val name: String, val emoji: String, val color: Int)
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        
+        binding = ActivityColorGameBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
+        
+        prefsManager = PreferencesManager(this)
+        firebaseRepo = FirebaseRepository()
+        soundManager = SoundManager.getInstance(this)
+        
+        setupGame()
+        setupClickListeners()
+    }
+    
+    private fun setupGame() {
+        score = 0
+        lives = 3
+        currentLevel = 1
+        spawnDelay = 1200L
+        fallDuration = 3000L
+        isPlaying = false
+        activeObjects.clear()
+        updateUI()
+    }
+    
+    private fun setupClickListeners() {
+        binding.btnBack.setOnClickListener { 
+            stopGame()
+            finish() 
+        }
+        
+        binding.btnStart.setOnClickListener {
+            startGame()
+        }
+    }
+    
+    private fun startGame() {
+        binding.startOverlay.visibility = View.GONE
+        isPlaying = true
+        gameStartTime = System.currentTimeMillis()
+        
+        // Pick random target color
+        targetColor = colors.random()
+        binding.tvTargetColor.text = "${targetColor!!.emoji} ${targetColor!!.name}"
+        binding.tvTargetColor.setTextColor(targetColor!!.color)
+        
+        startSpawning()
+        startDifficultyIncrease()
+    }
+    
+    private fun stopGame() {
+        isPlaying = false
+        handler.removeCallbacksAndMessages(null)
+        
+        // Remove all active objects
+        activeObjects.forEach { data ->
+            data.animator.cancel()
+            binding.gameArea.removeView(data.view)
+        }
+        activeObjects.clear()
+    }
+    
+    private fun startSpawning() {
+        if (!isPlaying) return
+        
+        spawnObject()
+        
+        handler.postDelayed({
+            startSpawning()
+        }, spawnDelay)
+    }
+    
+    private fun startDifficultyIncrease() {
+        if (!isPlaying) return
+        
+        // Increase difficulty every 5 seconds
+        handler.postDelayed({
+            if (isPlaying) {
+                // Decrease spawn delay (more objects)
+                spawnDelay = (spawnDelay * 0.92).toLong().coerceAtLeast(400L)
+                // Decrease fall duration (faster falling)
+                fallDuration = (fallDuration * 0.95).toLong().coerceAtLeast(1200L)
+                currentLevel++
+                updateUI()
+                
+                // Maybe change target color every few levels
+                if (currentLevel % 5 == 0) {
+                    targetColor = colors.random()
+                    binding.tvTargetColor.text = "${targetColor!!.emoji} ${targetColor!!.name}"
+                    binding.tvTargetColor.setTextColor(targetColor!!.color)
+                }
+                
+                startDifficultyIncrease()
+            }
+        }, 5000L)
+    }
+    
+    private fun spawnObject() {
+        if (!isPlaying) return
+        
+        val gameArea = binding.gameArea
+        val areaWidth = gameArea.width
+        if (areaWidth <= 0) {
+            handler.postDelayed({ spawnObject() }, 100)
+            return
+        }
+        
+        val objectSize = resources.getDimensionPixelSize(R.dimen.color_ball_size)
+        
+        // Decide what to spawn: target color (40%), other colors (45%), or bomb (15%)
+        val spawnType = Random.nextInt(100)
+        
+        val objectType: String
+        val objectEmoji: String
+        
+        when {
+            spawnType < 40 -> {
+                // Target color
+                objectType = "target"
+                objectEmoji = targetColor!!.emoji
+            }
+            spawnType < 85 -> {
+                // Other color
+                objectType = "other"
+                val otherColor = colors.filter { it != targetColor }.random()
+                objectEmoji = otherColor.emoji
+            }
+            else -> {
+                // Bomb
+                objectType = "bomb"
+                objectEmoji = "💣"
+            }
+        }
+        
+        val objectView = TextView(this).apply {
+            text = objectEmoji
+            textSize = 44f
+            gravity = Gravity.CENTER
+            setTextColor(0xFF000000.toInt()) // Black for full color emoji
+            
+            layoutParams = FrameLayout.LayoutParams(objectSize, objectSize).apply {
+                leftMargin = Random.nextInt(areaWidth - objectSize)
+                topMargin = -objectSize
+            }
+        }
+        
+        binding.gameArea.addView(objectView)
+        
+        // Animate falling
+        val animator = animateObject(objectView, objectSize, objectType)
+        val objectData = ObjectData(objectView, objectType, animator)
+        activeObjects.add(objectData)
+        
+        objectView.setOnClickListener {
+            handleObjectTap(objectData)
+        }
+    }
+    
+    private fun animateObject(view: View, objectSize: Int, objectType: String): ValueAnimator {
+        val gameAreaHeight = binding.gameArea.height
+        
+        val animator = ValueAnimator.ofFloat(0f, 1f).apply {
+            duration = fallDuration
+            interpolator = LinearInterpolator()
+            
+            addUpdateListener { animation ->
+                if (!isPlaying) {
+                    cancel()
+                    return@addUpdateListener
+                }
+                
+                val progress = animation.animatedValue as Float
+                val newY = -objectSize + (gameAreaHeight + objectSize) * progress
+                
+                (view.layoutParams as FrameLayout.LayoutParams).topMargin = newY.toInt()
+                view.requestLayout()
+                
+                // Check if object reached bottom (missed)
+                if (progress >= 0.98f) {
+                    val data = activeObjects.find { it.view == view }
+                    if (data != null && !data.handled) {
+                        handleMissedObject(data)
+                    }
+                }
+            }
+        }
+        
+        animator.start()
+        return animator
+    }
+    
+    private fun handleObjectTap(data: ObjectData) {
+        if (!isPlaying || data.handled) return
+        
+        data.handled = true
+        data.animator.cancel()
+        
+        when (data.type) {
+            "target" -> {
+                // Correct!
+                score += 10 * currentLevel
+                soundManager.playCorrect()
+                showFeedback(data.view, "✓", R.color.game_green)
+            }
+            "bomb" -> {
+                // Hit a bomb - GAME OVER!
+                soundManager.playFail()
+                showFeedback(data.view, "💥", R.color.game_red)
+                removeObject(data)
+                handler.postDelayed({
+                    stopGame()
+                    showGameOver(hitBomb = true)
+                }, 300)
+                return
+            }
+            "other" -> {
+                // Wrong color - lose a life
+                lives--
+                soundManager.playWrong()
+                showFeedback(data.view, "✗", R.color.game_red)
+            }
+        }
+        
+        removeObject(data)
+        updateUI()
+        checkGameOver()
+    }
+    
+    private fun handleMissedObject(data: ObjectData) {
+        if (!isPlaying || data.handled) return
+        
+        data.handled = true
+        
+        // Only count as miss if it was a target color
+        if (data.type == "target") {
+            lives--
+            showFeedback(data.view, "Miss!", R.color.game_yellow)
+            updateUI()
+            checkGameOver()
+        }
+        
+        removeObject(data)
+    }
+    
+    private fun showFeedback(anchorView: View, text: String, colorRes: Int) {
+        val params = anchorView.layoutParams as? FrameLayout.LayoutParams ?: return
+        
+        val feedback = TextView(this).apply {
+            this.text = text
+            textSize = 20f
+            setTextColor(getColor(colorRes))
+            layoutParams = FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT
+            ).apply {
+                leftMargin = params.leftMargin
+                topMargin = params.topMargin
+            }
+        }
+        
+        binding.gameArea.addView(feedback)
+        
+        feedback.animate()
+            .alpha(0f)
+            .translationYBy(-80f)
+            .setDuration(600)
+            .withEndAction {
+                binding.gameArea.removeView(feedback)
+            }
+            .start()
+    }
+    
+    private fun removeObject(data: ObjectData) {
+        data.animator.cancel()
+        activeObjects.remove(data)
+        
+        data.view.animate()
+            .alpha(0f)
+            .scaleX(0.5f)
+            .scaleY(0.5f)
+            .setDuration(150)
+            .withEndAction {
+                binding.gameArea.removeView(data.view)
+            }
+            .start()
+    }
+    
+    private fun checkGameOver() {
+        if (lives <= 0) {
+            stopGame()
+            showGameOver(hitBomb = false)
+        }
+    }
+    
+    private fun updateUI() {
+        binding.tvScore.text = getString(R.string.score, score.toInt())
+        binding.tvMisses.text = "❤️".repeat(lives)
+    }
+    
+    private fun showGameOver(hitBomb: Boolean) {
+        saveScore(score)
+        
+        val dialogBinding = DialogGameOverBinding.inflate(layoutInflater)
+        
+        if (hitBomb) {
+            dialogBinding.tvResultEmoji.text = "💥"
+            dialogBinding.tvTitle.text = "BOOM! Hit a bomb!"
+        } else {
+            dialogBinding.tvResultEmoji.text = when {
+                score > 500 -> "🌈"
+                score > 200 -> "🎨"
+                else -> "👍"
+            }
+            dialogBinding.tvTitle.text = when {
+                score > 500 -> "Color Master!"
+                score > 200 -> "Great Catching!"
+                else -> "Good Try!"
+            }
+        }
+        
+        dialogBinding.tvScore.text = "Score: $score"
+        
+        dialogBinding.statsLayout.visibility = View.VISIBLE
+        dialogBinding.tvStat1Label.text = "Level"
+        dialogBinding.tvStat1Value.text = "$currentLevel"
+        dialogBinding.tvStat2Label.text = "Caught"
+        dialogBinding.tvStat2Value.text = "${score / 10}"
+        
+        // Load top 3 leaderboard
+        GameOverHelper.loadLeaderboard(dialogBinding, GameType.COLOR_CATCH)
+        
+        val dialog = AlertDialog.Builder(this, R.style.Theme_MiniArcade)
+            .setView(dialogBinding.root)
+            .setCancelable(false)
+            .create()
+        
+        dialogBinding.btnPlayAgain.setOnClickListener {
+            dialog.dismiss()
+            setupGame()
+            binding.startOverlay.visibility = View.VISIBLE
+        }
+        
+        dialogBinding.btnMenu.setOnClickListener {
+            dialog.dismiss()
+            finish()
+        }
+        
+        dialog.show()
+    }
+    
+    private fun saveScore(score: Long) {
+        val player = prefsManager.currentPlayer ?: return
+        
+        val gameScore = GameScore(
+            playerId = player.id,
+            playerNickname = player.nickname,
+            gameType = GameType.COLOR_CATCH,
+            score = score,
+            extras = mapOf("level" to currentLevel)
+        )
+        
+        lifecycleScope.launch {
+            firebaseRepo.saveScore(gameScore)
+        }
+    }
+    
+    override fun onDestroy() {
+        super.onDestroy()
+        stopGame()
+    }
+}

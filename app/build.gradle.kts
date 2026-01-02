@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.rizwaan.cousinarcade"
+    namespace = "com.rizwaan.miniarcade"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.rizwaan.cousinarcade"
+        applicationId = "com.rizwaan.miniarcade"
         minSdk = 26
         targetSdk = 35
         versionCode = 1

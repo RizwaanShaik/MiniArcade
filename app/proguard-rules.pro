@@ -14,7 +14,7 @@
 -keepattributes *Annotation*
 
 # Firebase Realtime Database
--keepclassmembers class com.rizwaan.cousinarcade.data.models.** {
+-keepclassmembers class com.rizwaan.miniarcade.data.models.** {
     *;
 }
 
@@ -35,9 +35,9 @@
 
 # ==================== Data Models ====================
 # Keep all data models (Firebase needs these)
--keep class com.rizwaan.cousinarcade.data.models.Player { *; }
--keep class com.rizwaan.cousinarcade.data.models.GameScore { *; }
--keep class com.rizwaan.cousinarcade.data.models.GameType { *; }
+-keep class com.rizwaan.miniarcade.data.models.Player { *; }
+-keep class com.rizwaan.miniarcade.data.models.GameScore { *; }
+-keep class com.rizwaan.miniarcade.data.models.GameType { *; }
 
 # ==================== Room Database ====================
 -keep class * extends androidx.room.RoomDatabase
