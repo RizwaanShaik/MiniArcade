@@ -37,6 +37,7 @@ class PatternGameActivity : AppCompatActivity() {
     private var score = 0L
     private var lives = 3
     private var mistakes = 0  // Track total mistakes for scoring
+    private var previousHighScore = 0L  // Track previous high score for new high score detection
     private var currentPattern = listOf<String>()
     private var userSelection = mutableListOf<String>()
     private var optionViews = mutableListOf<TextView>()
@@ -76,6 +77,15 @@ class PatternGameActivity : AppCompatActivity() {
         
         setupGame()
         setupClickListeners()
+        loadPreviousHighScore()
+    }
+    
+    private fun loadPreviousHighScore() {
+        lifecycleScope.launch {
+            val player = prefsManager.currentPlayer ?: return@launch
+            val playerData = firebaseRepo.getPlayerScores(player.id)
+            previousHighScore = playerData?.getScore(GameType.PATTERN_SNAP) ?: 0L
+        }
     }
     
     private fun setupGame() {
@@ -381,7 +391,7 @@ class PatternGameActivity : AppCompatActivity() {
         if (isCorrect) {
             score += currentLevel * 100L
             currentLevel++
-            soundManager.playSuccess()
+            soundManager.playCorrect()
             
             binding.tvInstruction.text = getString(R.string.correct)
             binding.tvInstruction.setTextColor(getColor(R.color.game_green))
@@ -447,6 +457,16 @@ class PatternGameActivity : AppCompatActivity() {
     }
     
     private fun showGameOver() {
+        val finalScore = calculateScore()
+        
+        // Check if this is a new high score
+        val isNewHighScore = finalScore > previousHighScore
+        if (isNewHighScore) {
+            soundManager.playHighscore()
+        } else {
+            soundManager.playGameOver()
+        }
+        
         saveScore()
         
         val dialogBinding = DialogGameOverBinding.inflate(layoutInflater)
@@ -462,8 +482,6 @@ class PatternGameActivity : AppCompatActivity() {
             currentLevel > 5 -> "Great Memory!"
             else -> "Good Try!"
         }
-        
-        val finalScore = calculateScore()
         dialogBinding.tvScore.text = "Score: $finalScore"
         
         dialogBinding.statsLayout.visibility = View.VISIBLE

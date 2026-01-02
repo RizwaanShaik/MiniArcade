@@ -64,9 +64,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:textColor="@color/game_yellow"
-            android:textStyle="bold" android:fontFamily="@font/poppins"
+            android:textStyle="bold" 
+            android:fontFamily="@font/poppins_bold"
             android:gravity="center"
             tools:text="Score: 0"/>
 

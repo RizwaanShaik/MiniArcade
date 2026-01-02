@@ -51,6 +51,7 @@ class WordGameActivity : AppCompatActivity() {
     // Lives system - 3 lives per game
     private var lives = 3
     private val maxLives = 3
+    private var previousHighScore = 0L  // Track previous high score for new high score detection
     
     // Prevent rapid clicks
     private var isProcessingClick = false
@@ -81,6 +82,15 @@ class WordGameActivity : AppCompatActivity() {
         
         setupGame()
         setupClickListeners()
+        loadPreviousHighScore()
+    }
+    
+    private fun loadPreviousHighScore() {
+        lifecycleScope.launch {
+            val player = prefsManager.currentPlayer ?: return@launch
+            val playerData = firebaseRepo.getPlayerScores(player.id)
+            previousHighScore = playerData?.getScore(GameType.WORD_SCRAMBLE) ?: 0L
+        }
     }
     
     private fun setupGame() {
@@ -456,7 +466,7 @@ class WordGameActivity : AppCompatActivity() {
             val wordPoints = (currentWord.length * 10) + timeBonus
             totalScore += wordPoints
             
-            soundManager.playSuccess()
+            soundManager.playCorrect()
             
             val bonusText = if (hintUsedThisWord) "(no time bonus)" else ""
             showFeedback(true, "✓ +$wordPoints pts! $bonusText")
@@ -467,7 +477,7 @@ class WordGameActivity : AppCompatActivity() {
         } else {
             // Wrong answer - lose a life instead of game over
             lives--
-            soundManager.playWrong()
+            soundManager.playLoseLife()
             
             if (lives <= 0) {
                 showFeedback(false, "✗ The word was: $currentWord")
@@ -547,7 +557,7 @@ class WordGameActivity : AppCompatActivity() {
                 
                 // Time out - lose a life
                 lives--
-                soundManager.playFail()
+                soundManager.playLoseLife()
                 updateUI()
                 
                 if (lives <= 0) {
@@ -574,6 +584,14 @@ class WordGameActivity : AppCompatActivity() {
     
     private fun showGameOver() {
         timer?.cancel()
+        
+        // Check if this is a new high score
+        val isNewHighScore = totalScore > previousHighScore
+        if (isNewHighScore) {
+            soundManager.playHighscore()
+        } else {
+            soundManager.playGameOver()
+        }
         
         saveScore()
         

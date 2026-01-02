@@ -65,14 +65,19 @@ class SoundManager(private val context: Context) {
             highscoreSoundId = tryLoadSoundFromAssets("highscore.mp3")
             loselifeSoundId = tryLoadSoundFromAssets("loselife.mp3")
             countdownSoundId = tryLoadSoundFromAssets("countdown.mp3")
+            correctSoundId = tryLoadSoundFromAssets("correct.mp3")
             
             // Then try to load from raw folder (for backward compatibility)
             tapSoundId = tryLoadSoundFromRaw("tap")
             successSoundId = tryLoadSoundFromRaw("success")
             failSoundId = tryLoadSoundFromRaw("fail")
-            correctSoundId = tryLoadSoundFromRaw("correct")
             wrongSoundId = tryLoadSoundFromRaw("wrong")
             gameOverSoundId = tryLoadSoundFromRaw("game_over")
+            
+            // If correct sound not loaded from assets, try raw folder
+            if (correctSoundId == 0) {
+                correctSoundId = tryLoadSoundFromRaw("correct")
+            }
             
             soundPool.setOnLoadCompleteListener { _, _, status ->
                 if (status == 0) isLoaded = true

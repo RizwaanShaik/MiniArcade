@@ -479,6 +479,7 @@ class RhythmGameActivity : AppCompatActivity() {
             this.text = text
             textSize = 24f
             setTextColor(getColor(colorRes))
+            typeface = resources.getFont(R.font.poppins_bold)
             layoutParams = FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.WRAP_CONTENT,
                 FrameLayout.LayoutParams.WRAP_CONTENT
@@ -526,6 +527,9 @@ class RhythmGameActivity : AppCompatActivity() {
         binding.tvScore.text = getString(R.string.score, score.toInt())
         binding.tvCombo.text = if (combo > 1) "🔥 x$combo" else ""
         binding.tvLives.text = "❤️".repeat(lives.coerceAtLeast(0))
+        
+        // Ensure score text uses bold font
+        binding.tvScore.typeface = resources.getFont(R.font.poppins_bold)
     }
     
     private fun showGameOver() {

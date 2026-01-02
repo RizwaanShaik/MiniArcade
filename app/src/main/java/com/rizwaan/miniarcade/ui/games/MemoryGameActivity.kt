@@ -42,6 +42,7 @@ class MemoryGameActivity : AppCompatActivity() {
     private var firstCard: Int? = null
     private var isChecking = false
     private var isGameStarted = false
+    private var previousHighScore = 0L  // Track previous high score for new high score detection
     
     private val emojis = listOf(
         "🍎", "🍊", "🍋", "🍇", "🍓", "🍒", "🥝", "🍑",
@@ -69,8 +70,17 @@ class MemoryGameActivity : AppCompatActivity() {
         
         setupClickListeners()
         resetGame()
+        loadPreviousHighScore()
         
         binding.startOverlay.visibility = View.VISIBLE
+    }
+    
+    private fun loadPreviousHighScore() {
+        lifecycleScope.launch {
+            val player = prefsManager.currentPlayer ?: return@launch
+            val playerData = firebaseRepo.getPlayerScores(player.id)
+            previousHighScore = playerData?.getScore(GameType.MEMORY_FLIP) ?: 0L
+        }
     }
     
     private fun resetGame() {
@@ -258,11 +268,19 @@ class MemoryGameActivity : AppCompatActivity() {
     }
     
     private fun showGameOver(isWin: Boolean) {
+        val finalScore = calculateScore()
+        
+        // Check if this is a new high score
+        val isNewHighScore = finalScore > previousHighScore
+        if (isNewHighScore) {
+            soundManager.playHighscore()
+        } else {
+            soundManager.playGameOver()
+        }
+        
         saveScore()
         
         val dialogBinding = DialogGameOverBinding.inflate(layoutInflater)
-        
-        val finalScore = calculateScore()
         dialogBinding.tvResultEmoji.text = if (isWin) "🏆" else "😅"
         dialogBinding.tvTitle.text = if (isWin) "Memory Master!" else "Game Over!"
         dialogBinding.tvScore.text = "Score: $finalScore"

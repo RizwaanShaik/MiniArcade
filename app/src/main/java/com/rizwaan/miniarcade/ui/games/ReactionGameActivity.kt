@@ -35,6 +35,7 @@ class ReactionGameActivity : AppCompatActivity() {
     private var currentRound = 0
     private val totalRounds = 5
     private val reactionTimes = mutableListOf<Long>()
+    private var previousHighScore = Long.MAX_VALUE  // Track previous best time (lower is better)
     
     private var pendingGoRunnable: Runnable? = null
     private var pendingResetRunnable: Runnable? = null
@@ -67,6 +68,17 @@ class ReactionGameActivity : AppCompatActivity() {
         
         resetToIdle()
         setupClickListeners()
+        loadPreviousHighScore()
+    }
+    
+    private fun loadPreviousHighScore() {
+        lifecycleScope.launch {
+            val player = prefsManager.currentPlayer ?: return@launch
+            val playerData = firebaseRepo.getPlayerScores(player.id)
+            val previousBest = playerData?.getScore(GameType.REACTION_TIME) ?: 0L
+            // For reaction time, 0 means no previous score, so use MAX_VALUE
+            previousHighScore = if (previousBest > 0) previousBest else Long.MAX_VALUE
+        }
     }
     
     private fun resetToIdle() {
@@ -173,7 +185,7 @@ class ReactionGameActivity : AppCompatActivity() {
         cancelAllPendingActions()
         gameState = GameState.TOO_EARLY
         
-        soundManager.playWrong()
+        soundManager.playLoseLife()
         setRedBackground()
         binding.tvInstruction.text = "TOO EARLY!"
         binding.tvSubtext.text = "Tap to try again"
@@ -275,6 +287,14 @@ class ReactionGameActivity : AppCompatActivity() {
     private fun showGameOver() {
         val best = reactionTimes.minOrNull() ?: 0
         val avg = reactionTimes.average().toLong()
+        
+        // Check if this is a new best time (lower is better for reaction time)
+        val isNewHighScore = best > 0 && (previousHighScore == Long.MAX_VALUE || best < previousHighScore)
+        if (isNewHighScore) {
+            soundManager.playHighscore()
+        } else {
+            soundManager.playGameOver()
+        }
         
         saveScore(best)
         

@@ -49,6 +49,7 @@ class ColorGameActivity : AppCompatActivity() {
     // Tracking for improved scoring
     private var ballsSpawned = 0  // Total balls spawned (excluding bombs)
     private var catches = 0        // Successful catches of target color
+    private var previousHighScore = 0L  // Track previous high score for new high score detection
     
     data class ObjectData(
         val view: View,
@@ -85,6 +86,15 @@ class ColorGameActivity : AppCompatActivity() {
         
         setupGame()
         setupClickListeners()
+        loadPreviousHighScore()
+    }
+    
+    private fun loadPreviousHighScore() {
+        lifecycleScope.launch {
+            val player = prefsManager.currentPlayer ?: return@launch
+            val playerData = firebaseRepo.getPlayerScores(player.id)
+            previousHighScore = playerData?.getScore(GameType.COLOR_CATCH) ?: 0L
+        }
     }
     
     private fun setupGame() {
@@ -112,17 +122,67 @@ class ColorGameActivity : AppCompatActivity() {
     }
     
     private fun startGame() {
-        binding.startOverlay.visibility = View.GONE
-        isPlaying = true
-        gameStartTime = System.currentTimeMillis()
+        binding.btnStart.isEnabled = false
+        binding.startContent.visibility = View.GONE
+        binding.tvCountdown.visibility = View.VISIBLE
         
-        // Pick random target color
-        targetColor = colors.random()
-        binding.tvTargetColor.text = "${targetColor!!.emoji} ${targetColor!!.name}"
-        binding.tvTargetColor.setTextColor(targetColor!!.color)
+        startCountdown()
+    }
+    
+    private fun startCountdown() {
+        val countdownTexts = listOf("3", "2", "1", "GO!")
+        var countdownIndex = 0
         
-        startSpawning()
-        startDifficultyIncrease()
+        // Play countdown sound once at the start (it contains 3-2-1-GO)
+        soundManager.playCountdown()
+        
+        fun showNextCountdown() {
+            if (countdownIndex >= countdownTexts.size) {
+                // Countdown complete - start the game
+                binding.startOverlay.visibility = View.GONE
+                binding.tvCountdown.visibility = View.GONE
+                isPlaying = true
+                gameStartTime = System.currentTimeMillis()
+                
+                // Pick random target color
+                targetColor = colors.random()
+                binding.tvTargetColor.text = "${targetColor!!.emoji} ${targetColor!!.name}"
+                binding.tvTargetColor.setTextColor(targetColor!!.color)
+                
+                startSpawning()
+                startDifficultyIncrease()
+                return
+            }
+            
+            binding.tvCountdown.text = countdownTexts[countdownIndex]
+            binding.tvCountdown.alpha = 1f
+            binding.tvCountdown.scaleX = 0.5f
+            binding.tvCountdown.scaleY = 0.5f
+            
+            // Animate countdown with slight delay before starting
+            handler.postDelayed({
+                binding.tvCountdown.animate()
+                    .scaleX(1.2f)
+                    .scaleY(1.2f)
+                    .alpha(1f)
+                    .setDuration(200)
+                    .withEndAction {
+                        binding.tvCountdown.animate()
+                            .scaleX(1f)
+                            .scaleY(1f)
+                            .alpha(0.3f)
+                            .setDuration(300)
+                            .withEndAction {
+                                countdownIndex++
+                                handler.postDelayed({ showNextCountdown() }, 200)
+                            }
+                            .start()
+                    }
+                    .start()
+            }, 150) // Small delay before animation starts
+        }
+        
+        showNextCountdown()
     }
     
     private fun stopGame() {
@@ -298,7 +358,7 @@ class ColorGameActivity : AppCompatActivity() {
             "other" -> {
                 // Wrong color - lose a life
                 lives--
-                soundManager.playWrong()
+                soundManager.playLoseLife()
                 showFeedback(data.view, "✗", R.color.game_red)
             }
         }
@@ -316,6 +376,7 @@ class ColorGameActivity : AppCompatActivity() {
         // Only count as miss if it was a target color
         if (data.type == "target") {
             lives--
+            soundManager.playLoseLife()
             showFeedback(data.view, "Miss!", R.color.game_yellow)
             updateUI()
             checkGameOver()
@@ -381,10 +442,19 @@ class ColorGameActivity : AppCompatActivity() {
     }
     
     private fun showGameOver(hitBomb: Boolean) {
+        val finalScore = calculateScore()
+        
+        // Check if this is a new high score
+        val isNewHighScore = finalScore > previousHighScore
+        if (isNewHighScore) {
+            soundManager.playHighscore()
+        } else {
+            soundManager.playGameOver()
+        }
+        
         saveScore()
         
         val dialogBinding = DialogGameOverBinding.inflate(layoutInflater)
-        val finalScore = calculateScore()
         val accuracy = if (ballsSpawned > 0) (catches.toDouble() / ballsSpawned * 100).toInt() else 0
         
         if (hitBomb) {
@@ -423,6 +493,8 @@ class ColorGameActivity : AppCompatActivity() {
             dialog.dismiss()
             setupGame()
             binding.startOverlay.visibility = View.VISIBLE
+            binding.startContent.visibility = View.VISIBLE
+            binding.btnStart.isEnabled = true
         }
         
         dialogBinding.btnMenu.setOnClickListener {
