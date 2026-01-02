@@ -1,0 +1,5518 @@
+{
+  "3": [
+    {
+      "words": [
+        "CAT",
+        "ACT"
+      ],
+      "hint": "A pet that meows 🐱"
+    },
+    {
+      "words": [
+        "DOG",
+        "GOD"
+      ],
+      "hint": "A pet that barks 🐕"
+    },
+    {
+      "words": [
+        "SUN",
+        "NUS"
+      ],
+      "hint": "Bright in the sky ☀️"
+    },
+    {
+      "words": [
+        "BEE"
+      ],
+      "hint": "Makes honey 🐝"
+    },
+    {
+      "words": [
+        "CAR",
+        "ARC"
+      ],
+      "hint": "Has four wheels 🚗"
+    },
+    {
+      "words": [
+        "BAT",
+        "TAB"
+      ],
+      "hint": "Flies at night 🦇"
+    },
+    {
+      "words": [
+        "HAT"
+      ],
+      "hint": "Wear on your head 🎩"
+    },
+    {
+      "words": [
+        "CUP"
+      ],
+      "hint": "Drink from this ☕"
+    },
+    {
+      "words": [
+        "BUS",
+        "SUB"
+      ],
+      "hint": "Public transport 🚌"
+    },
+    {
+      "words": [
+        "ANT",
+        "TAN"
+      ],
+      "hint": "Tiny insect 🐜"
+    },
+    {
+      "words": [
+        "OWL"
+      ],
+      "hint": "Night bird 🦉"
+    },
+    {
+      "words": [
+        "PIG"
+      ],
+      "hint": "Pink farm animal 🐷"
+    },
+    {
+      "words": [
+        "COW"
+      ],
+      "hint": "Says moo 🐄"
+    },
+    {
+      "words": [
+        "EGG"
+      ],
+      "hint": "Comes from chicken 🥚"
+    },
+    {
+      "words": [
+        "ICE"
+      ],
+      "hint": "Frozen water 🧊"
+    },
+    {
+      "words": [
+        "JAM"
+      ],
+      "hint": "Spread on bread 🍓"
+    },
+    {
+      "words": [
+        "KEY"
+      ],
+      "hint": "Opens locks 🔑"
+    },
+    {
+      "words": [
+        "MAP",
+        "AMP"
+      ],
+      "hint": "Shows directions 🗺️"
+    },
+    {
+      "words": [
+        "NET",
+        "TEN"
+      ],
+      "hint": "Catch fish with it 🥅"
+    },
+    {
+      "words": [
+        "PEN"
+      ],
+      "hint": "Write with this ✏️"
+    },
+    {
+      "words": [
+        "RAT",
+        "TAR",
+        "ART"
+      ],
+      "hint": "Small rodent 🐀"
+    },
+    {
+      "words": [
+        "POT",
+        "TOP",
+        "OPT"
+      ],
+      "hint": "Cook in this 🍲"
+    },
+    {
+      "words": [
+        "PAT",
+        "TAP",
+        "APT"
+      ],
+      "hint": "Gentle touch 👋"
+    },
+    {
+      "words": [
+        "EAR",
+        "ARE",
+        "ERA"
+      ],
+      "hint": "You hear with this 👂"
+    },
+    {
+      "words": [
+        "EAT",
+        "ATE",
+        "TEA"
+      ],
+      "hint": "Consume food 🍽️"
+    },
+    {
+      "words": [
+        "SAW",
+        "WAS"
+      ],
+      "hint": "Cutting tool 🪚"
+    },
+    {
+      "words": [
+        "NOW",
+        "OWN",
+        "WON"
+      ],
+      "hint": "This moment ⏰"
+    },
+    {
+      "words": [
+        "RED"
+      ],
+      "hint": "Color of fire 🔴"
+    },
+    {
+      "words": [
+        "RUN"
+      ],
+      "hint": "Move fast 🏃"
+    },
+    {
+      "words": [
+        "FUN"
+      ],
+      "hint": "Enjoyable time 🎉"
+    },
+    {
+      "words": [
+        "GUM"
+      ],
+      "hint": "Chew this 🫧"
+    },
+    {
+      "words": [
+        "HUG"
+      ],
+      "hint": "Show affection 🤗"
+    },
+    {
+      "words": [
+        "JOB"
+      ],
+      "hint": "Work you do 💼"
+    },
+    {
+      "words": [
+        "JOY"
+      ],
+      "hint": "Happiness 😊"
+    },
+    {
+      "words": [
+        "KID"
+      ],
+      "hint": "Young person 👦"
+    },
+    {
+      "words": [
+        "LEG"
+      ],
+      "hint": "Body part for walking 🦵"
+    },
+    {
+      "words": [
+        "LID"
+      ],
+      "hint": "Cover for container 🫙"
+    },
+    {
+      "words": [
+        "LOG"
+      ],
+      "hint": "Piece of wood 🪵"
+    },
+    {
+      "words": [
+        "MOM",
+        "MUM"
+      ],
+      "hint": "Your mother 👩"
+    },
+    {
+      "words": [
+        "DAD"
+      ],
+      "hint": "Your father 👨"
+    },
+    {
+      "words": [
+        "NUT"
+      ],
+      "hint": "Hard-shelled snack 🥜"
+    },
+    {
+      "words": [
+        "POP"
+      ],
+      "hint": "Burst sound 💥"
+    },
+    {
+      "words": [
+        "RUG"
+      ],
+      "hint": "Floor covering 🧶"
+    },
+    {
+      "words": [
+        "SKY"
+      ],
+      "hint": "Above your head 🌌"
+    },
+    {
+      "words": [
+        "TOY"
+      ],
+      "hint": "Thing to play with 🧸"
+    },
+    {
+      "words": [
+        "VAN"
+      ],
+      "hint": "Large vehicle 🚐"
+    },
+    {
+      "words": [
+        "WEB"
+      ],
+      "hint": "Spider makes this 🕸️"
+    },
+    {
+      "words": [
+        "ZOO"
+      ],
+      "hint": "Animals live here 🦁"
+    },
+    {
+      "words": [
+        "BAG"
+      ],
+      "hint": "Carry things 👜"
+    },
+    {
+      "words": [
+        "BED"
+      ],
+      "hint": "Sleep on this 🛏️"
+    },
+    {
+      "words": [
+        "BOX"
+      ],
+      "hint": "Square container 📦"
+    },
+    {
+      "words": [
+        "CRY"
+      ],
+      "hint": "Shed tears 😢"
+    },
+    {
+      "words": [
+        "DRY"
+      ],
+      "hint": "Not wet 🏜️"
+    },
+    {
+      "words": [
+        "FAN"
+      ],
+      "hint": "Cools you down 🌀"
+    },
+    {
+      "words": [
+        "FAT"
+      ],
+      "hint": "Opposite of thin 🐷"
+    },
+    {
+      "words": [
+        "FIG"
+      ],
+      "hint": "Purple fruit 🍇"
+    },
+    {
+      "words": [
+        "FIN"
+      ],
+      "hint": "Fish has this 🦈"
+    },
+    {
+      "words": [
+        "FIT"
+      ],
+      "hint": "In good shape 💪"
+    },
+    {
+      "words": [
+        "FLY"
+      ],
+      "hint": "Insect or verb 🪰"
+    },
+    {
+      "words": [
+        "FOG"
+      ],
+      "hint": "Misty weather 🌫️"
+    },
+    {
+      "words": [
+        "FOX"
+      ],
+      "hint": "Clever animal 🦊"
+    },
+    {
+      "words": [
+        "FRY"
+      ],
+      "hint": "Cook in oil 🍳"
+    },
+    {
+      "words": [
+        "GAS"
+      ],
+      "hint": "Fuel for cars ⛽"
+    },
+    {
+      "words": [
+        "GYM"
+      ],
+      "hint": "Exercise place 🏋️"
+    },
+    {
+      "words": [
+        "HEN"
+      ],
+      "hint": "Female chicken 🐔"
+    },
+    {
+      "words": [
+        "HOT"
+      ],
+      "hint": "Very warm 🔥"
+    },
+    {
+      "words": [
+        "INK"
+      ],
+      "hint": "Pen uses this 🖋️"
+    },
+    {
+      "words": [
+        "JAR"
+      ],
+      "hint": "Glass container 🫙"
+    },
+    {
+      "words": [
+        "JET"
+      ],
+      "hint": "Fast plane ✈️"
+    },
+    {
+      "words": [
+        "JOG"
+      ],
+      "hint": "Slow run 🏃"
+    },
+    {
+      "words": [
+        "LAP",
+        "PAL"
+      ],
+      "hint": "One circuit 🏁"
+    },
+    {
+      "words": [
+        "LAW"
+      ],
+      "hint": "Rules to follow ⚖️"
+    },
+    {
+      "words": [
+        "LIP"
+      ],
+      "hint": "Part of mouth 👄"
+    },
+    {
+      "words": [
+        "LOW"
+      ],
+      "hint": "Not high ⬇️"
+    },
+    {
+      "words": [
+        "MAD"
+      ],
+      "hint": "Very angry 😠"
+    },
+    {
+      "words": [
+        "MAN"
+      ],
+      "hint": "Adult male 👨"
+    },
+    {
+      "words": [
+        "MAT"
+      ],
+      "hint": "Floor pad 🧘"
+    },
+    {
+      "words": [
+        "MIX"
+      ],
+      "hint": "Combine together 🥣"
+    },
+    {
+      "words": [
+        "MUD"
+      ],
+      "hint": "Wet dirt 💩"
+    },
+    {
+      "words": [
+        "NAP"
+      ],
+      "hint": "Short sleep 😴"
+    },
+    {
+      "words": [
+        "NEW"
+      ],
+      "hint": "Not old 🆕"
+    },
+    {
+      "words": [
+        "OAK"
+      ],
+      "hint": "Type of tree 🌳"
+    },
+    {
+      "words": [
+        "ODD"
+      ],
+      "hint": "Strange or not even 🤔"
+    },
+    {
+      "words": [
+        "OLD"
+      ],
+      "hint": "Not new 👴"
+    },
+    {
+      "words": [
+        "ONE"
+      ],
+      "hint": "First number 1️⃣"
+    },
+    {
+      "words": [
+        "ARM",
+        "RAM",
+        "MAR"
+      ],
+      "hint": "Part of the body 💪"
+    },
+    {
+      "words": [
+        "ASH",
+        "HAS"
+      ],
+      "hint": "Left after fire 🔥"
+    },
+    {
+      "words": [
+        "BAD"
+      ],
+      "hint": "Not good ❌"
+    },
+    {
+      "words": [
+        "BAR"
+      ],
+      "hint": "Place to drink 🍺"
+    },
+    {
+      "words": [
+        "BAY"
+      ],
+      "hint": "Small sea inlet 🌊"
+    },
+    {
+      "words": [
+        "BID"
+      ],
+      "hint": "Offer a price 💰"
+    },
+    {
+      "words": [
+        "BIT"
+      ],
+      "hint": "Small piece 🧩"
+    },
+    {
+      "words": [
+        "BOG"
+      ],
+      "hint": "Swampy land 🌿"
+    },
+    {
+      "words": [
+        "BOW",
+        "WOB"
+      ],
+      "hint": "Weapon for arrows 🏹"
+    },
+    {
+      "words": [
+        "BUN"
+      ],
+      "hint": "Bread roll 🍞"
+    },
+    {
+      "words": [
+        "CAB"
+      ],
+      "hint": "Taxi 🚕"
+    },
+    {
+      "words": [
+        "CAN"
+      ],
+      "hint": "Able to do something ✅"
+    },
+    {
+      "words": [
+        "CAP",
+        "PAC"
+      ],
+      "hint": "Head covering 🧢"
+    },
+    {
+      "words": [
+        "COD"
+      ],
+      "hint": "Type of fish 🐟"
+    },
+    {
+      "words": [
+        "COG"
+      ],
+      "hint": "Part of a machine ⚙️"
+    },
+    {
+      "words": [
+        "COP"
+      ],
+      "hint": "Police officer 👮"
+    },
+    {
+      "words": [
+        "COT"
+      ],
+      "hint": "Small bed 🛏️"
+    },
+    {
+      "words": [
+        "CUE"
+      ],
+      "hint": "Signal or hint 🎯"
+    },
+    {
+      "words": [
+        "DAM",
+        "MAD"
+      ],
+      "hint": "Blocks river 🌊"
+    },
+    {
+      "words": [
+        "DAY"
+      ],
+      "hint": "Opposite of night ☀️"
+    },
+    {
+      "words": [
+        "DEN",
+        "END"
+      ],
+      "hint": "Animal shelter 🐻"
+    },
+    {
+      "words": [
+        "DIP"
+      ],
+      "hint": "Sauce for snacks 🥣"
+    },
+    {
+      "words": [
+        "DOT"
+      ],
+      "hint": "Small mark •"
+    },
+    {
+      "words": [
+        "DUE"
+      ],
+      "hint": "Owed payment 💸"
+    },
+    {
+      "words": [
+        "EGO",
+        "GOE"
+      ],
+      "hint": "Sense of self 😎"
+    },
+    {
+      "words": [
+        "ELM"
+      ],
+      "hint": "Type of tree 🌳"
+    },
+    {
+      "words": [
+        "FEE"
+      ],
+      "hint": "Service charge 💵"
+    },
+    {
+      "words": [
+        "FIR"
+      ],
+      "hint": "Evergreen tree 🌲"
+    },
+    {
+      "words": [
+        "FIX"
+      ],
+      "hint": "Repair something 🔧"
+    },
+    {
+      "words": [
+        "GAP"
+      ],
+      "hint": "Empty space ➖"
+    },
+    {
+      "words": [
+        "GEL",
+        "LEG"
+      ],
+      "hint": "Hair styling product 💇"
+    },
+    {
+      "words": [
+        "GIG"
+      ],
+      "hint": "Live performance 🎸"
+    },
+    {
+      "words": [
+        "GLO",
+        "LOG"
+      ],
+      "hint": "Record of events 📒"
+    },
+    {
+      "words": [
+        "HAY"
+      ],
+      "hint": "Dry grass 🌾"
+    },
+    {
+      "words": [
+        "HOP",
+        "PHO"
+      ],
+      "hint": "Jump lightly 🐇"
+    },
+    {
+      "words": [
+        "ICE"
+      ],
+      "hint": "Frozen water 🧊"
+    },
+    {
+      "words": [
+        "ILL"
+      ],
+      "hint": "Not healthy 🤒"
+    },
+    {
+      "words": [
+        "JAW"
+      ],
+      "hint": "Part of mouth 🦷"
+    },
+    {
+      "words": [
+        "KIT"
+      ],
+      "hint": "Set of tools 🧰"
+    },
+    {
+      "words": [
+        "LAG",
+        "GAL"
+      ],
+      "hint": "Delay behind ⏳"
+    },
+    {
+      "words": [
+        "LEE"
+      ],
+      "hint": "Sheltered side 🌬️"
+    },
+    {
+      "words": [
+        "LIE"
+      ],
+      "hint": "Not tell truth 🤥"
+    },
+    {
+      "words": [
+        "LOT"
+      ],
+      "hint": "Group or amount 📦"
+    },
+    {
+      "words": [
+        "MAY"
+      ],
+      "hint": "Possibility 🤔"
+    },
+    {
+      "words": [
+        "MID"
+      ],
+      "hint": "Middle point 🎯"
+    },
+    {
+      "words": [
+        "MOP"
+      ],
+      "hint": "Clean floor 🧹"
+    },
+    {
+      "words": [
+        "NOD",
+        "DON"
+      ],
+      "hint": "Gesture yes 👍"
+    },
+    {
+      "words": [
+        "NOR",
+        "RON"
+      ],
+      "hint": "Used in logic ❓"
+    },
+    {
+      "words": [
+        "OAR",
+        "ORA"
+      ],
+      "hint": "Rowing tool 🚣"
+    },
+    {
+      "words": [
+        "OIL"
+      ],
+      "hint": "Cooking liquid 🛢️"
+    },
+    {
+      "words": [
+        "ORB"
+      ],
+      "hint": "Round object 🔮"
+    },
+    {
+      "words": [
+        "PAN",
+        "NAP"
+      ],
+      "hint": "Cooking utensil 🍳"
+    },
+    {
+      "words": [
+        "PAY"
+      ],
+      "hint": "Give money 💳"
+    },
+    {
+      "words": [
+        "POD"
+      ],
+      "hint": "Seed container 🌱"
+    },
+    {
+      "words": [
+        "PRO",
+        "ROP"
+      ],
+      "hint": "Expert person 🧠"
+    },
+    {
+      "words": [
+        "RAY"
+      ],
+      "hint": "Beam of light 🌟"
+    },
+    {
+      "words": [
+        "RID"
+      ],
+      "hint": "Get free of 🧹"
+    },
+    {
+      "words": [
+        "RIM"
+      ],
+      "hint": "Edge of wheel 🚗"
+    },
+    {
+      "words": [
+        "ROB"
+      ],
+      "hint": "Steal 💰"
+    },
+    {
+      "words": [
+        "ROD"
+      ],
+      "hint": "Thin stick 🎣"
+    },
+    {
+      "words": [
+        "ROT"
+      ],
+      "hint": "Decay 🍂"
+    },
+    {
+      "words": [
+        "SIP"
+      ],
+      "hint": "Drink slowly ☕"
+    },
+    {
+      "words": [
+        "SKI"
+      ],
+      "hint": "Snow sport ⛷️"
+    },
+    {
+      "words": [
+        "SOW",
+        "WOS"
+      ],
+      "hint": "Plant seeds 🌱"
+    },
+    {
+      "words": [
+        "TAX"
+      ],
+      "hint": "Government charge 🧾"
+    },
+    {
+      "words": [
+        "TIE"
+      ],
+      "hint": "Formal wear 👔"
+    },
+    {
+      "words": [
+        "TON",
+        "NOT"
+      ],
+      "hint": "Heavy amount ⚖️"
+    },
+    {
+      "words": [
+        "TRY"
+      ],
+      "hint": "Make an effort 💪"
+    },
+    {
+      "words": [
+        "USE"
+      ],
+      "hint": "Put into action 🛠️"
+    },
+    {
+      "words": [
+        "VIA"
+      ],
+      "hint": "By way of ➡️"
+    },
+    {
+      "words": [
+        "YET"
+      ],
+      "hint": "Until now ⏳"
+    },
+    {
+      "words": [
+        "YOU"
+      ],
+      "hint": "The person reading 👀"
+    },
+    {
+      "words": [
+        "ZED"
+      ],
+      "hint": "Letter Z 🇬🇧"
+    },
+    {
+      "words": [
+        "ACE"
+      ],
+      "hint": "Top score or expert 🎯"
+    },
+    {
+      "words": [
+        "ADD"
+      ],
+      "hint": "Combine numbers ➕"
+    },
+    {
+      "words": [
+        "AID"
+      ],
+      "hint": "Help or assistance 🤝"
+    },
+    {
+      "words": [
+        "AIM"
+      ],
+      "hint": "Target or goal 🎯"
+    },
+    {
+      "words": [
+        "AIR",
+        "RIA"
+      ],
+      "hint": "What we breathe 🌬️"
+    },
+    {
+      "words": [
+        "ALL"
+      ],
+      "hint": "Everything included 📦"
+    },
+    {
+      "words": [
+        "ANY"
+      ],
+      "hint": "No matter which 🤷"
+    },
+    {
+      "words": [
+        "ASK"
+      ],
+      "hint": "Request information ❓"
+    },
+    {
+      "words": [
+        "ATE",
+        "EAT",
+        "TEA"
+      ],
+      "hint": "Had a meal 🍽️"
+    },
+    {
+      "words": [
+        "AWL"
+      ],
+      "hint": "Leather piercing tool 🧵"
+    },
+    {
+      "words": [
+        "BEE"
+      ],
+      "hint": "Insect that makes honey 🐝"
+    },
+    {
+      "words": [
+        "BET"
+      ],
+      "hint": "Gamble or wager 🎲"
+    },
+    {
+      "words": [
+        "BIG"
+      ],
+      "hint": "Large size 📏"
+    },
+    {
+      "words": [
+        "BIN"
+      ],
+      "hint": "Trash container 🗑️"
+    },
+    {
+      "words": [
+        "BOA"
+      ],
+      "hint": "Large snake 🐍"
+    },
+    {
+      "words": [
+        "BOB"
+      ],
+      "hint": "Short hairstyle ✂️"
+    },
+    {
+      "words": [
+        "BUG"
+      ],
+      "hint": "Small insect 🐞"
+    },
+    {
+      "words": [
+        "BUY"
+      ],
+      "hint": "Purchase something 🛒"
+    },
+    {
+      "words": [
+        "BYE"
+      ],
+      "hint": "Farewell 👋"
+    },
+    {
+      "words": [
+        "CAL"
+      ],
+      "hint": "Short for calorie 🔥"
+    },
+    {
+      "words": [
+        "CHI"
+      ],
+      "hint": "Energy flow ☯️"
+    },
+    {
+      "words": [
+        "COB"
+      ],
+      "hint": "Corn center 🌽"
+    },
+    {
+      "words": [
+        "COY"
+      ],
+      "hint": "Shy or playful 😏"
+    },
+    {
+      "words": [
+        "CRU"
+      ],
+      "hint": "Wine harvest year 🍷"
+    },
+    {
+      "words": [
+        "CUT"
+      ],
+      "hint": "Slice or trim ✂️"
+    },
+    {
+      "words": [
+        "DAB",
+        "BAD"
+      ],
+      "hint": "Light touch 👆"
+    },
+    {
+      "words": [
+        "DIE"
+      ],
+      "hint": "Cube used in games 🎲"
+    },
+    {
+      "words": [
+        "DIG"
+      ],
+      "hint": "Break ground ⛏️"
+    },
+    {
+      "words": [
+        "DIM"
+      ],
+      "hint": "Not bright 💡"
+    },
+    {
+      "words": [
+        "DOC",
+        "COD"
+      ],
+      "hint": "Doctor (short) 🩺"
+    },
+    {
+      "words": [
+        "DYE"
+      ],
+      "hint": "Color fabric 🎨"
+    },
+    {
+      "words": [
+        "EEL"
+      ],
+      "hint": "Slippery fish 🐍"
+    },
+    {
+      "words": [
+        "EGG"
+      ],
+      "hint": "Breakfast item 🍳"
+    },
+    {
+      "words": [
+        "EMU"
+      ],
+      "hint": "Large bird 🐦"
+    },
+    {
+      "words": [
+        "FAD"
+      ],
+      "hint": "Short-lived trend 📉"
+    },
+    {
+      "words": [
+        "FAR"
+      ],
+      "hint": "Not near 🛣️"
+    },
+    {
+      "words": [
+        "FAX"
+      ],
+      "hint": "Old document sender 📠"
+    },
+    {
+      "words": [
+        "FED"
+      ],
+      "hint": "Already eaten 🍽️"
+    },
+    {
+      "words": [
+        "FEW"
+      ],
+      "hint": "Not many ➖"
+    },
+    {
+      "words": [
+        "FIB"
+      ],
+      "hint": "Small lie 🤥"
+    },
+    {
+      "words": [
+        "GEM"
+      ],
+      "hint": "Precious stone 💎"
+    },
+    {
+      "words": [
+        "GET"
+      ],
+      "hint": "Receive something 📦"
+    },
+    {
+      "words": [
+        "GOT"
+      ],
+      "hint": "Already received ✅"
+    },
+    {
+      "words": [
+        "GUN"
+      ],
+      "hint": "Weapon 🔫"
+    },
+    {
+      "words": [
+        "HAD"
+      ],
+      "hint": "Past of have ⏳"
+    },
+    {
+      "words": [
+        "HAM"
+      ],
+      "hint": "Meat food 🍖"
+    },
+    {
+      "words": [
+        "HER"
+      ],
+      "hint": "Female pronoun 👩"
+    },
+    {
+      "words": [
+        "HIM"
+      ],
+      "hint": "Male pronoun 👨"
+    },
+    {
+      "words": [
+        "HUT"
+      ],
+      "hint": "Small shelter 🛖"
+    },
+    {
+      "words": [
+        "ICE"
+      ],
+      "hint": "Frozen water 🧊"
+    },
+    {
+      "words": [
+        "ION"
+      ],
+      "hint": "Charged particle ⚡"
+    },
+    {
+      "words": [
+        "ITS"
+      ],
+      "hint": "Belongs to it 📌"
+    },
+    {
+      "words": [
+        "JAB"
+      ],
+      "hint": "Quick punch 👊"
+    },
+    {
+      "words": [
+        "JAM"
+      ],
+      "hint": "Traffic problem 🚗"
+    },
+    {
+      "words": [
+        "LAD"
+      ],
+      "hint": "Young boy 👦"
+    },
+    {
+      "words": [
+        "LAY"
+      ],
+      "hint": "Put down ⬇️"
+    },
+    {
+      "words": [
+        "LET"
+      ],
+      "hint": "Allow something ✅"
+    },
+    {
+      "words": [
+        "LIE"
+      ],
+      "hint": "False statement 🤥"
+    },
+    {
+      "words": [
+        "LUX"
+      ],
+      "hint": "Light measurement 💡"
+    },
+    {
+      "words": [
+        "MEN"
+      ],
+      "hint": "Plural of man 👨‍👨‍👦"
+    },
+    {
+      "words": [
+        "MET"
+      ],
+      "hint": "Encountered 🤝"
+    },
+    {
+      "words": [
+        "MOO"
+      ],
+      "hint": "Cow sound 🐄"
+    },
+    {
+      "words": [
+        "NIL"
+      ],
+      "hint": "Nothing zero 0️⃣"
+    },
+    {
+      "words": [
+        "NIP",
+        "PIN"
+      ],
+      "hint": "Small bite 🐜"
+    },
+    {
+      "words": [
+        "OAT"
+      ],
+      "hint": "Healthy grain 🌾"
+    },
+    {
+      "words": [
+        "OFF"
+      ],
+      "hint": "Turned off ❌"
+    },
+    {
+      "words": [
+        "OUT"
+      ],
+      "hint": "Not inside 🚪"
+    },
+    {
+      "words": [
+        "PEW"
+      ],
+      "hint": "Church bench ⛪"
+    },
+    {
+      "words": [
+        "PLY"
+      ],
+      "hint": "Fold or layer 📄"
+    },
+    {
+      "words": [
+        "PUT"
+      ],
+      "hint": "Place something 📍"
+    },
+    {
+      "words": [
+        "RED"
+      ],
+      "hint": "Color of blood 🔴"
+    },
+    {
+      "words": [
+        "RIP"
+      ],
+      "hint": "Tear apart 💥"
+    },
+    {
+      "words": [
+        "SAY"
+      ],
+      "hint": "Speak 🗣️"
+    },
+    {
+      "words": [
+        "SET"
+      ],
+      "hint": "Put in place 🧩"
+    },
+    {
+      "words": [
+        "SHY"
+      ],
+      "hint": "Easily embarrassed 😊"
+    },
+    {
+      "words": [
+        "SOD"
+      ],
+      "hint": "Grass surface 🌱"
+    },
+    {
+      "words": [
+        "SON"
+      ],
+      "hint": "Male child 👦"
+    },
+    {
+      "words": [
+        "SUE"
+      ],
+      "hint": "Go to court ⚖️"
+    },
+    {
+      "words": [
+        "TAG"
+      ],
+      "hint": "Label something 🏷️"
+    },
+    {
+      "words": [
+        "TAP"
+      ],
+      "hint": "Light touch 👆"
+    },
+    {
+      "words": [
+        "TEA",
+        "ATE",
+        "EAT"
+      ],
+      "hint": "Hot drink ☕"
+    },
+    {
+      "words": [
+        "TOO"
+      ],
+      "hint": "Excessively ➕"
+    },
+    {
+      "words": [
+        "URN"
+      ],
+      "hint": "Decorative container ⚱️"
+    },
+    {
+      "words": [
+        "VET"
+      ],
+      "hint": "Animal doctor 🐶"
+    },
+    {
+      "words": [
+        "WHO"
+      ],
+      "hint": "Question word ❓"
+    },
+    {
+      "words": [
+        "WHY"
+      ],
+      "hint": "Ask for reason 🤔"
+    },
+    {
+      "words": [
+        "WIT"
+      ],
+      "hint": "Quick intelligence 🧠"
+    },
+    {
+      "words": [
+        "WOW"
+      ],
+      "hint": "Expression of surprise 😮"
+    },
+    {
+      "words": [
+        "YAW"
+      ],
+      "hint": "Turn sideways ⛵"
+    },
+    {
+      "words": [
+        "YIP"
+      ],
+      "hint": "Small bark 🐕"
+    },
+    {
+      "words": [
+        "ZIP"
+      ],
+      "hint": "Fast move or fastener ⚡"
+    }
+  ],
+  "4": [
+    {
+      "words": [
+        "FISH"
+      ],
+      "hint": "Lives in water 🐟"
+    },
+    {
+      "words": [
+        "BIRD",
+        "DRIB"
+      ],
+      "hint": "Has wings and flies 🐦"
+    },
+    {
+      "words": [
+        "TREE"
+      ],
+      "hint": "Has leaves 🌳"
+    },
+    {
+      "words": [
+        "CAKE"
+      ],
+      "hint": "Birthday dessert 🎂"
+    },
+    {
+      "words": [
+        "STAR",
+        "RATS",
+        "ARTS",
+        "TSAR"
+      ],
+      "hint": "Twinkles at night ⭐"
+    },
+    {
+      "words": [
+        "MOON"
+      ],
+      "hint": "Shines at night 🌙"
+    },
+    {
+      "words": [
+        "FROG"
+      ],
+      "hint": "Says ribbit 🐸"
+    },
+    {
+      "words": [
+        "BEAR",
+        "BARE"
+      ],
+      "hint": "Big furry animal 🐻"
+    },
+    {
+      "words": [
+        "LION",
+        "LOIN"
+      ],
+      "hint": "King of the jungle 🦁"
+    },
+    {
+      "words": [
+        "DUCK"
+      ],
+      "hint": "Says quack 🦆"
+    },
+    {
+      "words": [
+        "BOOK"
+      ],
+      "hint": "Read stories 📚"
+    },
+    {
+      "words": [
+        "BALL"
+      ],
+      "hint": "Round toy ⚽"
+    },
+    {
+      "words": [
+        "RAIN"
+      ],
+      "hint": "Falls from clouds 🌧️"
+    },
+    {
+      "words": [
+        "SNOW",
+        "OWNS",
+        "NOWS",
+        "SOWN",
+        "WONS"
+      ],
+      "hint": "White and cold ❄️"
+    },
+    {
+      "words": [
+        "LEAF",
+        "FLEA",
+        "ALEF"
+      ],
+      "hint": "Grows on trees 🍃"
+    },
+    {
+      "words": [
+        "ROSE",
+        "SORE",
+        "ORES",
+        "EROS"
+      ],
+      "hint": "Beautiful flower 🌹"
+    },
+    {
+      "words": [
+        "MILK"
+      ],
+      "hint": "Comes from cows 🥛"
+    },
+    {
+      "words": [
+        "RICE"
+      ],
+      "hint": "Staple food 🍚"
+    },
+    {
+      "words": [
+        "SHOE",
+        "HOES",
+        "HOSE"
+      ],
+      "hint": "Wear on feet 👟"
+    },
+    {
+      "words": [
+        "SOCK"
+      ],
+      "hint": "Goes inside a shoe 🧦"
+    },
+    {
+      "words": [
+        "DOOR"
+      ],
+      "hint": "Entrance to a room 🚪"
+    },
+    {
+      "words": [
+        "BELL"
+      ],
+      "hint": "Makes ringing sound 🔔"
+    },
+    {
+      "words": [
+        "GIFT"
+      ],
+      "hint": "Something you give 🎁"
+    },
+    {
+      "words": [
+        "GOLD"
+      ],
+      "hint": "Precious metal 🥇"
+    },
+    {
+      "words": [
+        "KITE"
+      ],
+      "hint": "Flies in the wind 🪁"
+    },
+    {
+      "words": [
+        "STOP",
+        "POTS",
+        "POST",
+        "SPOT",
+        "TOPS",
+        "OPTS"
+      ],
+      "hint": "Red traffic sign 🛑"
+    },
+    {
+      "words": [
+        "LAMP",
+        "PALM"
+      ],
+      "hint": "Gives light 💡"
+    },
+    {
+      "words": [
+        "GAME",
+        "MAGE"
+      ],
+      "hint": "Fun activity 🎮"
+    },
+    {
+      "words": [
+        "NAME",
+        "MEAN",
+        "MANE",
+        "AMEN"
+      ],
+      "hint": "What you are called 📛"
+    },
+    {
+      "words": [
+        "POOL",
+        "LOOP",
+        "POLO"
+      ],
+      "hint": "Swimming place 🏊"
+    },
+    {
+      "words": [
+        "SHIP"
+      ],
+      "hint": "Travels on sea 🚢"
+    },
+    {
+      "words": [
+        "BOAT"
+      ],
+      "hint": "Small water vehicle ⛵"
+    },
+    {
+      "words": [
+        "WAVE"
+      ],
+      "hint": "Ocean movement 🌊"
+    },
+    {
+      "words": [
+        "SAND"
+      ],
+      "hint": "Beach ground 🏖️"
+    },
+    {
+      "words": [
+        "PARK"
+      ],
+      "hint": "Green open area 🌳"
+    },
+    {
+      "words": [
+        "BIKE"
+      ],
+      "hint": "Two-wheeler 🚲"
+    },
+    {
+      "words": [
+        "BLUE"
+      ],
+      "hint": "Color of sky 🔵"
+    },
+    {
+      "words": [
+        "PINK"
+      ],
+      "hint": "Light red color 💗"
+    },
+    {
+      "words": [
+        "GRAY",
+        "GREY"
+      ],
+      "hint": "Between black and white ⚪"
+    },
+    {
+      "words": [
+        "FAST"
+      ],
+      "hint": "Very quick ⚡"
+    },
+    {
+      "words": [
+        "SLOW"
+      ],
+      "hint": "Not fast 🐢"
+    },
+    {
+      "words": [
+        "FOOD"
+      ],
+      "hint": "What you eat 🍽️"
+    },
+    {
+      "words": [
+        "MEAL"
+      ],
+      "hint": "Breakfast, lunch or dinner 🍛"
+    },
+    {
+      "words": [
+        "WARM"
+      ],
+      "hint": "Not cold 🌤️"
+    },
+    {
+      "words": [
+        "COLD"
+      ],
+      "hint": "Low temperature ❄️"
+    },
+    {
+      "words": [
+        "OPEN"
+      ],
+      "hint": "Not closed 🚪"
+    },
+    {
+      "words": [
+        "CLOSE"
+      ],
+      "hint": "Shut something ❌"
+    },
+    {
+      "words": [
+        "HOME"
+      ],
+      "hint": "Place you live 🏠"
+    },
+    {
+      "words": [
+        "WORK"
+      ],
+      "hint": "Job or task 💼"
+    },
+    {
+      "words": [
+        "PLAY"
+      ],
+      "hint": "Have fun 🎉"
+    },
+    {
+      "words": [
+        "READ"
+      ],
+      "hint": "Look at words 📖"
+    },
+    {
+      "words": [
+        "WRITE"
+      ],
+      "hint": "Put words on paper ✍️"
+    },
+    {
+      "words": [
+        "SING"
+      ],
+      "hint": "Make music with voice 🎤"
+    },
+    {
+      "words": [
+        "DANCE"
+      ],
+      "hint": "Move to music 💃"
+    },
+    {
+      "words": [
+        "LOVE"
+      ],
+      "hint": "Strong affection ❤️"
+    },
+    {
+      "words": [
+        "HATE"
+      ],
+      "hint": "Strong dislike 😡"
+    },
+    {
+      "words": [
+        "HELP"
+      ],
+      "hint": "Give assistance 🤝"
+    },
+    {
+      "words": [
+        "CALL"
+      ],
+      "hint": "Phone someone 📞"
+    },
+    {
+      "words": [
+        "WAIT"
+      ],
+      "hint": "Pause for some time ⏳"
+    },
+    {
+      "words": [
+        "TIME"
+      ],
+      "hint": "Measured in seconds ⏱️"
+    },
+    {
+      "words": [
+        "LATE"
+      ],
+      "hint": "After expected time ⏰"
+    },
+    {
+      "words": [
+        "EARL"
+      ],
+      "hint": "Opposite of late 🕘"
+    },
+    {
+      "words": [
+        "ROAD"
+      ],
+      "hint": "For vehicles 🚗"
+    },
+    {
+      "words": [
+        "CITY"
+      ],
+      "hint": "Large town 🏙️"
+    },
+    {
+      "words": [
+        "TOWN"
+      ],
+      "hint": "Smaller than city 🏘️"
+    },
+    {
+      "words": [
+        "SHOP"
+      ],
+      "hint": "Place to buy things 🛍️"
+    },
+    {
+      "words": [
+        "BANK"
+      ],
+      "hint": "Money place 🏦"
+    },
+    {
+      "words": [
+        "CARD"
+      ],
+      "hint": "Plastic payment item 💳"
+    },
+    {
+      "words": [
+        "CASH"
+      ],
+      "hint": "Paper money 💵"
+    },
+    {
+      "words": [
+        "BILL"
+      ],
+      "hint": "Amount to pay 🧾"
+    },
+    {
+      "words": [
+        "NOTE"
+      ],
+      "hint": "Short written reminder 📝"
+    },
+    {
+      "words": [
+        "PLAN"
+      ],
+      "hint": "Future idea 📅"
+    },
+    {
+      "words": [
+        "GOAL"
+      ],
+      "hint": "Target to achieve 🎯"
+    },
+    {
+      "words": [
+        "TEAM"
+      ],
+      "hint": "Group working together 🤝"
+    },
+    {
+      "words": [
+        "LEAD",
+        "DEAL"
+      ],
+      "hint": "Be in charge 🧭"
+    },
+    {
+      "words": [
+        "SAFE"
+      ],
+      "hint": "Not dangerous 🛡️"
+    },
+    {
+      "words": [
+        "RISK"
+      ],
+      "hint": "Chance of loss ⚠️"
+    },
+    {
+      "words": [
+        "FIRE"
+      ],
+      "hint": "Produces heat and light 🔥"
+    },
+    {
+      "words": [
+        "WIND"
+      ],
+      "hint": "Moving air 🌬️"
+    },
+    {
+      "words": [
+        "ROCK"
+      ],
+      "hint": "Hard natural stone 🪨"
+    },
+    {
+      "words": [
+        "SOIL"
+      ],
+      "hint": "Ground for plants 🌱"
+    },
+    {
+      "words": [
+        "CLAY"
+      ],
+      "hint": "Used to make pots 🏺"
+    },
+    {
+      "words": [
+        "IRON"
+      ],
+      "hint": "Strong metal 🛠️"
+    },
+    {
+      "words": [
+        "WOOD"
+      ],
+      "hint": "Material from trees 🪵"
+    },
+    {
+      "words": [
+        "GLASS"
+      ],
+      "hint": "Clear fragile material 🪟"
+    },
+    {
+      "words": [
+        "SOAP"
+      ],
+      "hint": "Used for cleaning 🧼"
+    },
+    {
+      "words": [
+        "TOWEL"
+      ],
+      "hint": "Used to dry body 🚿"
+    },
+    {
+      "words": [
+        "DESK"
+      ],
+      "hint": "Work table 🧑‍💻"
+    },
+    {
+      "words": [
+        "CHAIR"
+      ],
+      "hint": "Sit on this 🪑"
+    },
+    {
+      "words": [
+        "CLOCK"
+      ],
+      "hint": "Shows time ⏰"
+    },
+    {
+      "words": [
+        "PHONE"
+      ],
+      "hint": "Used to call 📱"
+    },
+    {
+      "words": [
+        "EMAIL"
+      ],
+      "hint": "Digital message 📧"
+    },
+    {
+      "words": [
+        "FILE"
+      ],
+      "hint": "Stored document 📂"
+    },
+    {
+      "words": [
+        "DATA"
+      ],
+      "hint": "Information 📊"
+    },
+    {
+      "words": [
+        "CODE"
+      ],
+      "hint": "Instructions for software 💻"
+    },
+    {
+      "words": [
+        "TASK"
+      ],
+      "hint": "Piece of work 📋"
+    },
+    {
+      "words": [
+        "ROLE"
+      ],
+      "hint": "Job responsibility 🎭"
+    },
+    {
+      "words": [
+        "USER"
+      ],
+      "hint": "Person using a system 👤"
+    },
+    {
+      "words": [
+        "PASS"
+      ],
+      "hint": "Access permission 🔐"
+    },
+    {
+      "words": [
+        "LOCK"
+      ],
+      "hint": "Secures something 🔒"
+    },
+    {
+      "words": [
+        "KEYS"
+      ],
+      "hint": "Open locks 🔑"
+    },
+    {
+      "words": [
+        "DOCK"
+      ],
+      "hint": "Ship parking area ⚓"
+    },
+    {
+      "words": [
+        "PORT"
+      ],
+      "hint": "Harbor or connection 🔌"
+    },
+    {
+      "words": [
+        "LINK"
+      ],
+      "hint": "Connection 🔗"
+    },
+    {
+      "words": [
+        "PAGE"
+      ],
+      "hint": "Part of a book 📄"
+    },
+    {
+      "words": [
+        "WORD"
+      ],
+      "hint": "Unit of language 📝"
+    },
+    {
+      "words": [
+        "TEXT"
+      ],
+      "hint": "Written message 💬"
+    },
+    {
+      "words": [
+        "CHAT"
+      ],
+      "hint": "Talk casually 💬"
+    },
+    {
+      "words": [
+        "MEET"
+      ],
+      "hint": "Gather together 🤝"
+    },
+    {
+      "words": [
+        "JOIN"
+      ],
+      "hint": "Become part of ➕"
+    },
+    {
+      "words": [
+        "SEND"
+      ],
+      "hint": "Transmit message 📤"
+    },
+    {
+      "words": [
+        "MOVE"
+      ],
+      "hint": "Change position 🚶"
+    },
+    {
+      "words": [
+        "TURN"
+      ],
+      "hint": "Rotate or change direction 🔄"
+    },
+    {
+      "words": [
+        "STOP"
+      ],
+      "hint": "Come to rest ✋"
+    },
+    {
+      "words": [
+        "PUSH"
+      ],
+      "hint": "Apply force ➡️"
+    },
+    {
+      "words": [
+        "PULL"
+      ],
+      "hint": "Draw toward you ⬅️"
+    },
+    {
+      "words": [
+        "DROP"
+      ],
+      "hint": "Let fall ⬇️"
+    },
+    {
+      "words": [
+        "HOLD"
+      ],
+      "hint": "Keep in hand ✋"
+    },
+    {
+      "words": [
+        "LIFT"
+      ],
+      "hint": "Raise up ⬆️"
+    },
+    {
+      "words": [
+        "OPEN"
+      ],
+      "hint": "Make accessible 🚪"
+    },
+    {
+      "words": [
+        "SHUT"
+      ],
+      "hint": "Close completely 🚫"
+    },
+    {
+      "words": [
+        "PACK"
+      ],
+      "hint": "Put things together 🎒"
+    },
+    {
+      "words": [
+        "LOAD"
+      ],
+      "hint": "Put cargo on 🚚"
+    },
+    {
+      "words": [
+        "SAVE"
+      ],
+      "hint": "Store for later 💾"
+    },
+    {
+      "words": [
+        "EDIT"
+      ],
+      "hint": "Modify content ✏️"
+    },
+    {
+      "words": [
+        "VIEW"
+      ],
+      "hint": "Look at 👀"
+    },
+    {
+      "words": [
+        "ZOOM"
+      ],
+      "hint": "Magnify view 🔍"
+    },
+    {
+      "words": [
+        "SCAN"
+      ],
+      "hint": "Check closely 📡"
+    },
+    {
+      "words": [
+        "READ"
+      ],
+      "hint": "Understand written words 📖"
+    },
+    {
+      "words": [
+        "NOTE"
+      ],
+      "hint": "Short reminder 📝"
+    },
+    {
+      "words": [
+        "IDEA"
+      ],
+      "hint": "Thought or concept 💡"
+    },
+    {
+      "words": [
+        "PLAN"
+      ],
+      "hint": "Prepare in advance 🗺️"
+    },
+    {
+      "words": [
+        "STEP"
+      ],
+      "hint": "Single action 👣"
+    },
+    {
+      "words": [
+        "PATH"
+      ],
+      "hint": "Way forward 🛤️"
+    },
+    {
+      "words": [
+        "GOAL"
+      ],
+      "hint": "Desired outcome 🎯"
+    },
+    {
+      "words": [
+        "TEST"
+      ],
+      "hint": "Check performance 🧪"
+    },
+    {
+      "words": [
+        "FAIL"
+      ],
+      "hint": "Not succeed ❌"
+    },
+    {
+      "words": [
+        "PASS"
+      ],
+      "hint": "Succeed or allow ✅"
+    },
+    {
+      "words": [
+        "GAIN"
+      ],
+      "hint": "Obtain something 📈"
+    },
+    {
+      "words": [
+        "LOSE"
+      ],
+      "hint": "Fail to keep 📉"
+    },
+    {
+      "words": [
+        "COST"
+      ],
+      "hint": "Price to pay 💰"
+    },
+    {
+      "words": [
+        "PAID"
+      ],
+      "hint": "Money given 💵"
+    },
+    {
+      "words": [
+        "FREE"
+      ],
+      "hint": "No cost 🆓"
+    },
+    {
+      "words": [
+        "DEAL"
+      ],
+      "hint": "Business agreement 🤝"
+    },
+    {
+      "words": [
+        "SALE"
+      ],
+      "hint": "Discount event 🏷️"
+    },
+    {
+      "words": [
+        "MARK"
+      ],
+      "hint": "Sign or label 🖊️"
+    },
+    {
+      "words": [
+        "BRAND"
+      ],
+      "hint": "Product identity ™️"
+    },
+    {
+      "words": [
+        "ITEM"
+      ],
+      "hint": "Single object 📦"
+    },
+    {
+      "words": [
+        "STOCK"
+      ],
+      "hint": "Available supply 📦"
+    },
+    {
+      "words": [
+        "ORDER"
+      ],
+      "hint": "Request to buy 🛒"
+    },
+    {
+      "words": [
+        "TRACK"
+      ],
+      "hint": "Follow progress 📍"
+    },
+    {
+      "words": [
+        "CHECK"
+      ],
+      "hint": "Verify something ✔️"
+    },
+    {
+      "words": [
+        "CLEAR"
+      ],
+      "hint": "Easy to understand ✨"
+    },
+    {
+      "words": [
+        "FAST"
+      ],
+      "hint": "Moving quickly ⚡"
+    },
+    {
+      "words": [
+        "SLOW"
+      ],
+      "hint": "Not fast 🐢"
+    },
+    {
+      "words": [
+        "HARD"
+      ],
+      "hint": "Not soft 🪨"
+    },
+    {
+      "words": [
+        "SOFT"
+      ],
+      "hint": "Not hard 🧸"
+    },
+    {
+      "words": [
+        "LOUD"
+      ],
+      "hint": "High volume 🔊"
+    },
+    {
+      "words": [
+        "QUIET"
+      ],
+      "hint": "Low noise 🤫"
+    },
+    {
+      "words": [
+        "CLEAN"
+      ],
+      "hint": "Not dirty ✨"
+    },
+    {
+      "words": [
+        "DIRT"
+      ],
+      "hint": "Unclean matter 🪵"
+    },
+    {
+      "words": [
+        "FULL"
+      ],
+      "hint": "Completely filled 🫙"
+    },
+    {
+      "words": [
+        "EMPTY"
+      ],
+      "hint": "Nothing inside 📭"
+    },
+    {
+      "words": [
+        "TRUE"
+      ],
+      "hint": "Correct or factual ✔️"
+    },
+    {
+      "words": [
+        "FALSE"
+      ],
+      "hint": "Not correct ❌"
+    },
+    {
+      "words": [
+        "SAFE"
+      ],
+      "hint": "Not dangerous 🛡️"
+    },
+    {
+      "words": [
+        "RISK"
+      ],
+      "hint": "Chance of harm ⚠️"
+    },
+    {
+      "words": [
+        "EASY"
+      ],
+      "hint": "Not difficult 😊"
+    },
+    {
+      "words": [
+        "HARD"
+      ],
+      "hint": "Needs effort 💪"
+    },
+    {
+      "words": [
+        "NEAR"
+      ],
+      "hint": "Close by 📍"
+    },
+    {
+      "words": [
+        "FAR"
+      ],
+      "hint": "Not close 🛣️"
+    },
+    {
+      "words": [
+        "LEFT"
+      ],
+      "hint": "Direction ⬅️"
+    },
+    {
+      "words": [
+        "RIGHT"
+      ],
+      "hint": "Opposite of left ➡️"
+    },
+    {
+      "words": [
+        "OPEN"
+      ],
+      "hint": "Not closed 🚪"
+    },
+    {
+      "words": [
+        "SHUT"
+      ],
+      "hint": "Fully closed 🚫"
+    },
+    {
+      "words": [
+        "RISE"
+      ],
+      "hint": "Move upward ⬆️"
+    },
+    {
+      "words": [
+        "FALL"
+      ],
+      "hint": "Move downward ⬇️"
+    },
+    {
+      "words": [
+        "SEND"
+      ],
+      "hint": "Transmit something 📤"
+    },
+    {
+      "words": [
+        "RECV"
+      ],
+      "hint": "Short for receive 📥"
+    },
+    {
+      "words": [
+        "KEEP"
+      ],
+      "hint": "Hold or retain 🧠"
+    },
+    {
+      "words": [
+        "DROP"
+      ],
+      "hint": "Let go ⬇️"
+    },
+    {
+      "words": [
+        "PUSH"
+      ],
+      "hint": "Apply force ➡️"
+    },
+    {
+      "words": [
+        "PULL"
+      ],
+      "hint": "Draw closer ⬅️"
+    },
+    {
+      "words": [
+        "WAIT"
+      ],
+      "hint": "Pause briefly ⏳"
+    },
+    {
+      "words": [
+        "MOVE"
+      ],
+      "hint": "Change position 🚶"
+    },
+    {
+      "words": [
+        "STAY"
+      ],
+      "hint": "Remain in place 🏠"
+    },
+    {
+      "words": [
+        "LEAVE"
+      ],
+      "hint": "Go away 🚪"
+    },
+    {
+      "words": [
+        "WALK"
+      ],
+      "hint": "Move on foot 🚶"
+    },
+    {
+      "words": [
+        "RUN"
+      ],
+      "hint": "Move fast 🏃"
+    },
+    {
+      "words": [
+        "JUMP"
+      ],
+      "hint": "Leap upward 🦘"
+    },
+    {
+      "words": [
+        "STOP"
+      ],
+      "hint": "Cease motion ✋"
+    },
+    {
+      "words": [
+        "START"
+      ],
+      "hint": "Begin action ▶️"
+    },
+    {
+      "words": [
+        "WORK"
+      ],
+      "hint": "Do a task 💼"
+    },
+    {
+      "words": [
+        "REST"
+      ],
+      "hint": "Relax 😌"
+    },
+    {
+      "words": [
+        "PLAY"
+      ],
+      "hint": "Have fun 🎮"
+    },
+    {
+      "words": [
+        "STUDY"
+      ],
+      "hint": "Learn 📘"
+    },
+    {
+      "words": [
+        "TEACH"
+      ],
+      "hint": "Help others learn 👩‍🏫"
+    },
+    {
+      "words": [
+        "BUILD"
+      ],
+      "hint": "Create something 🏗️"
+    },
+    {
+      "words": [
+        "FIX"
+      ],
+      "hint": "Repair something 🔧"
+    },
+    {
+      "words": [
+        "BREAK"
+      ],
+      "hint": "Damage or pause 💥"
+    },
+    {
+      "words": [
+        "MAKE"
+      ],
+      "hint": "Create something 🛠️"
+    },
+    {
+      "words": [
+        "TAKE"
+      ],
+      "hint": "Receive or grab ✋"
+    },
+    {
+      "words": [
+        "GIVE"
+      ],
+      "hint": "Hand over 🎁"
+    },
+    {
+      "words": [
+        "HELP"
+      ],
+      "hint": "Assist 🤝"
+    },
+    {
+      "words": [
+        "NEED"
+      ],
+      "hint": "Require something ❗"
+    },
+    {
+      "words": [
+        "WANT"
+      ],
+      "hint": "Desire something 💭"
+    },
+    {
+      "words": [
+        "LIKE"
+      ],
+      "hint": "Enjoy or prefer 👍"
+    },
+    {
+      "words": [
+        "HATE"
+      ],
+      "hint": "Strong dislike 😡"
+    },
+    {
+      "words": [
+        "LOVE"
+      ],
+      "hint": "Strong affection ❤️"
+    },
+    {
+      "words": [
+        "CARE"
+      ],
+      "hint": "Show concern 🤗"
+    },
+    {
+      "words": [
+        "FEAR"
+      ],
+      "hint": "Feeling of danger 😨"
+    },
+    {
+      "words": [
+        "HOPE"
+      ],
+      "hint": "Wish for good 🌈"
+    },
+    {
+      "words": [
+        "PLAN"
+      ],
+      "hint": "Prepare ahead 🗺️"
+    },
+    {
+      "words": [
+        "IDEA"
+      ],
+      "hint": "Thought 💡"
+    },
+    {
+      "words": [
+        "TASK"
+      ],
+      "hint": "Unit of work 📋"
+    },
+    {
+      "words": [
+        "GOAL"
+      ],
+      "hint": "Target 🎯"
+    },
+    {
+      "words": [
+        "STEP"
+      ],
+      "hint": "Single action 👣"
+    },
+    {
+      "words": [
+        "PATH"
+      ],
+      "hint": "Way forward 🛤️"
+    },
+    {
+      "words": [
+        "TURN"
+      ],
+      "hint": "Change direction 🔄"
+    },
+    {
+      "words": [
+        "BACK"
+      ],
+      "hint": "Return ↩️"
+    },
+    {
+      "words": [
+        "NEXT"
+      ],
+      "hint": "Following one ⏭️"
+    },
+    {
+      "words": [
+        "LAST"
+      ],
+      "hint": "Final one 🏁"
+    },
+    {
+      "words": [
+        "FIRST"
+      ],
+      "hint": "Beginning 🥇"
+    },
+    {
+      "words": [
+        "TIME"
+      ],
+      "hint": "Measured moments ⏱️"
+    },
+    {
+      "words": [
+        "DATE"
+      ],
+      "hint": "Calendar day 📅"
+    },
+    {
+      "words": [
+        "YEAR"
+      ],
+      "hint": "Twelve months 🗓️"
+    },
+    {
+      "words": [
+        "HOUR"
+      ],
+      "hint": "Sixty minutes ⏰"
+    },
+    {
+      "words": [
+        "MIND"
+      ],
+      "hint": "Thinking organ 🧠"
+    },
+    {
+      "words": [
+        "BODY"
+      ],
+      "hint": "Physical form 🧍"
+    },
+    {
+      "words": [
+        "FACE"
+      ],
+      "hint": "Front of head 🙂"
+    },
+    {
+      "words": [
+        "HAND"
+      ],
+      "hint": "Used to hold ✋"
+    },
+    {
+      "words": [
+        "FOOT"
+      ],
+      "hint": "Used to walk 🦶"
+    },
+    {
+      "words": [
+        "HEAD"
+      ],
+      "hint": "Top of body 🧑"
+    },
+    {
+      "words": [
+        "EYES"
+      ],
+      "hint": "Used to see 👀"
+    },
+    {
+      "words": [
+        "NOSE"
+      ],
+      "hint": "Used to smell 👃"
+    },
+    {
+      "words": [
+        "MOUTH"
+      ],
+      "hint": "Used to eat 👄"
+    },
+    {
+      "words": [
+        "SKIN"
+      ],
+      "hint": "Outer body layer 🧴"
+    }
+  ],
+  "5": [
+    {
+      "words": [
+        "APPLE"
+      ],
+      "hint": "Red or green fruit 🍎"
+    },
+    {
+      "words": [
+        "BREAD",
+        "DEBAR"
+      ],
+      "hint": "Staple food 🍞"
+    },
+    {
+      "words": [
+        "CHAIR"
+      ],
+      "hint": "You sit on this 🪑"
+    },
+    {
+      "words": [
+        "TABLE"
+      ],
+      "hint": "Furniture for meals 🪑"
+    },
+    {
+      "words": [
+        "WATER"
+      ],
+      "hint": "Essential to drink 💧"
+    },
+    {
+      "words": [
+        "SUGAR",
+        "ARGUS"
+      ],
+      "hint": "Sweet ingredient 🍬"
+    },
+    {
+      "words": [
+        "SALT"
+      ],
+      "hint": "Common seasoning 🧂"
+    },
+    {
+      "words": [
+        "MILKY"
+      ],
+      "hint": "Like fresh milk 🥛"
+    },
+    {
+      "words": [
+        "RICEE"
+      ],
+      "hint": "Cooked grain food 🍚"
+    },
+    {
+      "words": [
+        "FRUIT"
+      ],
+      "hint": "Healthy natural snack 🍓"
+    },
+    {
+      "words": [
+        "VEGIE",
+        "EIGEV"
+      ],
+      "hint": "Plant-based food 🥦"
+    },
+    {
+      "words": [
+        "PLATE"
+      ],
+      "hint": "Food holder 🍽️"
+    },
+    {
+      "words": [
+        "CUPPA"
+      ],
+      "hint": "Casual tea 🍵"
+    },
+    {
+      "words": [
+        "COFFEE"
+      ],
+      "hint": "Morning drink ☕"
+    },
+    {
+      "words": [
+        "TEACH"
+      ],
+      "hint": "Help others learn 👩‍🏫"
+    },
+    {
+      "words": [
+        "STUDY"
+      ],
+      "hint": "Prepare for exams 📘"
+    },
+    {
+      "words": [
+        "LEARN"
+      ],
+      "hint": "Gain knowledge 🧠"
+    },
+    {
+      "words": [
+        "WRITE"
+      ],
+      "hint": "Put words on paper ✍️"
+    },
+    {
+      "words": [
+        "READS",
+        "SADER"
+      ],
+      "hint": "Looks at text 📖"
+    },
+    {
+      "words": [
+        "THINK"
+      ],
+      "hint": "Use your brain 🤔"
+    },
+    {
+      "words": [
+        "IDEAS"
+      ],
+      "hint": "Creative thoughts 💡"
+    },
+    {
+      "words": [
+        "PLANS",
+        "NAPLS"
+      ],
+      "hint": "Future arrangements 🗺️"
+    },
+    {
+      "words": [
+        "TASKS"
+      ],
+      "hint": "Work items 📋"
+    },
+    {
+      "words": [
+        "GOALS"
+      ],
+      "hint": "Targets to achieve 🎯"
+    },
+    {
+      "words": [
+        "WORKS"
+      ],
+      "hint": "Job-related efforts 💼"
+    },
+    {
+      "words": [
+        "MEETS"
+      ],
+      "hint": "Gathers together 🤝"
+    },
+    {
+      "words": [
+        "CALLS"
+      ],
+      "hint": "Phone actions 📞"
+    },
+    {
+      "words": [
+        "EMAIL"
+      ],
+      "hint": "Digital message 📧"
+    },
+    {
+      "words": [
+        "CHATS"
+      ],
+      "hint": "Casual talks 💬"
+    },
+    {
+      "words": [
+        "HELPS"
+      ],
+      "hint": "Gives assistance 🤝"
+    },
+    {
+      "words": [
+        "SAVES"
+      ],
+      "hint": "Stores for later 💾"
+    },
+    {
+      "words": [
+        "SPEND"
+      ],
+      "hint": "Use money 💸"
+    },
+    {
+      "words": [
+        "MONEY"
+      ],
+      "hint": "Used to buy things 💰"
+    },
+    {
+      "words": [
+        "PRICE"
+      ],
+      "hint": "Cost of something 🏷️"
+    },
+    {
+      "words": [
+        "ORDER"
+      ],
+      "hint": "Request to buy 🛒"
+    },
+    {
+      "words": [
+        "TRACK"
+      ],
+      "hint": "Follow progress 📍"
+    },
+    {
+      "words": [
+        "CHECK"
+      ],
+      "hint": "Verify ✔️"
+    },
+    {
+      "words": [
+        "CLEAR"
+      ],
+      "hint": "Easy to understand ✨"
+    },
+    {
+      "words": [
+        "SMART"
+      ],
+      "hint": "Intelligent 🧠"
+    },
+    {
+      "words": [
+        "QUICK"
+      ],
+      "hint": "Fast ⚡"
+    },
+    {
+      "words": [
+        "SLOWW"
+      ],
+      "hint": "Not fast 🐢"
+    },
+    {
+      "words": [
+        "READY"
+      ],
+      "hint": "Prepared ✅"
+    },
+    {
+      "words": [
+        "START"
+      ],
+      "hint": "Begin ▶️"
+    },
+    {
+      "words": [
+        "PAUSE"
+      ],
+      "hint": "Temporary stop ⏸️"
+    },
+    {
+      "words": [
+        "STOPP"
+      ],
+      "hint": "Come to rest ✋"
+    },
+    {
+      "words": [
+        "BUILD"
+      ],
+      "hint": "Create something 🏗️"
+    },
+    {
+      "words": [
+        "FIXED"
+      ],
+      "hint": "Repaired 🔧"
+    },
+    {
+      "words": [
+        "BREAK"
+      ],
+      "hint": "Damage or pause 💥"
+    },
+    {
+      "words": [
+        "CARRY"
+      ],
+      "hint": "Hold and move 👜"
+    },
+    {
+      "words": [
+        "DRIVE"
+      ],
+      "hint": "Operate a vehicle 🚗"
+    },
+    {
+      "words": [
+        "TRAVEL"
+      ],
+      "hint": "Go to places ✈️"
+    },
+    {
+      "words": [
+        "HOTEL"
+      ],
+      "hint": "Place to stay 🏨"
+    },
+    {
+      "words": [
+        "TRAIN"
+      ],
+      "hint": "Public transport 🚆"
+    },
+    {
+      "words": [
+        "FLYER"
+      ],
+      "hint": "Paper or traveler ✈️"
+    },
+    {
+      "words": [
+        "PHONE"
+      ],
+      "hint": "Calling device 📱"
+    },
+    {
+      "words": [
+        "SCREEN"
+      ],
+      "hint": "Display surface 🖥️"
+    },
+    {
+      "words": [
+        "CLICK"
+      ],
+      "hint": "Mouse action 🖱️"
+    },
+    {
+      "words": [
+        "SCROLL"
+      ],
+      "hint": "Move page 📜"
+    },
+    {
+      "words": [
+        "LOGIN"
+      ],
+      "hint": "Access account 🔐"
+    },
+    {
+      "words": [
+        "LOGOUT"
+      ],
+      "hint": "Exit account 🚪"
+    },
+    {
+      "words": [
+        "ERROR"
+      ],
+      "hint": "Something went wrong ❌"
+    },
+    {
+      "words": [
+        "ALERT"
+      ],
+      "hint": "Warning message ⚠️"
+    },
+    {
+      "words": [
+        "STATUS"
+      ],
+      "hint": "Current state 📊"
+    },
+    {
+      "words": [
+        "UPDATE"
+      ],
+      "hint": "Make it current 🔄"
+    },
+    {
+      "words": [
+        "HOUSE"
+      ],
+      "hint": "Place where you live 🏠"
+    },
+    {
+      "words": [
+        "MOUSE"
+      ],
+      "hint": "Small rodent 🐭"
+    },
+    {
+      "words": [
+        "PLANT"
+      ],
+      "hint": "Grows in soil 🌱"
+    },
+    {
+      "words": [
+        "LIGHT"
+      ],
+      "hint": "Opposite of dark 💡"
+    },
+    {
+      "words": [
+        "NIGHT"
+      ],
+      "hint": "Time after sunset 🌙"
+    },
+    {
+      "words": [
+        "EARTH"
+      ],
+      "hint": "Our planet 🌍"
+    },
+    {
+      "words": [
+        "HEART"
+      ],
+      "hint": "Pumps blood ❤️"
+    },
+    {
+      "words": [
+        "BRAIN"
+      ],
+      "hint": "Thinking organ 🧠"
+    },
+    {
+      "words": [
+        "SMILE"
+      ],
+      "hint": "Happy expression 🙂"
+    },
+    {
+      "words": [
+        "LAUGH"
+      ],
+      "hint": "Sound of joy 😂"
+    },
+    {
+      "words": [
+        "CRYER"
+      ],
+      "hint": "One who sheds tears 😢"
+    },
+    {
+      "words": [
+        "ANGRY"
+      ],
+      "hint": "Feeling mad 😠"
+    },
+    {
+      "words": [
+        "CALM"
+      ],
+      "hint": "Peaceful state 🧘"
+    },
+    {
+      "words": [
+        "PEACE"
+      ],
+      "hint": "State of harmony ☮️"
+    },
+    {
+      "words": [
+        "TRUST"
+      ],
+      "hint": "Belief in someone 🤝"
+    },
+    {
+      "words": [
+        "FAITH"
+      ],
+      "hint": "Strong belief 🙏"
+    },
+    {
+      "words": [
+        "POWER"
+      ],
+      "hint": "Ability to act ⚡"
+    },
+    {
+      "words": [
+        "MIGHT"
+      ],
+      "hint": "Strength or force 💪"
+    },
+    {
+      "words": [
+        "SPEED"
+      ],
+      "hint": "How fast something moves 🏎️"
+    },
+    {
+      "words": [
+        "SLEEP"
+      ],
+      "hint": "Rest at night 😴"
+    },
+    {
+      "words": [
+        "DREAM"
+      ],
+      "hint": "Thoughts while sleeping 💭"
+    },
+    {
+      "words": [
+        "AWAKE"
+      ],
+      "hint": "Not sleeping 👀"
+    },
+    {
+      "words": [
+        "ALARM"
+      ],
+      "hint": "Wakes you up ⏰"
+    },
+    {
+      "words": [
+        "CLOCK"
+      ],
+      "hint": "Shows time ⏰"
+    },
+    {
+      "words": [
+        "WATCH"
+      ],
+      "hint": "Wearable time device ⌚"
+    },
+    {
+      "words": [
+        "PHONE"
+      ],
+      "hint": "Used to call 📱"
+    },
+    {
+      "words": [
+        "VIDEO"
+      ],
+      "hint": "Moving pictures 🎥"
+    },
+    {
+      "words": [
+        "AUDIO"
+      ],
+      "hint": "Sound only 🔊"
+    },
+    {
+      "words": [
+        "MUSIC"
+      ],
+      "hint": "Pleasant sounds 🎵"
+    },
+    {
+      "words": [
+        "SONGS"
+      ],
+      "hint": "Musical pieces 🎶"
+    },
+    {
+      "words": [
+        "MOVIE"
+      ],
+      "hint": "Film entertainment 🎬"
+    },
+    {
+      "words": [
+        "DRAMA"
+      ],
+      "hint": "Emotional story 🎭"
+    },
+    {
+      "words": [
+        "COMED"
+      ],
+      "hint": "Funny performance 😂"
+    },
+    {
+      "words": [
+        "SPORT"
+      ],
+      "hint": "Physical game 🏏"
+    },
+    {
+      "words": [
+        "GAMES"
+      ],
+      "hint": "Fun activities 🎮"
+    },
+    {
+      "words": [
+        "TRAIN"
+      ],
+      "hint": "Rail transport 🚆"
+    },
+    {
+      "words": [
+        "PLANE"
+      ],
+      "hint": "Air travel ✈️"
+    },
+    {
+      "words": [
+        "TRUCK"
+      ],
+      "hint": "Large vehicle 🚚"
+    },
+    {
+      "words": [
+        "ROAD"
+      ],
+      "hint": "Path for vehicles 🛣️"
+    },
+    {
+      "words": [
+        "BRIDGE"
+      ],
+      "hint": "Crosses a river 🌉"
+    },
+    {
+      "words": [
+        "STORE"
+      ],
+      "hint": "Place to buy things 🏪"
+    },
+    {
+      "words": [
+        "MARKT"
+      ],
+      "hint": "Public shopping place 🛒"
+    },
+    {
+      "words": [
+        "PRICE"
+      ],
+      "hint": "Cost of an item 💰"
+    },
+    {
+      "words": [
+        "VALUE"
+      ],
+      "hint": "Worth of something 💎"
+    },
+    {
+      "words": [
+        "MONEY"
+      ],
+      "hint": "Used to purchase 💵"
+    },
+    {
+      "words": [
+        "SPEND"
+      ],
+      "hint": "Use money 💸"
+    },
+    {
+      "words": [
+        "SAVING"
+      ],
+      "hint": "Keeping money aside 🏦"
+    },
+    {
+      "words": [
+        "ORDER"
+      ],
+      "hint": "Request to buy 🧾"
+    },
+    {
+      "words": [
+        "DELIV"
+      ],
+      "hint": "Bring to destination 📦"
+    },
+    {
+      "words": [
+        "LOGIN"
+      ],
+      "hint": "Access an account 🔐"
+    },
+    {
+      "words": [
+        "LOGUT"
+      ],
+      "hint": "Exit an account 🚪"
+    },
+    {
+      "words": [
+        "ERROR"
+      ],
+      "hint": "Something went wrong ❌"
+    },
+    {
+      "words": [
+        "ALERT"
+      ],
+      "hint": "Warning message ⚠️"
+    },
+    {
+      "words": [
+        "CLEAR"
+      ],
+      "hint": "Easy to understand ✨"
+    },
+    {
+      "words": [
+        "FOCUS"
+      ],
+      "hint": "Concentrate 🎯"
+    },
+    {
+      "words": [
+        "LEARN"
+      ],
+      "hint": "Gain knowledge 📘"
+    },
+    {
+      "words": [
+        "TEACH"
+      ],
+      "hint": "Help others learn 👩‍🏫"
+    },
+    {
+      "words": [
+        "SKILL"
+      ],
+      "hint": "Ability gained by practice 🧠"
+    },
+    {
+      "words": [
+        "LEVEL"
+      ],
+      "hint": "Stage or height 🎚️"
+    },
+    {
+      "words": [
+        "SCORE"
+      ],
+      "hint": "Points achieved 🏆"
+    }
+  ],
+  "6": [
+    {
+      "words": [
+        "PEOPLE"
+      ],
+      "hint": "Human beings 👥"
+    },
+    {
+      "words": [
+        "FRIEND"
+      ],
+      "hint": "Someone you trust 🤝"
+    },
+    {
+      "words": [
+        "FAMILY"
+      ],
+      "hint": "Parents and relatives 👨‍👩‍👧"
+    },
+    {
+      "words": [
+        "MEMBER"
+      ],
+      "hint": "Part of a group 🧩"
+    },
+    {
+      "words": [
+        "PUBLIC"
+      ],
+      "hint": "Open to everyone 🌍"
+    },
+    {
+      "words": [
+        "SOCIAL"
+      ],
+      "hint": "Related to people 🗣️"
+    },
+    {
+      "words": [
+        "WORKER"
+      ],
+      "hint": "Person who does a job 💼"
+    },
+    {
+      "words": [
+        "OFFICE"
+      ],
+      "hint": "Place of work 🏢"
+    },
+    {
+      "words": [
+        "CAREER"
+      ],
+      "hint": "Professional life 📈"
+    },
+    {
+      "words": [
+        "SALARY"
+      ],
+      "hint": "Monthly pay 💰"
+    },
+    {
+      "words": [
+        "MARKET"
+      ],
+      "hint": "Place to buy and sell 🛒"
+    },
+    {
+      "words": [
+        "SELLER",
+        "RESLLE"
+      ],
+      "hint": "One who sells goods 🏷️"
+    },
+    {
+      "words": [
+        "BUYERS"
+      ],
+      "hint": "People who purchase 🧾"
+    },
+    {
+      "words": [
+        "PRODUCT"
+      ],
+      "hint": "Item for sale 📦"
+    },
+    {
+      "words": [
+        "SERVICE"
+      ],
+      "hint": "Help or work provided 🛠️"
+    },
+    {
+      "words": [
+        "SYSTEM"
+      ],
+      "hint": "Connected set of parts ⚙️"
+    },
+    {
+      "words": [
+        "PROCESS"
+      ],
+      "hint": "Series of steps 🔄"
+    },
+    {
+      "words": [
+        "METHOD"
+      ],
+      "hint": "Way of doing something 🧠"
+    },
+    {
+      "words": [
+        "RESULT"
+      ],
+      "hint": "Final outcome 🎯"
+    },
+    {
+      "words": [
+        "SUCCESS"
+      ],
+      "hint": "Achieving a goal 🏆"
+    },
+    {
+      "words": [
+        "FAILURE"
+      ],
+      "hint": "Not succeeding ❌"
+    },
+    {
+      "words": [
+        "EFFORT"
+      ],
+      "hint": "Hard work 💪"
+    },
+    {
+      "words": [
+        "SKILLS"
+      ],
+      "hint": "Learned abilities 🧠"
+    },
+    {
+      "words": [
+        "TALENT"
+      ],
+      "hint": "Natural ability 🌟"
+    },
+    {
+      "words": [
+        "LEADER"
+      ],
+      "hint": "Person who guides 🧭"
+    },
+    {
+      "words": [
+        "MANAGE"
+      ],
+      "hint": "Control or handle 📋"
+    },
+    {
+      "words": [
+        "HANDLE"
+      ],
+      "hint": "Deal with something 🤲"
+    },
+    {
+      "words": [
+        "CREATE"
+      ],
+      "hint": "Make something new 🛠️"
+    },
+    {
+      "words": [
+        "DESIGN"
+      ],
+      "hint": "Plan how something looks 🎨"
+    },
+    {
+      "words": [
+        "BUILD"
+      ],
+      "hint": "Construct something 🏗️"
+    },
+    {
+      "words": [
+        "REPAIR"
+      ],
+      "hint": "Fix something broken 🔧"
+    },
+    {
+      "words": [
+        "CHANGE"
+      ],
+      "hint": "Make different 🔄"
+    },
+    {
+      "words": [
+        "UPDATE"
+      ],
+      "hint": "Bring to latest version 🔁"
+    },
+    {
+      "words": [
+        "DELETE"
+      ],
+      "hint": "Remove completely 🗑️"
+    },
+    {
+      "words": [
+        "ACCESS"
+      ],
+      "hint": "Ability to enter 🔐"
+    },
+    {
+      "words": [
+        "SECURE"
+      ],
+      "hint": "Safe from harm 🛡️"
+    },
+    {
+      "words": [
+        "PRIVACY"
+      ],
+      "hint": "Personal protection 🔒"
+    },
+    {
+      "words": [
+        "SCREEN"
+      ],
+      "hint": "Display surface 🖥️"
+    },
+    {
+      "words": [
+        "BUTTON"
+      ],
+      "hint": "Press to act 🔘"
+    },
+    {
+      "words": [
+        "DEVICE"
+      ],
+      "hint": "Electronic gadget 📱"
+    },
+    {
+      "words": [
+        "MOBILE"
+      ],
+      "hint": "Portable phone 📲"
+    },
+    {
+      "words": [
+        "LAPTOP"
+      ],
+      "hint": "Portable computer 💻"
+    },
+    {
+      "words": [
+        "SERVER"
+      ],
+      "hint": "Provides data 🗄️"
+    },
+    {
+      "words": [
+        "NETWORK"
+      ],
+      "hint": "Connected computers 🌐"
+    },
+    {
+      "words": [
+        "INTERNET"
+      ],
+      "hint": "Global online system 🌍"
+    },
+    {
+      "words": [
+        "SEARCH"
+      ],
+      "hint": "Look for information 🔍"
+    },
+    {
+      "words": [
+        "BROWSER"
+      ],
+      "hint": "Used to open websites 🌐"
+    },
+    {
+      "words": [
+        "SIGNIN"
+      ],
+      "hint": "Enter an account 🔑"
+    },
+    {
+      "words": [
+        "SIGNUP"
+      ],
+      "hint": "Create an account 📝"
+    },
+    {
+      "words": [
+        "LOGOUT"
+      ],
+      "hint": "Exit an account 🚪"
+    },
+    {
+      "words": [
+        "MESSAGE"
+      ],
+      "hint": "Written communication 💬"
+    },
+    {
+      "words": [
+        "NOTIFY"
+      ],
+      "hint": "Send alert 🔔"
+    },
+    {
+      "words": [
+        "WARNING"
+      ],
+      "hint": "Danger alert ⚠️"
+    },
+    {
+      "words": [
+        "CONTROL"
+      ],
+      "hint": "Power to manage 🎛️"
+    },
+    {
+      "words": [
+        "BALANCE"
+      ],
+      "hint": "Equal state ⚖️"
+    },
+    {
+      "words": [
+        "HEALTH"
+      ],
+      "hint": "Physical well-being 🏥"
+    },
+    {
+      "words": [
+        "ENERGY"
+      ],
+      "hint": "Power to act ⚡"
+    },
+    {
+      "words": [
+        "EXERCISE"
+      ],
+      "hint": "Physical activity 🏃"
+    },
+    {
+      "words": [
+        "DIET"
+      ],
+      "hint": "Eating habit 🍎"
+    },
+    {
+      "words": [
+        "TRAVEL"
+      ],
+      "hint": "Go to places ✈️"
+    },
+    {
+      "words": [
+        "JOURNEY"
+      ],
+      "hint": "Long trip 🛣️"
+    },
+    {
+      "words": [
+        "VACATION"
+      ],
+      "hint": "Break from work 🏖️"
+    },
+    {
+      "words": [
+        "TICKET"
+      ],
+      "hint": "Travel pass 🎟️"
+    },
+    {
+      "words": [
+        "HOTELS"
+      ],
+      "hint": "Places to stay 🏨"
+    },
+    {
+      "words": [
+        "LUGGAGE"
+      ],
+      "hint": "Travel bags 🧳"
+    },
+    {
+      "words": [
+        "WEATHER"
+      ],
+      "hint": "Outside conditions 🌦️"
+    },
+    {
+      "words": [
+        "SEASON"
+      ],
+      "hint": "Part of the year 🍂"
+    },
+    {
+      "words": [
+        "MORNING"
+      ],
+      "hint": "Start of the day 🌅"
+    },
+    {
+      "words": [
+        "EVENING"
+      ],
+      "hint": "End of day 🌆"
+    },
+    {
+      "words": [
+        "CHOICE"
+      ],
+      "hint": "Option you select 🎯"
+    },
+    {
+      "words": [
+        "OPTION"
+      ],
+      "hint": "Available selection ☑️"
+    },
+    {
+      "words": [
+        "DECIDE"
+      ],
+      "hint": "Make a choice 🤔"
+    },
+    {
+      "words": [
+        "SELECT"
+      ],
+      "hint": "Pick from many 📌"
+    },
+    {
+      "words": [
+        "DECENT"
+      ],
+      "hint": "Good enough 👍"
+    },
+    {
+      "words": [
+        "HONEST"
+      ],
+      "hint": "Truthful nature 🤍"
+    },
+    {
+      "words": [
+        "SIMPLE"
+      ],
+      "hint": "Easy to understand ✨"
+    },
+    {
+      "words": [
+        "COMPLEX"
+      ],
+      "hint": "Hard to understand 🧩"
+    },
+    {
+      "words": [
+        "NORMAL"
+      ],
+      "hint": "Usual or standard 📏"
+    },
+    {
+      "words": [
+        "COMMON"
+      ],
+      "hint": "Found often 👥"
+    },
+    {
+      "words": [
+        "RARELY"
+      ],
+      "hint": "Not often ⏳"
+    },
+    {
+      "words": [
+        "ALWAYS"
+      ],
+      "hint": "At all times ♾️"
+    },
+    {
+      "words": [
+        "USUALLY"
+      ],
+      "hint": "Most of the time 🔁"
+    },
+    {
+      "words": [
+        "MAYBE"
+      ],
+      "hint": "Not sure 🤷"
+    },
+    {
+      "words": [
+        "EXPECT"
+      ],
+      "hint": "Anticipate something 👀"
+    },
+    {
+      "words": [
+        "PROMISE"
+      ],
+      "hint": "Commitment given 🤝"
+    },
+    {
+      "words": [
+        "BELIEF"
+      ],
+      "hint": "What you think is true 🧠"
+    },
+    {
+      "words": [
+        "OPINION"
+      ],
+      "hint": "Personal view 💭"
+    },
+    {
+      "words": [
+        "ADVICE"
+      ],
+      "hint": "Guidance given 🗣️"
+    },
+    {
+      "words": [
+        "SUPPORT"
+      ],
+      "hint": "Help provided 🤝"
+    },
+    {
+      "words": [
+        "PROBLEM"
+      ],
+      "hint": "Something to solve ❗"
+    },
+    {
+      "words": [
+        "SOLUTION"
+      ],
+      "hint": "Answer to a problem ✔️"
+    },
+    {
+      "words": [
+        "MISTAKE"
+      ],
+      "hint": "An error ❌"
+    },
+    {
+      "words": [
+        "LESSON"
+      ],
+      "hint": "Something learned 📘"
+    },
+    {
+      "words": [
+        "EXAMPLE"
+      ],
+      "hint": "Sample or case 🧪"
+    },
+    {
+      "words": [
+        "REASON"
+      ],
+      "hint": "Cause or explanation 🔍"
+    },
+    {
+      "words": [
+        "DETAIL"
+      ],
+      "hint": "Small information 🔎"
+    },
+    {
+      "words": [
+        "SUMMARY"
+      ],
+      "hint": "Short version 📝"
+    },
+    {
+      "words": [
+        "MESSAGE"
+      ],
+      "hint": "Information sent 💬"
+    },
+    {
+      "words": [
+        "CONTACT"
+      ],
+      "hint": "Reach someone 📞"
+    },
+    {
+      "words": [
+        "CONNECT"
+      ],
+      "hint": "Link together 🔗"
+    },
+    {
+      "words": [
+        "SHARING"
+      ],
+      "hint": "Giving to others 🤲"
+    },
+    {
+      "words": [
+        "FORWARD"
+      ],
+      "hint": "Send ahead 📤"
+    },
+    {
+      "words": [
+        "REPLY"
+      ],
+      "hint": "Respond back 💬"
+    },
+    {
+      "words": [
+        "FEEDBACK"
+      ],
+      "hint": "Response or review ⭐"
+    },
+    {
+      "words": [
+        "MEETING"
+      ],
+      "hint": "Group discussion 🤝"
+    },
+    {
+      "words": [
+        "DISCUSS"
+      ],
+      "hint": "Talk in detail 🗣️"
+    },
+    {
+      "words": [
+        "AGREED"
+      ],
+      "hint": "Accepted decision ✔️"
+    },
+    {
+      "words": [
+        "DENIED"
+      ],
+      "hint": "Not allowed 🚫"
+    },
+    {
+      "words": [
+        "REQUEST"
+      ],
+      "hint": "Ask formally 📄"
+    },
+    {
+      "words": [
+        "APPROVE"
+      ],
+      "hint": "Give permission ✅"
+    },
+    {
+      "words": [
+        "REJECT"
+      ],
+      "hint": "Refuse something ❌"
+    },
+    {
+      "words": [
+        "CONFIRM"
+      ],
+      "hint": "Make sure ✔️"
+    },
+    {
+      "words": [
+        "CANCEL"
+      ],
+      "hint": "Call off ❎"
+    },
+    {
+      "words": [
+        "SCHEDULE"
+      ],
+      "hint": "Planned timing 📆"
+    },
+    {
+      "words": [
+        "DELAY"
+      ],
+      "hint": "Make late ⏱️"
+    },
+    {
+      "words": [
+        "URGENT"
+      ],
+      "hint": "Needs quick action ⚠️"
+    },
+    {
+      "words": [
+        "PRIORITY"
+      ],
+      "hint": "Most important thing 🥇"
+    },
+    {
+      "words": [
+        "FOCUS"
+      ],
+      "hint": "Pay attention 🎯"
+    },
+    {
+      "words": [
+        "ATTEND"
+      ],
+      "hint": "Be present 👋"
+    },
+    {
+      "words": [
+        "ABSENT"
+      ],
+      "hint": "Not present 🚷"
+    },
+    {
+      "words": [
+        "PRESENT"
+      ],
+      "hint": "Current or gift 🎁"
+    },
+    {
+      "words": [
+        "AVAILABLE"
+      ],
+      "hint": "Ready to use 🟢"
+    },
+    {
+      "words": [
+        "BUSY"
+      ],
+      "hint": "Occupied ⛔"
+    },
+    {
+      "words": [
+        "RELAX"
+      ],
+      "hint": "Rest calmly 😌"
+    },
+    {
+      "words": [
+        "STRESS"
+      ],
+      "hint": "Mental pressure 😣"
+    },
+    {
+      "words": [
+        "TENSION"
+      ],
+      "hint": "Mental strain 😬"
+    },
+    {
+      "words": [
+        "EMOTION"
+      ],
+      "hint": "Strong feeling ❤️"
+    },
+    {
+      "words": [
+        "HAPPY"
+      ],
+      "hint": "Feeling joy 😊"
+    },
+    {
+      "words": [
+        "SAD"
+      ],
+      "hint": "Feeling low 😢"
+    },
+    {
+      "words": [
+        "EXCITED"
+      ],
+      "hint": "Very happy 😄"
+    },
+    {
+      "words": [
+        "ANXIOUS"
+      ],
+      "hint": "Feeling worried 😟"
+    },
+    {
+      "words": [
+        "CONFUSED"
+      ],
+      "hint": "Not clear 🤯"
+    },
+    {
+      "words": [
+        "CALM"
+      ],
+      "hint": "Peaceful state 🧘"
+    },
+    {
+      "words": [
+        "PATIENT"
+      ],
+      "hint": "Able to wait 🕰️"
+    },
+    {
+      "words": [
+        "KINDLY"
+      ],
+      "hint": "In a nice way 🤍"
+    },
+    {
+      "words": [
+        "POLITE"
+      ],
+      "hint": "Well-mannered 🙏"
+    },
+    {
+      "words": [
+        "RESPECT"
+      ],
+      "hint": "Show regard 🙇"
+    },
+    {
+      "words": [
+        "HONOUR"
+      ],
+      "hint": "High respect 🏅"
+    },
+    {
+      "words": [
+        "TRUST"
+      ],
+      "hint": "Belief in someone 🤝"
+    },
+    {
+      "words": [
+        "LOYAL"
+      ],
+      "hint": "Faithful behavior 🐕"
+    }
+  ],
+  "7": [
+    {
+      "words": [
+        "FREEDOM"
+      ],
+      "hint": "State of being free 🕊️"
+    },
+    {
+      "words": [
+        "HAPPILY"
+      ],
+      "hint": "With joy 😊"
+    },
+    {
+      "words": [
+        "FRIENDS"
+      ],
+      "hint": "People you trust 🤝"
+    },
+    {
+      "words": [
+        "FAMILYS"
+      ],
+      "hint": "Groups of relatives 👨‍👩‍👧"
+    },
+    {
+      "words": [
+        "SUPPORT"
+      ],
+      "hint": "Help or assistance 💪"
+    },
+    {
+      "words": [
+        "RESPECT"
+      ],
+      "hint": "High regard for someone 🙇"
+    },
+    {
+      "words": [
+        "KINDNESS"
+      ],
+      "hint": "Being caring and nice 🤍"
+    },
+    {
+      "words": [
+        "HONESTY"
+      ],
+      "hint": "Quality of truthfulness 🪞"
+    },
+    {
+      "words": [
+        "LOYALTY"
+      ],
+      "hint": "Faithfulness 🐕"
+    },
+    {
+      "words": [
+        "COURAGE"
+      ],
+      "hint": "Ability to face fear 🦁"
+    },
+    {
+      "words": [
+        "PATIENT"
+      ],
+      "hint": "Able to wait calmly ⏳"
+    },
+    {
+      "words": [
+        "CONFIDE"
+      ],
+      "hint": "Share a secret 🤫"
+    },
+    {
+      "words": [
+        "BELIEVE"
+      ],
+      "hint": "Accept as true 🙏"
+    },
+    {
+      "words": [
+        "THOUGHTS"
+      ],
+      "hint": "Things in your mind 💭"
+    },
+    {
+      "words": [
+        "EMOTIONS"
+      ],
+      "hint": "Strong feelings ❤️"
+    },
+    {
+      "words": [
+        "HAPPENS"
+      ],
+      "hint": "Takes place 📍"
+    },
+    {
+      "words": [
+        "DECISION"
+      ],
+      "hint": "Choice you make 🎯"
+    },
+    {
+      "words": [
+        "OPTIONS"
+      ],
+      "hint": "Available choices ☑️"
+    },
+    {
+      "words": [
+        "PLANNED"
+      ],
+      "hint": "Prepared in advance 🗺️"
+    },
+    {
+      "words": [
+        "PROCESS"
+      ],
+      "hint": "Series of steps 🔄"
+    },
+    {
+      "words": [
+        "PROGRESS"
+      ],
+      "hint": "Forward movement 📈"
+    },
+    {
+      "words": [
+        "SUCCESS"
+      ],
+      "hint": "Achieving a goal 🏆"
+    },
+    {
+      "words": [
+        "FAILURE"
+      ],
+      "hint": "Not succeeding ❌"
+    },
+    {
+      "words": [
+        "RESULTS"
+      ],
+      "hint": "Final outcomes 🎯"
+    },
+    {
+      "words": [
+        "EFFORTS"
+      ],
+      "hint": "Hard work applied 💪"
+    },
+    {
+      "words": [
+        "SKILLED"
+      ],
+      "hint": "Having ability 🧠"
+    },
+    {
+      "words": [
+        "TALENTS"
+      ],
+      "hint": "Natural abilities 🌟"
+    },
+    {
+      "words": [
+        "CAREERS"
+      ],
+      "hint": "Professional paths 📊"
+    },
+    {
+      "words": [
+        "WORKING"
+      ],
+      "hint": "Doing a job 💼"
+    },
+    {
+      "words": [
+        "OFFICES"
+      ],
+      "hint": "Places of work 🏢"
+    },
+    {
+      "words": [
+        "MEETING"
+      ],
+      "hint": "Group discussion 🤝"
+    },
+    {
+      "words": [
+        "DISCUSS"
+      ],
+      "hint": "Talk in detail 🗣️"
+    },
+    {
+      "words": [
+        "MESSAGE"
+      ],
+      "hint": "Information sent 💬"
+    },
+    {
+      "words": [
+        "CONTACT"
+      ],
+      "hint": "Way to reach someone 📞"
+    },
+    {
+      "words": [
+        "CONNECT"
+      ],
+      "hint": "Link together 🔗"
+    },
+    {
+      "words": [
+        "SHARING"
+      ],
+      "hint": "Giving to others 🤲"
+    },
+    {
+      "words": [
+        "FORWARD"
+      ],
+      "hint": "Send onward 📤"
+    },
+    {
+      "words": [
+        "RESPONSE"
+      ],
+      "hint": "Reply given 💬"
+    },
+    {
+      "words": [
+        "FEEDBACK"
+      ],
+      "hint": "Opinion or review ⭐"
+    },
+    {
+      "words": [
+        "REQUEST"
+      ],
+      "hint": "Formal ask 📄"
+    },
+    {
+      "words": [
+        "APPROVE"
+      ],
+      "hint": "Give permission ✅"
+    },
+    {
+      "words": [
+        "REJECT"
+      ],
+      "hint": "Refuse something ❌"
+    },
+    {
+      "words": [
+        "CONFIRM"
+      ],
+      "hint": "Make sure ✔️"
+    },
+    {
+      "words": [
+        "SCHEDULE"
+      ],
+      "hint": "Planned timing 📆"
+    },
+    {
+      "words": [
+        "DELAYED"
+      ],
+      "hint": "Made late ⏱️"
+    },
+    {
+      "words": [
+        "URGENT"
+      ],
+      "hint": "Needs quick action ⚠️"
+    },
+    {
+      "words": [
+        "PRIORITY"
+      ],
+      "hint": "Most important thing 🥇"
+    },
+    {
+      "words": [
+        "FOCUSED"
+      ],
+      "hint": "Paying attention 🎯"
+    },
+    {
+      "words": [
+        "BALANCE"
+      ],
+      "hint": "Even state ⚖️"
+    },
+    {
+      "words": [
+        "CONTROL"
+      ],
+      "hint": "Power to manage 🎛️"
+    },
+    {
+      "words": [
+        "SECURED"
+      ],
+      "hint": "Made safe 🔒"
+    },
+    {
+      "words": [
+        "PRIVACY"
+      ],
+      "hint": "Personal protection 🔐"
+    },
+    {
+      "words": [
+        "NETWORK"
+      ],
+      "hint": "Connected systems 🌐"
+    },
+    {
+      "words": [
+        "INTERNET"
+      ],
+      "hint": "Global online system 🌍"
+    },
+    {
+      "words": [
+        "WEBSITE"
+      ],
+      "hint": "Online page 🌐"
+    },
+    {
+      "words": [
+        "BROWSER"
+      ],
+      "hint": "Used to surf web 🧭"
+    },
+    {
+      "words": [
+        "ACCOUNT"
+      ],
+      "hint": "User profile 👤"
+    },
+    {
+      "words": [
+        "SIGNING"
+      ],
+      "hint": "Logging in ✍️"
+    },
+    {
+      "words": [
+        "LOGGING"
+      ],
+      "hint": "Recording activity 📝"
+    },
+    {
+      "words": [
+        "UPDATED"
+      ],
+      "hint": "Made current 🔄"
+    },
+    {
+      "words": [
+        "DELETED"
+      ],
+      "hint": "Removed completely 🗑️"
+    },
+    {
+      "words": [
+        "WARNING"
+      ],
+      "hint": "Danger alert ⚠️"
+    },
+    {
+      "words": [
+        "PROBLEM"
+      ],
+      "hint": "Something to solve ❗"
+    },
+    {
+      "words": [
+        "SOLUTION"
+      ],
+      "hint": "Answer to problem ✔️"
+    },
+    {
+      "words": [
+        "EXAMPLE"
+      ],
+      "hint": "Sample case 🧪"
+    },
+    {
+      "words": [
+        "DETAILS"
+      ],
+      "hint": "Small information 🔍"
+    },
+    {
+      "words": [
+        "SUMMARY"
+      ],
+      "hint": "Short version 📝"
+    },
+    {
+      "words": [
+        "LEARNING"
+      ],
+      "hint": "Gaining knowledge 📘"
+    },
+    {
+      "words": [
+        "TEACHING"
+      ],
+      "hint": "Helping others learn 👩‍🏫"
+    },
+    {
+      "words": [
+        "TRAINING"
+      ],
+      "hint": "Skill development 🏋️"
+    },
+    {
+      "words": [
+        "EXERCISE"
+      ],
+      "hint": "Physical activity 🏃"
+    },
+    {
+      "words": [
+        "HEALTHY"
+      ],
+      "hint": "In good condition 🥗"
+    },
+    {
+      "words": [
+        "ENERGIC"
+      ],
+      "hint": "Full of energy ⚡"
+    },
+    {
+      "words": [
+        "TRAVELS"
+      ],
+      "hint": "Goes to places ✈️"
+    },
+    {
+      "words": [
+        "JOURNEY"
+      ],
+      "hint": "Long trip 🛣️"
+    },
+    {
+      "words": [
+        "VACATION"
+      ],
+      "hint": "Break from work 🏖️"
+    },
+    {
+      "words": [
+        "WEATHER"
+      ],
+      "hint": "Outside conditions 🌦️"
+    },
+    {
+      "words": [
+        "SEASONS"
+      ],
+      "hint": "Parts of the year 🍂"
+    },
+    {
+      "words": [
+        "MORNING"
+      ],
+      "hint": "Start of day 🌅"
+    },
+    {
+      "words": [
+        "EVENING"
+      ],
+      "hint": "End of day 🌆"
+    },
+    {
+      "words": [
+        "HAPPIER"
+      ],
+      "hint": "More joyful 😊"
+    },
+    {
+      "words": [
+        "SMILING"
+      ],
+      "hint": "Showing happiness 🙂"
+    },
+    {
+      "words": [
+        "LAUGHED"
+      ],
+      "hint": "Expressed joy 😂"
+    },
+    {
+      "words": [
+        "CRYING"
+      ],
+      "hint": "Shedding tears 😢"
+    },
+    {
+      "words": [
+        "FEELING"
+      ],
+      "hint": "Emotional state ❤️"
+    },
+    {
+      "words": [
+        "EMOTIVE"
+      ],
+      "hint": "Full of emotion 💓"
+    },
+    {
+      "words": [
+        "ANXIOUS"
+      ],
+      "hint": "Feeling worried 😟"
+    },
+    {
+      "words": [
+        "CALMING"
+      ],
+      "hint": "Making peaceful 🧘"
+    },
+    {
+      "words": [
+        "RELAXED"
+      ],
+      "hint": "Free from stress 😌"
+    },
+    {
+      "words": [
+        "STRESSED"
+      ],
+      "hint": "Mentally tense 😣"
+    },
+    {
+      "words": [
+        "PATIENT"
+      ],
+      "hint": "Able to wait calmly ⏳"
+    },
+    {
+      "words": [
+        "KINDRED"
+      ],
+      "hint": "Related or similar 🤍"
+    },
+    {
+      "words": [
+        "HELPFUL"
+      ],
+      "hint": "Giving assistance 🤝"
+    },
+    {
+      "words": [
+        "CARING"
+      ],
+      "hint": "Showing concern 💗"
+    },
+    {
+      "words": [
+        "FRIENDLY"
+      ],
+      "hint": "Kind and pleasant 🙂"
+    },
+    {
+      "words": [
+        "SUPPORT"
+      ],
+      "hint": "Provide help 💪"
+    },
+    {
+      "words": [
+        "TRUSTED"
+      ],
+      "hint": "Believed in 🤝"
+    },
+    {
+      "words": [
+        "LOYALTY"
+      ],
+      "hint": "Faithfulness 🐕"
+    },
+    {
+      "words": [
+        "RESPECT"
+      ],
+      "hint": "High regard 🙇"
+    },
+    {
+      "words": [
+        "HONORED"
+      ],
+      "hint": "Shown respect 🏅"
+    },
+    {
+      "words": [
+        "COURAGE"
+      ],
+      "hint": "Ability to face fear 🦁"
+    },
+    {
+      "words": [
+        "BRAVERY"
+      ],
+      "hint": "Fearless behavior 🛡️"
+    },
+    {
+      "words": [
+        "CONFIDE"
+      ],
+      "hint": "Share privately 🤫"
+    },
+    {
+      "words": [
+        "BELIEVE"
+      ],
+      "hint": "Accept as true 🙏"
+    },
+    {
+      "words": [
+        "REALIZE"
+      ],
+      "hint": "Become aware 💡"
+    },
+    {
+      "words": [
+        "THOUGHT"
+      ],
+      "hint": "Idea in mind 💭"
+    },
+    {
+      "words": [
+        "IDEATED"
+      ],
+      "hint": "Created ideas 🧠"
+    },
+    {
+      "words": [
+        "DECIDED"
+      ],
+      "hint": "Made a choice ✔️"
+    },
+    {
+      "words": [
+        "PLANNED"
+      ],
+      "hint": "Prepared ahead 🗺️"
+    },
+    {
+      "words": [
+        "FOCUSED"
+      ],
+      "hint": "Paying attention 🎯"
+    },
+    {
+      "words": [
+        "BALANCE"
+      ],
+      "hint": "Even distribution ⚖️"
+    },
+    {
+      "words": [
+        "CONTROL"
+      ],
+      "hint": "Power to manage 🎛️"
+    },
+    {
+      "words": [
+        "MANAGED"
+      ],
+      "hint": "Handled successfully 📋"
+    },
+    {
+      "words": [
+        "WORKING"
+      ],
+      "hint": "Doing a job 💼"
+    },
+    {
+      "words": [
+        "EARNING"
+      ],
+      "hint": "Making money 💰"
+    },
+    {
+      "words": [
+        "SAVINGS"
+      ],
+      "hint": "Money kept aside 🏦"
+    },
+    {
+      "words": [
+        "SPENDING"
+      ],
+      "hint": "Using money 💸"
+    },
+    {
+      "words": [
+        "SHOPPING"
+      ],
+      "hint": "Buying items 🛍️"
+    },
+    {
+      "words": [
+        "MARKETS"
+      ],
+      "hint": "Buying places 🏪"
+    },
+    {
+      "words": [
+        "PRODUCT"
+      ],
+      "hint": "Item for sale 📦"
+    },
+    {
+      "words": [
+        "SERVICE"
+      ],
+      "hint": "Work provided 🛠️"
+    },
+    {
+      "words": [
+        "QUALITY"
+      ],
+      "hint": "Level of goodness ⭐"
+    },
+    {
+      "words": [
+        "VALUEED"
+      ],
+      "hint": "Considered important 💎"
+    },
+    {
+      "words": [
+        "DELIVER"
+      ],
+      "hint": "Bring to destination 📦"
+    },
+    {
+      "words": [
+        "PACKAGE"
+      ],
+      "hint": "Wrapped item 📦"
+    },
+    {
+      "words": [
+        "SHIPPED"
+      ],
+      "hint": "Sent for delivery 🚚"
+    },
+    {
+      "words": [
+        "TRACKED"
+      ],
+      "hint": "Monitored movement 📍"
+    },
+    {
+      "words": [
+        "UPDATED"
+      ],
+      "hint": "Made current 🔄"
+    },
+    {
+      "words": [
+        "CHANGED"
+      ],
+      "hint": "Made different 🔁"
+    },
+    {
+      "words": [
+        "REMOVED"
+      ],
+      "hint": "Taken away 🗑️"
+    },
+    {
+      "words": [
+        "DELETED"
+      ],
+      "hint": "Erased completely ❌"
+    },
+    {
+      "words": [
+        "WARNING"
+      ],
+      "hint": "Alert of danger ⚠️"
+    },
+    {
+      "words": [
+        "PROBLEM"
+      ],
+      "hint": "Issue to solve ❗"
+    },
+    {
+      "words": [
+        "SOLVING"
+      ],
+      "hint": "Finding answers 🧩"
+    },
+    {
+      "words": [
+        "EXAMPLE"
+      ],
+      "hint": "Sample case 🧪"
+    },
+    {
+      "words": [
+        "DETAILS"
+      ],
+      "hint": "Small information 🔍"
+    },
+    {
+      "words": [
+        "SUMMARY"
+      ],
+      "hint": "Short version 📝"
+    },
+    {
+      "words": [
+        "LEARNING"
+      ],
+      "hint": "Gaining knowledge 📘"
+    },
+    {
+      "words": [
+        "TEACHER"
+      ],
+      "hint": "Person who teaches 👩‍🏫"
+    },
+    {
+      "words": [
+        "STUDENT"
+      ],
+      "hint": "Person who learns 🎓"
+    },
+    {
+      "words": [
+        "TRAINED"
+      ],
+      "hint": "Skilled by practice 🏋️"
+    },
+    {
+      "words": [
+        "HEALTHY"
+      ],
+      "hint": "In good condition 🥗"
+    },
+    {
+      "words": [
+        "ENERGIC"
+      ],
+      "hint": "Full of energy ⚡"
+    },
+    {
+      "words": [
+        "EXERCISE"
+      ],
+      "hint": "Physical activity 🏃"
+    },
+    {
+      "words": [
+        "WALKING"
+      ],
+      "hint": "Moving on foot 🚶"
+    },
+    {
+      "words": [
+        "RUNNING"
+      ],
+      "hint": "Moving fast 🏃"
+    },
+    {
+      "words": [
+        "TRAVELS"
+      ],
+      "hint": "Goes to places ✈️"
+    },
+    {
+      "words": [
+        "JOURNEY"
+      ],
+      "hint": "Long trip 🛣️"
+    },
+    {
+      "words": [
+        "HOLIDAY"
+      ],
+      "hint": "Break from work 🏖️"
+    },
+    {
+      "words": [
+        "WEATHER"
+      ],
+      "hint": "Outside conditions 🌦️"
+    },
+    {
+      "words": [
+        "SEASONS"
+      ],
+      "hint": "Parts of the year 🍂"
+    },
+    {
+      "words": [
+        "MORNING"
+      ],
+      "hint": "Start of day 🌅"
+    },
+    {
+      "words": [
+        "EVENING"
+      ],
+      "hint": "End of day 🌆"
+    }
+  ]
+}

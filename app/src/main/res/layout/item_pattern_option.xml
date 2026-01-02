@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/spacing_xs">
+
+    <TextView
+        android:id="@+id/tvEmoji"
+        android:layout_width="@dimen/pattern_item_size"
+        android:layout_height="@dimen/pattern_item_size"
+        android:background="@drawable/bg_pattern_item"
+        android:gravity="center"
+        android:textSize="36sp"
+        android:textColor="#FF000000"
+        tools:text="🍎"/>
+
+</FrameLayout>
+

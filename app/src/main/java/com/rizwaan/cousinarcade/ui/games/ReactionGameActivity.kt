@@ -1,0 +1,347 @@
+package com.rizwaan.cousinarcade.ui.games
+
+import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.view.View
+import android.view.animation.DecelerateInterpolator
+import android.view.animation.OvershootInterpolator
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
+import com.rizwaan.cousinarcade.R
+import com.rizwaan.cousinarcade.data.local.PreferencesManager
+import com.rizwaan.cousinarcade.data.models.GameScore
+import com.rizwaan.cousinarcade.data.models.GameType
+import com.rizwaan.cousinarcade.data.repository.FirebaseRepository
+import com.rizwaan.cousinarcade.databinding.ActivityReactionGameBinding
+import com.rizwaan.cousinarcade.databinding.DialogGameOverBinding
+import com.rizwaan.cousinarcade.util.SoundManager
+import kotlinx.coroutines.launch
+import kotlin.random.Random
+
+class ReactionGameActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityReactionGameBinding
+    private lateinit var prefsManager: PreferencesManager
+    private lateinit var firebaseRepo: FirebaseRepository
+    private lateinit var soundManager: SoundManager
+    
+    private val handler = Handler(Looper.getMainLooper())
+    private var gameState = GameState.IDLE
+    private var startTime = 0L
+    private var currentRound = 0
+    private val totalRounds = 5
+    private val reactionTimes = mutableListOf<Long>()
+    
+    private var pendingGoRunnable: Runnable? = null
+    private var pendingResetRunnable: Runnable? = null
+    
+    enum class GameState {
+        IDLE,           // Ready to start - RED, "TAP TO START"
+        WAITING,        // Waiting for green - RED, "WAIT..."
+        GO,             // Tap now! - GREEN, "TAP NOW!"
+        TOO_EARLY,      // Tapped too early - RED, "TOO EARLY!"
+        SHOWING_RESULT, // Showing reaction time - GREEN with time
+        FINISHED        // All rounds complete
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        
+        binding = ActivityReactionGameBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
+        
+        prefsManager = PreferencesManager(this)
+        firebaseRepo = FirebaseRepository()
+        soundManager = SoundManager.getInstance(this)
+        
+        resetToIdle()
+        setupClickListeners()
+    }
+    
+    private fun resetToIdle() {
+        cancelAllPendingActions()
+        
+        currentRound = 0
+        reactionTimes.clear()
+        gameState = GameState.IDLE
+        
+        setRedBackground()
+        binding.tvInstruction.text = "TAP TO START"
+        binding.tvSubtext.text = "Tap anywhere to begin"
+        binding.tvSubtext.visibility = View.VISIBLE
+        binding.tvReactionTime.visibility = View.GONE
+        binding.tvReactionLabel.visibility = View.GONE
+        binding.tvRound.text = "0/$totalRounds"
+        binding.tvBestTime.text = "---"
+        binding.tvAvgTime.text = "---"
+    }
+    
+    private fun cancelAllPendingActions() {
+        pendingGoRunnable?.let { handler.removeCallbacks(it) }
+        pendingResetRunnable?.let { handler.removeCallbacks(it) }
+        pendingGoRunnable = null
+        pendingResetRunnable = null
+    }
+    
+    private fun setupClickListeners() {
+        binding.btnBack.setOnClickListener { 
+            cancelAllPendingActions()
+            finish() 
+        }
+        
+        binding.gameArea.setOnClickListener {
+            handleTap()
+        }
+    }
+    
+    private fun handleTap() {
+        when (gameState) {
+            GameState.IDLE -> startRound()
+            GameState.WAITING -> tooEarly()
+            GameState.GO -> recordReaction()
+            GameState.TOO_EARLY -> startRound()
+            GameState.SHOWING_RESULT -> { /* Ignore */ }
+            GameState.FINISHED -> { /* Ignore */ }
+        }
+    }
+    
+    private fun startRound() {
+        cancelAllPendingActions()
+        
+        currentRound++
+        gameState = GameState.WAITING
+        
+        binding.tvRound.text = "$currentRound/$totalRounds"
+        
+        setRedBackground()
+        binding.tvInstruction.text = "WAIT..."
+        binding.tvSubtext.visibility = View.VISIBLE
+        binding.tvReactionTime.visibility = View.GONE
+        binding.tvReactionLabel.visibility = View.GONE
+        
+        // Random delay between 1.5 and 4 seconds
+        val delay = Random.nextLong(1500, 4000)
+        pendingGoRunnable = Runnable {
+            if (gameState == GameState.WAITING) {
+                showGo()
+            }
+        }
+        handler.postDelayed(pendingGoRunnable!!, delay)
+    }
+    
+    private fun showGo() {
+        gameState = GameState.GO
+        startTime = System.currentTimeMillis()
+        
+        // Smooth transition to green
+        binding.gameArea.alpha = 0.9f
+        setGreenBackground()
+        binding.gameArea.animate()
+            .alpha(1f)
+            .setDuration(100)
+            .start()
+        
+        binding.tvInstruction.text = "TAP NOW!"
+        binding.tvSubtext.text = "As fast as you can!"
+        binding.tvSubtext.visibility = View.VISIBLE
+        
+        // Pulse animation with overshoot
+        binding.tvInstruction.scaleX = 0.7f
+        binding.tvInstruction.scaleY = 0.7f
+        binding.tvInstruction.alpha = 0f
+        binding.tvInstruction.animate()
+            .scaleX(1f)
+            .scaleY(1f)
+            .alpha(1f)
+            .setDuration(180)
+            .setInterpolator(OvershootInterpolator(1.5f))
+            .start()
+    }
+    
+    private fun tooEarly() {
+        cancelAllPendingActions()
+        gameState = GameState.TOO_EARLY
+        
+        soundManager.playWrong()
+        setRedBackground()
+        binding.tvInstruction.text = "TOO EARLY!"
+        binding.tvSubtext.text = "Tap to try again"
+        binding.tvSubtext.visibility = View.VISIBLE
+        binding.tvReactionTime.visibility = View.GONE
+        binding.tvReactionLabel.visibility = View.GONE
+        
+        // Shake animation
+        binding.tvInstruction.animate()
+            .translationX(-15f)
+            .setDuration(50)
+            .withEndAction {
+                binding.tvInstruction.animate()
+                    .translationX(15f)
+                    .setDuration(50)
+                    .withEndAction {
+                        binding.tvInstruction.animate()
+                            .translationX(-10f)
+                            .setDuration(50)
+                            .withEndAction {
+                                binding.tvInstruction.animate()
+                                    .translationX(0f)
+                                    .setDuration(50)
+                                    .start()
+                            }
+                            .start()
+                    }
+                    .start()
+            }
+            .start()
+        
+        currentRound--
+        binding.tvRound.text = "$currentRound/$totalRounds"
+    }
+    
+    private fun recordReaction() {
+        val reactionTime = System.currentTimeMillis() - startTime
+        reactionTimes.add(reactionTime)
+        
+        soundManager.playSuccess()
+        gameState = GameState.SHOWING_RESULT
+        
+        // Keep green background for showing result
+        setGreenBackground()
+        binding.tvInstruction.text = "NICE!"
+        binding.tvSubtext.visibility = View.GONE
+        binding.tvReactionTime.text = "$reactionTime"
+        binding.tvReactionTime.visibility = View.VISIBLE
+        binding.tvReactionLabel.visibility = View.VISIBLE
+        
+        // Pop animation for reaction time
+        binding.tvReactionTime.scaleX = 0.5f
+        binding.tvReactionTime.scaleY = 0.5f
+        binding.tvReactionTime.animate()
+            .scaleX(1f)
+            .scaleY(1f)
+            .setDuration(300)
+            .setInterpolator(OvershootInterpolator())
+            .start()
+        
+        updateStats()
+        
+        if (currentRound >= totalRounds) {
+            gameState = GameState.FINISHED
+            pendingResetRunnable = Runnable { showGameOver() }
+            handler.postDelayed(pendingResetRunnable!!, 1500)
+        } else {
+            pendingResetRunnable = Runnable {
+                gameState = GameState.IDLE
+                setRedBackground()
+                binding.tvInstruction.text = "TAP TO START"
+                binding.tvSubtext.text = "Round ${currentRound + 1} of $totalRounds"
+                binding.tvSubtext.visibility = View.VISIBLE
+                binding.tvReactionTime.visibility = View.GONE
+                binding.tvReactionLabel.visibility = View.GONE
+            }
+            handler.postDelayed(pendingResetRunnable!!, 1500)
+        }
+    }
+    
+    private fun setRedBackground() {
+        binding.gameArea.setBackgroundResource(R.drawable.bg_reaction_red)
+    }
+    
+    private fun setGreenBackground() {
+        binding.gameArea.setBackgroundResource(R.drawable.bg_reaction_green)
+    }
+    
+    private fun updateStats() {
+        if (reactionTimes.isNotEmpty()) {
+            val best = reactionTimes.minOrNull() ?: 0
+            val avg = reactionTimes.average().toLong()
+            
+            binding.tvBestTime.text = "$best"
+            binding.tvAvgTime.text = "$avg"
+        }
+    }
+    
+    private fun showGameOver() {
+        val best = reactionTimes.minOrNull() ?: 0
+        val avg = reactionTimes.average().toLong()
+        
+        saveScore(best)
+        
+        val dialogBinding = DialogGameOverBinding.inflate(layoutInflater)
+        
+        dialogBinding.tvResultEmoji.text = when {
+            best < 200 -> "🚀"
+            best < 300 -> "⚡"
+            best < 400 -> "👍"
+            else -> "🐢"
+        }
+        
+        dialogBinding.tvTitle.text = when {
+            best < 200 -> "Lightning Fast!"
+            best < 300 -> "Great Reflexes!"
+            best < 400 -> "Good Job!"
+            else -> "Keep Practicing!"
+        }
+        
+        dialogBinding.tvScore.text = "Best: $best ms"
+        
+        dialogBinding.statsLayout.visibility = View.VISIBLE
+        dialogBinding.tvStat1Label.text = "Best Time"
+        dialogBinding.tvStat1Value.text = "$best ms"
+        dialogBinding.tvStat2Label.text = "Average"
+        dialogBinding.tvStat2Value.text = "$avg ms"
+        
+        // Load top 3 leaderboard
+        GameOverHelper.loadLeaderboard(dialogBinding, GameType.REACTION_TIME)
+        
+        val dialog = AlertDialog.Builder(this, R.style.Theme_CousinArcade)
+            .setView(dialogBinding.root)
+            .setCancelable(false)
+            .create()
+        
+        dialogBinding.btnPlayAgain.setOnClickListener {
+            dialog.dismiss()
+            resetToIdle()
+        }
+        
+        dialogBinding.btnMenu.setOnClickListener {
+            dialog.dismiss()
+            finish()
+        }
+        
+        dialog.show()
+    }
+    
+    private fun saveScore(bestTime: Long) {
+        val player = prefsManager.currentPlayer ?: return
+        
+        val score = GameScore(
+            playerId = player.id,
+            playerNickname = player.nickname,
+            gameType = GameType.REACTION_TIME,
+            score = bestTime,
+            extras = mapOf("average" to reactionTimes.average().toLong())
+        )
+        
+        lifecycleScope.launch {
+            firebaseRepo.saveScore(score)
+        }
+    }
+    
+    override fun onDestroy() {
+        super.onDestroy()
+        cancelAllPendingActions()
+    }
+}

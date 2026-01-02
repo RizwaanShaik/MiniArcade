@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary Colors - Modern Purple/Indigo -->
+    <color name="primary">#6366F1</color>
+    <color name="primary_dark">#4F46E5</color>
+    <color name="primary_light">#818CF8</color>
+    
+    <!-- Secondary - Vibrant Violet -->
+    <color name="secondary">#8B5CF6</color>
+    <color name="secondary_dark">#7C3AED</color>
+    
+    <!-- Accent -->
+    <color name="accent">#F472B6</color>
+    
+    <!-- Background Colors - Dark Theme -->
+    <color name="background_dark">#0F0F1A</color>
+    <color name="background_game">#1A1A2E</color>
+    <color name="background_primary">#0F0F1A</color>
+    <color name="background_secondary">#16213E</color>
+    <color name="background_card">#1E2746</color>
+    <color name="surface">#16213E</color>
+    <color name="surface_elevated">#1E2746</color>
+    <color name="surface_overlay">#2A2A4E</color>
+    
+    <!-- Text Colors -->
+    <color name="text_primary">#F8FAFC</color>
+    <color name="text_secondary">#94A3B8</color>
+    <color name="text_hint">#64748B</color>
+    
+    <!-- Gradient Colors -->
+    <color name="gradient_start">#6366F1</color>
+    <color name="gradient_end">#8B5CF6</color>
+    <color name="gradient_orange_start">#F97316</color>
+    <color name="gradient_orange_end">#EA580C</color>
+    <color name="gradient_purple_start">#8B5CF6</color>
+    <color name="gradient_purple_end">#7C3AED</color>
+    
+    <!-- Game Colors - Vibrant & Modern -->
+    <color name="game_red">#EF4444</color>
+    <color name="game_orange">#F97316</color>
+    <color name="game_yellow">#FBBF24</color>
+    <color name="game_green">#22C55E</color>
+    <color name="game_cyan">#06B6D4</color>
+    <color name="game_blue">#3B82F6</color>
+    <color name="game_purple">#A855F7</color>
+    <color name="game_pink">#EC4899</color>
+    
+    <!-- Status Colors -->
+    <color name="success">#22C55E</color>
+    <color name="error">#EF4444</color>
+    <color name="warning">#F59E0B</color>
+    
+    <!-- Card Colors for Games - Fresh Gradients -->
+    <color name="card_reaction">#F97316</color>
+    <color name="card_memory">#8B5CF6</color>
+    <color name="card_pattern">#06B6D4</color>
+    <color name="card_color">#22C55E</color>
+    <color name="card_word">#3B82F6</color>
+    <color name="card_rhythm">#EC4899</color>
+    
+    <!-- Leaderboard Colors - Subtle Pastels -->
+    <color name="leaderboard_gold">#FFE082</color>
+    <color name="leaderboard_silver">#E0E0E0</color>
+    <color name="leaderboard_bronze">#FFCC80</color>
+    
+    <!-- Standard -->
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+</resources>

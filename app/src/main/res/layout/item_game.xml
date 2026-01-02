@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="24dp"
+    app:cardElevation="8dp"
+    app:cardBackgroundColor="@color/surface_elevated"
+    android:foreground="?android:attr/selectableItemBackground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingVertical="24dp"
+        android:paddingHorizontal="16dp"
+        android:gravity="center">
+
+        <!-- Emoji - black text color for full color emoji rendering -->
+        <TextView
+            android:id="@+id/tvGameEmoji"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:gravity="center"
+            android:textSize="48sp"
+            android:textColor="#FF000000"
+            tools:text="⚡"/>
+
+        <TextView
+            android:id="@+id/tvGameName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/text_primary"
+            android:textStyle="bold"
+            android:fontFamily="@font/poppins_medium"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            tools:text="Reaction Time"/>
+
+        <TextView
+            android:id="@+id/tvGameDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="@color/text_secondary"
+            android:fontFamily="@font/poppins"
+            android:layout_marginTop="4dp"
+            android:gravity="center"
+            android:maxLines="2"
+            tools:text="Tap as fast as you can!"/>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+
+    <application
+        android:name=".CousinArcadeApplication"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.CousinArcade"
+        tools:targetApi="31">
+        
+        <!-- Main Entry Point -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.CousinArcade.Splash">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+        <!-- Welcome/Login Screen -->
+        <activity
+            android:name=".ui.WelcomeActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"/>
+        
+        <!-- Home Screen -->
+        <activity
+            android:name=".ui.HomeActivity"
+            android:exported="false"/>
+        
+        <!-- Leaderboard -->
+        <activity
+            android:name=".ui.LeaderboardActivity"
+            android:exported="false"/>
+        
+        <!-- Game Activities -->
+        <activity
+            android:name=".ui.games.ReactionGameActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        
+        <activity
+            android:name=".ui.games.MemoryGameActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        
+        <activity
+            android:name=".ui.games.PatternGameActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        
+        <activity
+            android:name=".ui.games.ColorGameActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        
+        <activity
+            android:name=".ui.games.WordGameActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        
+        <activity
+            android:name=".ui.games.RhythmGameActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+            
+    </application>
+
+</manifest>

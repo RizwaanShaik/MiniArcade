@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Mini Arcade</string>
+    
+    <!-- Welcome Screen -->
+    <string name="welcome_title">Welcome to\nMini Arcade! 🎮</string>
+    <string name="welcome_subtitle">Play fun mini games!</string>
+    <string name="enter_nickname">Enter your nickname</string>
+    <string name="nickname_hint">Your cool nickname</string>
+    <string name="choose_avatar">Pick your avatar!</string>
+    <string name="lets_play">Let\'s Play! 🚀</string>
+    <string name="nickname_taken">Oops! This nickname is taken 😅</string>
+    <string name="nickname_too_short">Nickname must be at least 3 characters</string>
+    <string name="nickname_invalid">Only letters and numbers allowed!</string>
+    
+    <!-- Home Screen -->
+    <string name="hi_player">Hi, %s! 👋</string>
+    <string name="choose_game">Choose a game!</string>
+    <string name="leaderboard">Leaderboard 🏆</string>
+    
+    <!-- Game Names -->
+    <string name="game_reaction">Reaction Time ⚡</string>
+    <string name="game_memory">Memory Flip 🧠</string>
+    <string name="game_pattern">Pattern Snap 🎯</string>
+    <string name="game_color">Color Catch 🌈</string>
+    <string name="game_word">Word Scramble 📝</string>
+    <string name="game_rhythm">Rhythm Tap 🎵</string>
+    
+    <!-- Game Common -->
+    <string name="score">Score: %d</string>
+    <string name="level">Level %d</string>
+    <string name="time_left">Time: %d</string>
+    <string name="lives_left">Lives: %d</string>
+    <string name="tap_to_start">Tap to Start!</string>
+    <string name="get_ready">Get Ready!</string>
+    <string name="go">GO!</string>
+    <string name="game_over">Game Over!</string>
+    <string name="well_done">Well Done! 🎉</string>
+    <string name="new_high_score">New High Score! 🏆</string>
+    <string name="play_again">Play Again</string>
+    <string name="back_to_menu">Back to Menu</string>
+    <string name="pause">Pause</string>
+    <string name="resume">Resume</string>
+    
+    <!-- Reaction Time Game -->
+    <string name="wait_for_green">Wait for GREEN…</string>
+    <string name="tap_now">TAP NOW! 💥</string>
+    <string name="too_early">Too early! 😬</string>
+    <string name="your_time">Your time: %d ms</string>
+    <string name="average_time">Average: %d ms</string>
+    <string name="best_time">Best: %d ms</string>
+    
+    <!-- Memory Game -->
+    <string name="find_pairs">Find all pairs!</string>
+    <string name="pairs_found">Pairs: %d/%d</string>
+    <string name="moves">Moves: %d</string>
+    
+    <!-- Pattern Game -->
+    <string name="watch_pattern">Watch the pattern!</string>
+    <string name="repeat_pattern">Now repeat it!</string>
+    <string name="correct">Correct! ✓</string>
+    <string name="wrong">Wrong! ✗</string>
+    
+    <!-- Color Catch Game -->
+    <string name="catch_color">Tap: %s</string>
+    <string name="avoid_bombs">Avoid the bombs! 💣</string>
+    <string name="misses">Misses: %d/3</string>
+    
+    <!-- Word Scramble -->
+    <string name="unscramble">Unscramble the word!</string>
+    <string name="hint">Hint 💡</string>
+    <string name="submit">Submit</string>
+    
+    <!-- Rhythm Tap -->
+    <string name="swipe_shapes">Swipe shapes to baskets!</string>
+    <string name="combo">Combo: %d 🔥</string>
+    
+    <!-- Leaderboard -->
+    <string name="leaderboard_title">Leaderboard 🏆</string>
+    <string name="no_scores">No scores yet. Be the first!</string>
+    <string name="rank">Rank</string>
+    <string name="player">Player</string>
+    
+    <!-- Multiplayer -->
+    <string name="player_1">Player 1</string>
+    <string name="player_2">Player 2</string>
+    <string name="your_turn">Your turn, %s!</string>
+    <string name="winner">Winner: %s! 🎉</string>
+    <string name="its_a_tie">It\'s a tie! 🤝</string>
+    
+    <!-- Menu -->
+    <string name="menu">Menu</string>
+    <string name="logout">Logout</string>
+    <string name="switch_player">Switch Player</string>
+    <string name="settings">Settings</string>
+</resources>

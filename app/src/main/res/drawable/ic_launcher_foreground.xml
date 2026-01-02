@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    
+    <!-- Game controller body -->
+    <path
+        android:pathData="M34,48 L74,48 Q82,48 82,56 L82,60 Q82,68 74,68 L34,68 Q26,68 26,60 L26,56 Q26,48 34,48 Z"
+        android:fillColor="#FFFFFF"/>
+    
+    <!-- Left D-pad vertical -->
+    <path
+        android:pathData="M38,52 L38,64 L42,64 L42,52 Z"
+        android:fillColor="#6366F1"/>
+    
+    <!-- Left D-pad horizontal -->
+    <path
+        android:pathData="M32,56 L48,56 L48,60 L32,60 Z"
+        android:fillColor="#6366F1"/>
+    
+    <!-- Right button A (top) -->
+    <path
+        android:pathData="M66,52m-4,0a4,4 0,1 1,8 0a4,4 0,1 1,-8 0"
+        android:fillColor="#22C55E"/>
+    
+    <!-- Right button B (bottom) -->
+    <path
+        android:pathData="M66,64m-4,0a4,4 0,1 1,8 0a4,4 0,1 1,-8 0"
+        android:fillColor="#EF4444"/>
+    
+    <!-- Right button X (left) -->
+    <path
+        android:pathData="M60,58m-4,0a4,4 0,1 1,8 0a4,4 0,1 1,-8 0"
+        android:fillColor="#3B82F6"/>
+    
+    <!-- Right button Y (right) -->
+    <path
+        android:pathData="M72,58m-4,0a4,4 0,1 1,8 0a4,4 0,1 1,-8 0"
+        android:fillColor="#FBBF24"/>
+    
+    <!-- Stars decorations -->
+    <path
+        android:pathData="M30,35 L32,39 L36,39 L33,42 L34,46 L30,44 L26,46 L27,42 L24,39 L28,39 Z"
+        android:fillColor="#FBBF24"/>
+    
+    <path
+        android:pathData="M78,35 L80,39 L84,39 L81,42 L82,46 L78,44 L74,46 L75,42 L72,39 L76,39 Z"
+        android:fillColor="#FBBF24"/>
+    
+    <path
+        android:pathData="M54,26 L56,30 L60,30 L57,33 L58,37 L54,35 L50,37 L51,33 L48,30 L52,30 Z"
+        android:fillColor="#FBBF24"/>
+
+</vector>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="@android:color/transparent">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/memory_card_size"
+        android:clipChildren="false"
+        android:clipToPadding="false">
+
+        <!-- Card Back (question mark) -->
+        <TextView
+            android:id="@+id/cardBack"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="?"
+            android:textSize="32sp"
+            android:textColor="#C4B5FD"
+            android:textStyle="bold"
+            android:background="@drawable/bg_memory_card_back"/>
+
+        <!-- Card Front (emoji) - black text for full color emojis -->
+        <TextView
+            android:id="@+id/cardFront"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="40sp"
+            android:textColor="#FF000000"
+            android:visibility="invisible"
+            android:background="@drawable/bg_memory_card_front"
+            tools:text="🎮"
+            tools:visibility="visible"/>
+
+    </FrameLayout>
+
+</androidx.cardview.widget.CardView>
