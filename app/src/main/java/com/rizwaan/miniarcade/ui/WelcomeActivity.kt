@@ -2,42 +2,31 @@ package com.rizwaan.miniarcade.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import android.util.Patterns
 import android.view.View
 import android.view.animation.OvershootInterpolator
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.rizwaan.miniarcade.R
 import com.rizwaan.miniarcade.data.WordDictionary
 import com.rizwaan.miniarcade.data.local.PreferencesManager
-import com.rizwaan.miniarcade.data.models.Player
 import com.rizwaan.miniarcade.data.repository.FirebaseRepository
 import com.rizwaan.miniarcade.databinding.ActivityWelcomeBinding
-import com.rizwaan.miniarcade.ui.adapters.AvatarAdapter
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withTimeoutOrNull
-import java.util.UUID
 
 class WelcomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityWelcomeBinding
     private lateinit var prefsManager: PreferencesManager
     private lateinit var firebaseRepo: FirebaseRepository
-    private lateinit var avatarAdapter: AvatarAdapter
-    
-    private var selectedAvatar = "🎮"
-    private var isFirebaseAvailable = false
-    
-    private val avatars = listOf(
-        "🎮", "🕹️", "👾", "🎯", "🏆", "⭐", "🌟", "💫",
-        "🦊", "🐱", "🐶", "🐼", "🦁", "🐯", "🐸", "🦋",
-        "🚀", "🎨", "🎪", "🎭", "🎬", "🎤", "🎸", "🎹"
-    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,22 +48,17 @@ class WelcomeActivity : AppCompatActivity() {
         WordDictionary.initialize(this)
         
         // Check if already logged in
-        if (prefsManager.isLoggedIn()) {
+        if (prefsManager.isLoggedIn() && firebaseRepo.isLoggedIn()) {
             navigateToHome()
             return
         }
         
-        setupAvatarSelector()
-        setupNicknameInput()
-        setupLetsPlayButton()
+        setupInputValidation()
+        setupClickListeners()
         animateEntrance()
-        
-        // Try to authenticate with Firebase (with timeout)
-        checkFirebaseAvailability()
     }
     
     private fun animateEntrance() {
-        // Animate logo
         binding.tvLogo.alpha = 0f
         binding.tvLogo.scaleX = 0.5f
         binding.tvLogo.scaleY = 0.5f
@@ -86,7 +70,6 @@ class WelcomeActivity : AppCompatActivity() {
             .setInterpolator(OvershootInterpolator())
             .start()
         
-        // Animate title
         binding.tvTitle.alpha = 0f
         binding.tvTitle.translationY = 30f
         binding.tvTitle.animate()
@@ -96,7 +79,6 @@ class WelcomeActivity : AppCompatActivity() {
             .setDuration(400)
             .start()
         
-        // Animate subtitle
         binding.tvSubtitle.alpha = 0f
         binding.tvSubtitle.animate()
             .alpha(1f)
@@ -105,161 +87,148 @@ class WelcomeActivity : AppCompatActivity() {
             .start()
     }
     
-    private fun checkFirebaseAvailability() {
-        lifecycleScope.launch {
-            try {
-                val result = withTimeoutOrNull(3000L) {
-                    firebaseRepo.ensureAuthenticated()
-                }
-                isFirebaseAvailable = result == true
-                Log.d("WelcomeActivity", "Firebase available: $isFirebaseAvailable")
-            } catch (e: Exception) {
-                Log.e("WelcomeActivity", "Firebase check failed", e)
-                isFirebaseAvailable = false
-            }
-        }
-    }
-    
-    private fun setupAvatarSelector() {
-        avatarAdapter = AvatarAdapter(avatars) { avatar ->
-            selectedAvatar = avatar
-            avatarAdapter.setSelected(avatar)
+    private fun setupInputValidation() {
+        val validateInputs = {
+            val emailOrUsername = binding.etEmail.text?.toString()?.trim() ?: ""
+            val password = binding.etPassword.text?.toString() ?: ""
+            
+            // Allow either email format OR username (3+ chars, alphanumeric/underscore)
+            val isValidEmailOrUsername = Patterns.EMAIL_ADDRESS.matcher(emailOrUsername).matches() ||
+                    (emailOrUsername.length >= 3 && emailOrUsername.matches(Regex("^[a-zA-Z0-9_]+$")))
+            val isValid = isValidEmailOrUsername && password.length >= 6
+            
+            binding.btnLogin.isEnabled = isValid
+            binding.btnLogin.alpha = if (isValid) 1f else 0.5f
         }
         
-        binding.rvAvatars.apply {
-            layoutManager = LinearLayoutManager(this@WelcomeActivity, LinearLayoutManager.HORIZONTAL, false)
-            adapter = avatarAdapter
-        }
-        
-        avatarAdapter.setSelected(selectedAvatar)
-    }
-    
-    private fun setupNicknameInput() {
-        binding.etNickname.addTextChangedListener { text ->
+        binding.etEmail.addTextChangedListener { 
             binding.tvError.visibility = View.GONE
-            binding.btnLetsPlay.isEnabled = text?.length ?: 0 >= 3
-            binding.btnLetsPlay.alpha = if (text?.length ?: 0 >= 3) 1f else 0.5f
+            validateInputs()
         }
         
-        binding.btnLetsPlay.alpha = 0.5f
+        binding.etPassword.addTextChangedListener {
+            binding.tvError.visibility = View.GONE
+            validateInputs()
+        }
+        
+        binding.btnLogin.alpha = 0.5f
+        binding.btnLogin.isEnabled = false
     }
     
-    private fun setupLetsPlayButton() {
-        binding.btnLetsPlay.isEnabled = false
+    private fun setupClickListeners() {
+        binding.btnLogin.setOnClickListener {
+            performLogin()
+        }
         
-        binding.btnLetsPlay.setOnClickListener {
-            // Button press animation
-            binding.btnLetsPlay.animate()
-                .scaleX(0.95f)
-                .scaleY(0.95f)
-                .setDuration(80)
-                .withEndAction {
-                    binding.btnLetsPlay.animate()
-                        .scaleX(1f)
-                        .scaleY(1f)
-                        .setDuration(80)
-                        .withEndAction {
-                            validateAndProceed()
-                        }
-                        .start()
-                }
-                .start()
+        binding.tvCreateAccount.setOnClickListener {
+            startActivity(Intent(this, RegisterActivity::class.java))
+        }
+        
+        binding.tvForgotPassword.setOnClickListener {
+            showForgotPasswordDialog()
         }
     }
     
-    private fun validateAndProceed() {
-        val nickname = binding.etNickname.text.toString().trim()
+    private fun performLogin() {
+        val emailOrUsername = binding.etEmail.text.toString().trim()
+        val password = binding.etPassword.text.toString()
         
-        when {
-            nickname.length < 3 -> {
-                showError(getString(R.string.nickname_too_short))
-            }
-            !nickname.matches(Regex("^[a-zA-Z0-9]+$")) -> {
-                showError(getString(R.string.nickname_invalid))
-            }
-            else -> {
-                createPlayerAndProceed(nickname)
-            }
+        val isEmail = Patterns.EMAIL_ADDRESS.matcher(emailOrUsername).matches()
+        val isUsername = emailOrUsername.length >= 3 && emailOrUsername.matches(Regex("^[a-zA-Z0-9_]+$"))
+        
+        if (!isEmail && !isUsername) {
+            showError("Please enter a valid email or username")
+            return
         }
-    }
-    
-    private fun createPlayerAndProceed(nickname: String) {
+        
+        if (password.length < 6) {
+            showError("Password must be at least 6 characters")
+            return
+        }
+        
         showLoading(true)
         
         lifecycleScope.launch {
             try {
-                if (isFirebaseAvailable) {
-                    // Try Firebase first
-                    val result = withTimeoutOrNull(5000L) {
-                        tryFirebaseLogin(nickname)
-                    }
-                    
-                    if (result == true) {
-                        return@launch // Successfully logged in via Firebase
-                    }
-                }
-                
-                // Fallback to offline mode
-                createOfflinePlayer(nickname)
-                
-            } catch (e: Exception) {
-                Log.e("WelcomeActivity", "Login error", e)
-                // Fallback to offline
-                createOfflinePlayer(nickname)
-            }
-        }
-    }
-    
-    private suspend fun tryFirebaseLogin(nickname: String): Boolean {
-        // Check if nickname is available
-        val isAvailable = firebaseRepo.isNicknameAvailable(nickname)
-        
-        if (isAvailable) {
-            // Create new player
-            val player = firebaseRepo.createPlayer(nickname, selectedAvatar)
-            if (player != null) {
-                prefsManager.currentPlayer = player
-                navigateToHome()
-                return true
-            }
-        } else {
-            // Nickname taken - check if it's returning player
-            val existingPlayer = firebaseRepo.getPlayerByNickname(nickname)
-            if (existingPlayer != null) {
-                // Welcome back! Update avatar if changed
-                val updatedPlayer = if (existingPlayer.avatarEmoji != selectedAvatar) {
-                    firebaseRepo.updatePlayerAvatar(existingPlayer.id, selectedAvatar)
-                    existingPlayer.copy(avatarEmoji = selectedAvatar)
+                val player = if (isEmail) {
+                    // Direct email login
+                    firebaseRepo.loginWithEmail(emailOrUsername, password)
                 } else {
-                    existingPlayer
+                    // Username login - first get email from username, then login
+                    firebaseRepo.loginWithUsername(emailOrUsername.lowercase(), password)
                 }
-                prefsManager.currentPlayer = updatedPlayer
-                navigateToHome()
-                return true
-            } else {
+                
+                if (player != null) {
+                    prefsManager.currentPlayer = player
+                    navigateToHome()
+                } else {
+                    showLoading(false)
+                    showError("Invalid credentials. Check your email/username and password.")
+                }
+            } catch (e: Exception) {
                 showLoading(false)
-                showError(getString(R.string.nickname_taken))
-                return true // Handled, don't fallback
+                val errorMessage = when {
+                    e.message?.contains("no user record") == true -> 
+                        "No account found with this email/username"
+                    e.message?.contains("password is invalid") == true -> 
+                        "Incorrect password"
+                    e.message?.contains("network") == true -> 
+                        "Network error. Check your internet connection."
+                    else -> "Login failed. Please try again."
+                }
+                showError(errorMessage)
             }
         }
-        
-        return false
     }
     
-    private fun createOfflinePlayer(nickname: String) {
-        // Create player locally
-        val player = Player(
-            id = UUID.randomUUID().toString(),
-            nickname = nickname.lowercase(),
-            avatarEmoji = selectedAvatar,
-            createdAt = System.currentTimeMillis()
-        )
+    private fun showForgotPasswordDialog() {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_forgot_password, null)
+        val tilEmail = dialogView.findViewById<TextInputLayout>(R.id.tilEmail)
+        val etEmail = dialogView.findViewById<TextInputEditText>(R.id.etEmail)
         
-        prefsManager.currentPlayer = player
+        // Pre-fill with email from login form
+        val currentEmail = binding.etEmail.text.toString().trim()
+        if (currentEmail.isNotEmpty()) {
+            etEmail.setText(currentEmail)
+        }
         
-        runOnUiThread {
-            // Don't show offline message - just proceed silently
-            navigateToHome()
+        AlertDialog.Builder(this, R.style.Theme_MiniArcade_Dialog)
+            .setTitle("Reset Password")
+            .setMessage("Enter your email address and we'll send you a link to reset your password.")
+            .setView(dialogView)
+            .setPositiveButton("Send Reset Link") { dialog, _ ->
+                val email = etEmail.text.toString().trim()
+                if (Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                    sendPasswordResetEmail(email)
+                } else {
+                    Toast.makeText(this, "Please enter a valid email", Toast.LENGTH_SHORT).show()
+                }
+                dialog.dismiss()
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+    
+    private fun sendPasswordResetEmail(email: String) {
+        showLoading(true)
+        
+        lifecycleScope.launch {
+            val success = firebaseRepo.sendPasswordResetEmail(email)
+            showLoading(false)
+            
+            if (success) {
+                Toast.makeText(
+                    this@WelcomeActivity, 
+                    "Password reset email sent! Check your inbox.", 
+                    Toast.LENGTH_LONG
+                ).show()
+            } else {
+                Toast.makeText(
+                    this@WelcomeActivity, 
+                    "Failed to send reset email. Check if the email is correct.", 
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
     
@@ -289,13 +258,11 @@ class WelcomeActivity : AppCompatActivity() {
     
     private fun showLoading(show: Boolean) {
         binding.loadingOverlay.visibility = if (show) View.VISIBLE else View.GONE
-        binding.btnLetsPlay.isEnabled = !show
-        binding.etNickname.isEnabled = !show
+        binding.btnLogin.isEnabled = !show
     }
     
     private fun navigateToHome() {
         startActivity(Intent(this, HomeActivity::class.java))
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         finish()
     }
 }

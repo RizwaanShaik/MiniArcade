@@ -328,14 +328,16 @@ class ReactionGameActivity : AppCompatActivity() {
         
         val score = GameScore(
             playerId = player.id,
-            playerNickname = player.nickname,
+            playerUsername = player.username,
             gameType = GameType.REACTION_TIME,
             score = bestTime,
             extras = mapOf("average" to reactionTimes.average().toLong())
         )
         
         lifecycleScope.launch {
-            firebaseRepo.saveScore(score)
+            val saved = firebaseRepo.saveScore(score)
+            android.util.Log.d("ReactionGame", "Score saved: $saved, playerId: ${player.id}, username: ${player.username}, score: $bestTime")
+            firebaseRepo.incrementGamesPlayed(player.id)
         }
     }
     

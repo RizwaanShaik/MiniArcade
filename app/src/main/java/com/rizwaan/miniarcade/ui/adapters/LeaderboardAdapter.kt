@@ -75,7 +75,8 @@ class LeaderboardAdapter(
             binding.tvRank.setTextColor(textColor)
             
             // Player info
-            binding.tvPlayerName.text = score.playerNickname.replaceFirstChar { it.uppercase() }
+            binding.tvAvatar.text = score.playerAvatar
+            binding.tvPlayerName.text = score.playerUsername.replaceFirstChar { it.uppercase() }
             binding.tvDate.text = dateFormat.format(Date(score.timestamp))
             
             // Score formatting based on game type

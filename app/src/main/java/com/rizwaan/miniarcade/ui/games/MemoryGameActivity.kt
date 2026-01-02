@@ -297,17 +297,19 @@ class MemoryGameActivity : AppCompatActivity() {
     private fun saveScore(moves: Long) {
         val player = prefsManager.currentPlayer ?: return
         
-        // For Memory Flip, lower moves is better (stored as negative for sorting)
+        // For Memory Flip, lower moves is better
         val gameScore = GameScore(
             playerId = player.id,
-            playerNickname = player.nickname,
+            playerUsername = player.username,
             gameType = GameType.MEMORY_FLIP,
             score = moves,
             extras = mapOf("rounds" to currentLevel)
         )
         
         lifecycleScope.launch {
-            firebaseRepo.saveScore(gameScore)
+            val saved = firebaseRepo.saveScore(gameScore)
+            android.util.Log.d("MemoryGame", "Score saved: $saved, playerId: ${player.id}, username: ${player.username}, moves: $moves")
+            firebaseRepo.incrementGamesPlayed(player.id)
         }
     }
     

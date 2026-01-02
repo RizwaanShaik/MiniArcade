@@ -48,7 +48,7 @@ class ScoreSyncManager(context: Context) {
         // Save locally first
         val pendingScore = PendingScore(
             playerId = score.playerId,
-            playerNickname = score.playerNickname,
+            playerUsername = score.playerUsername,
             gameType = score.gameType.name,
             score = score.score,
             timestamp = score.timestamp,
@@ -89,7 +89,7 @@ class ScoreSyncManager(context: Context) {
                 val gameScore = GameScore(
                     id = UUID.randomUUID().toString(),
                     playerId = pending.playerId,
-                    playerNickname = pending.playerNickname,
+                    playerUsername = pending.playerUsername,
                     gameType = GameType.valueOf(pending.gameType),
                     score = pending.score,
                     timestamp = pending.timestamp,

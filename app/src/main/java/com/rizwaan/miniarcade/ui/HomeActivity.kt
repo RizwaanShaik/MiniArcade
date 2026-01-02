@@ -125,7 +125,7 @@ class HomeActivity : AppCompatActivity() {
         val player = prefsManager.currentPlayer
         if (player != null) {
             binding.tvAvatar.text = player.avatarEmoji
-            binding.tvGreeting.text = getString(R.string.hi_player, player.nickname.replaceFirstChar { it.uppercase() })
+            binding.tvGreeting.text = getString(R.string.hi_player, player.username.replaceFirstChar { it.uppercase() })
         }
         
         // Avatar click shows player stats
@@ -152,7 +152,7 @@ class HomeActivity : AppCompatActivity() {
         val dialogBinding = DialogPlayerStatsBinding.inflate(layoutInflater)
         
         dialogBinding.tvAvatar.text = player.avatarEmoji
-        dialogBinding.tvPlayerName.text = player.nickname.replaceFirstChar { it.uppercase() }
+        dialogBinding.tvPlayerName.text = player.username.replaceFirstChar { it.uppercase() }
         
         // Set default values
         dialogBinding.tvReactionScore.text = "-"
@@ -178,23 +178,29 @@ class HomeActivity : AppCompatActivity() {
         
         dialog.show()
         
-        // Load scores from Firebase
+        // Load scores from Firebase (directly from player record)
         if (firebaseRepository.isAvailable) {
             CoroutineScope(Dispatchers.Main).launch {
-                GameType.entries.forEach { gameType ->
-                    val scores = firebaseRepository.getLeaderboard(gameType, 100).firstOrNull() ?: emptyList()
-                    val playerScore = scores.find { it.playerNickname.equals(player.nickname, ignoreCase = true) }
+                android.util.Log.d("HomeActivity", "Loading scores for player: ${player.username} (id: ${player.id})")
+                
+                // Get fresh player data from Firebase
+                val freshPlayer = firebaseRepository.getPlayerScores(player.id)
+                
+                if (freshPlayer != null) {
+                    android.util.Log.d("HomeActivity", "Player scores loaded: reaction=${freshPlayer.reactionTime}, memory=${freshPlayer.memoryFlip}, pattern=${freshPlayer.patternSnap}")
                     
-                    if (playerScore != null) {
-                        when (gameType) {
-                            GameType.REACTION_TIME -> dialogBinding.tvReactionScore.text = "${playerScore.score}ms"
-                            GameType.MEMORY_FLIP -> dialogBinding.tvMemoryScore.text = "${playerScore.score} moves"
-                            GameType.PATTERN_SNAP -> dialogBinding.tvPatternScore.text = "${playerScore.score}"
-                            GameType.COLOR_CATCH -> dialogBinding.tvColorScore.text = "${playerScore.score}"
-                            GameType.WORD_SCRAMBLE -> dialogBinding.tvWordScore.text = "${playerScore.score}"
-                            GameType.RHYTHM_TAP -> dialogBinding.tvRhythmScore.text = "${playerScore.score}"
-                        }
-                    }
+                    // Display scores (0 means no score yet, show "-")
+                    dialogBinding.tvReactionScore.text = if (freshPlayer.reactionTime > 0) "${freshPlayer.reactionTime}ms" else "-"
+                    dialogBinding.tvMemoryScore.text = if (freshPlayer.memoryFlip > 0) "${freshPlayer.memoryFlip} moves" else "-"
+                    dialogBinding.tvPatternScore.text = if (freshPlayer.patternSnap > 0) "${freshPlayer.patternSnap}" else "-"
+                    dialogBinding.tvColorScore.text = if (freshPlayer.colorCatch > 0) "${freshPlayer.colorCatch}" else "-"
+                    dialogBinding.tvWordScore.text = if (freshPlayer.wordScramble > 0) "${freshPlayer.wordScramble}" else "-"
+                    dialogBinding.tvRhythmScore.text = if (freshPlayer.rhythmTap > 0) "${freshPlayer.rhythmTap}" else "-"
+                    
+                    // Update local prefs with fresh data
+                    prefsManager.currentPlayer = freshPlayer
+                } else {
+                    android.util.Log.e("HomeActivity", "Failed to load player scores")
                 }
             }
         }
@@ -220,8 +226,8 @@ class HomeActivity : AppCompatActivity() {
     
     private fun showLogoutDialog() {
         MaterialAlertDialogBuilder(this, R.style.Theme_MiniArcade_Dialog)
-            .setTitle("Switch Player? 👋")
-            .setMessage("Are you sure you want to logout and switch to another player?")
+            .setTitle("Logout?")
+            .setMessage("Are you sure you want to logout?")
             .setPositiveButton("Logout") { _, _ ->
                 logout()
             }
@@ -230,8 +236,14 @@ class HomeActivity : AppCompatActivity() {
     }
     
     private fun logout() {
+        // Sign out from Firebase Auth
+        firebaseRepository.signOut()
+        // Clear local preferences
         prefsManager.logout()
-        startActivity(Intent(this, WelcomeActivity::class.java))
+        // Navigate to welcome screen
+        val intent = Intent(this, WelcomeActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         finish()
     }

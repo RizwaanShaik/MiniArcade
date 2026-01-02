@@ -14,7 +14,7 @@ data class PendingScore(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
     val playerId: String,
-    val playerNickname: String,
+    val playerUsername: String,
     val gameType: String,
     val score: Long,
     val timestamp: Long = System.currentTimeMillis(),
@@ -37,8 +37,8 @@ interface PendingScoreDao {
     @Query("DELETE FROM pending_scores WHERE isSynced = 1")
     suspend fun deleteSynced()
     
-    @Query("SELECT * FROM pending_scores WHERE playerNickname = :nickname ORDER BY timestamp DESC LIMIT :limit")
-    fun getScoresByPlayer(nickname: String, limit: Int = 50): Flow<List<PendingScore>>
+    @Query("SELECT * FROM pending_scores WHERE playerUsername = :username ORDER BY timestamp DESC LIMIT :limit")
+    fun getScoresByPlayer(username: String, limit: Int = 50): Flow<List<PendingScore>>
     
     @Query("SELECT * FROM pending_scores WHERE gameType = :gameType ORDER BY score ASC LIMIT :limit")
     fun getTopScores(gameType: String, limit: Int = 10): Flow<List<PendingScore>>

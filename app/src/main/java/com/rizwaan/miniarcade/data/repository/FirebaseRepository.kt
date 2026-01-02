@@ -17,16 +17,14 @@ class FirebaseRepository {
     
     companion object {
         private const val TAG = "FirebaseRepository"
-        private const val DATABASE_URL = "https://cousinarcade-6ec96-default-rtdb.asia-southeast1.firebasedatabase.app"
+        private const val DATABASE_URL = "https://miniarcade-rushmalai-default-rtdb.asia-southeast1.firebasedatabase.app/"
     }
     
     private val database: FirebaseDatabase? by lazy {
         try {
-            Log.d(TAG, "Initializing Firebase Database with URL: $DATABASE_URL")
-            val db = FirebaseDatabase.getInstance(DATABASE_URL)
-            db.setPersistenceEnabled(true) // Enable offline persistence
-            Log.d(TAG, "Firebase Database initialized successfully")
-            db
+            Log.d(TAG, "Getting Firebase Database instance")
+            // Persistence is enabled in MiniArcadeApplication
+            FirebaseDatabase.getInstance(DATABASE_URL)
         } catch (e: Exception) {
             Log.e(TAG, "Firebase Database not configured", e)
             null
@@ -83,7 +81,7 @@ class FirebaseRepository {
         }
     }
     
-    suspend fun isNicknameAvailable(nickname: String): Boolean = suspendCancellableCoroutine { cont ->
+    suspend fun isUsernameAvailable(username: String): Boolean = suspendCancellableCoroutine { cont ->
         try {
             val ref = playersRef
             if (ref == null) {
@@ -91,7 +89,7 @@ class FirebaseRepository {
                 return@suspendCancellableCoroutine
             }
             
-            ref.orderByChild("nickname").equalTo(nickname.lowercase())
+            ref.orderByChild("username").equalTo(username.lowercase())
                 .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         cont.resume(!snapshot.exists())
@@ -105,7 +103,7 @@ class FirebaseRepository {
         }
     }
     
-    suspend fun getPlayerByNickname(nickname: String): Player? = suspendCancellableCoroutine { cont ->
+    suspend fun getPlayerByUsername(username: String): Player? = suspendCancellableCoroutine { cont ->
         try {
             val ref = playersRef
             if (ref == null) {
@@ -113,7 +111,7 @@ class FirebaseRepository {
                 return@suspendCancellableCoroutine
             }
             
-            ref.orderByChild("nickname").equalTo(nickname.lowercase())
+            ref.orderByChild("username").equalTo(username.lowercase())
                 .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         val player = snapshot.children.firstOrNull()?.getValue(Player::class.java)
@@ -128,115 +126,323 @@ class FirebaseRepository {
         }
     }
     
-    suspend fun createPlayer(nickname: String, avatarEmoji: String): Player? = suspendCancellableCoroutine { cont ->
+    // ==================== EMAIL/PASSWORD AUTHENTICATION ====================
+    
+    /**
+     * Register a new user with email and password
+     */
+    suspend fun registerWithEmail(email: String, password: String, username: String, avatarEmoji: String): Player? = suspendCancellableCoroutine { cont ->
         try {
-            val ref = playersRef
-            if (ref == null) {
-                Log.e(TAG, "Players ref is null - database not initialized")
+            val firebaseAuth = auth
+            if (firebaseAuth == null) {
+                Log.e(TAG, "Firebase Auth is null")
                 cont.resume(null)
                 return@suspendCancellableCoroutine
             }
             
-            val playerId = ref.push().key ?: return@suspendCancellableCoroutine cont.resume(null)
-            val player = Player(
-                id = playerId,
-                nickname = nickname.lowercase(),
-                avatarEmoji = avatarEmoji,
-                createdAt = System.currentTimeMillis()
-            )
-            
-            Log.d(TAG, "Creating player: $nickname with ID: $playerId")
-            ref.child(playerId).setValue(player.toMap())
-                .addOnSuccessListener { 
-                    Log.d(TAG, "Player created successfully!")
-                    cont.resume(player) 
+            firebaseAuth.createUserWithEmailAndPassword(email, password)
+                .addOnSuccessListener { result ->
+                    val uid = result.user?.uid
+                    if (uid != null) {
+                        // Create player profile in database
+                        val player = Player(
+                            id = uid,
+                            email = email.lowercase(),
+                            username = username.lowercase(),
+                            avatarEmoji = avatarEmoji,
+                            createdAt = System.currentTimeMillis()
+                        )
+                        
+                        playersRef?.child(uid)?.setValue(player.toMap())
+                            ?.addOnSuccessListener {
+                                Log.d(TAG, "Player profile created for: $username")
+                                cont.resume(player)
+                            }
+                            ?.addOnFailureListener { e ->
+                                Log.e(TAG, "Failed to create player profile", e)
+                                cont.resume(null)
+                            }
+                    } else {
+                        cont.resume(null)
+                    }
                 }
                 .addOnFailureListener { e ->
-                    Log.e(TAG, "Failed to create player: ${e.message}", e)
-                    cont.resume(null) 
+                    Log.e(TAG, "Registration failed: ${e.message}", e)
+                    cont.resume(null)
                 }
         } catch (e: Exception) {
-            Log.e(TAG, "Create player exception: ${e.message}", e)
+            Log.e(TAG, "Register exception: ${e.message}", e)
             cont.resume(null)
         }
     }
     
     /**
-     * Saves score directly to leaderboard - only keeps highest score per player per game.
-     * For Reaction Time: lower is better
-     * For all other games: higher is better
+     * Login with email and password
      */
-    suspend fun saveScore(score: GameScore): Boolean = suspendCancellableCoroutine { cont ->
+    suspend fun loginWithEmail(email: String, password: String): Player? = suspendCancellableCoroutine { cont ->
         try {
-            val ref = leaderboardRef
-            if (ref == null) {
+            val firebaseAuth = auth
+            if (firebaseAuth == null) {
+                Log.e(TAG, "Firebase Auth is null")
+                cont.resume(null)
+                return@suspendCancellableCoroutine
+            }
+            
+            firebaseAuth.signInWithEmailAndPassword(email, password)
+                .addOnSuccessListener { result ->
+                    val uid = result.user?.uid
+                    if (uid != null) {
+                        // Fetch player profile from database
+                        playersRef?.child(uid)?.addListenerForSingleValueEvent(object : ValueEventListener {
+                            override fun onDataChange(snapshot: DataSnapshot) {
+                                val player = snapshot.getValue(Player::class.java)
+                                if (player != null) {
+                                    Log.d(TAG, "Login successful for: ${player.username}")
+                                    cont.resume(player)
+                                } else {
+                                    Log.e(TAG, "Player profile not found for UID: $uid")
+                                    cont.resume(null)
+                                }
+                            }
+                            override fun onCancelled(error: DatabaseError) {
+                                Log.e(TAG, "Failed to fetch player profile", error.toException())
+                                cont.resume(null)
+                            }
+                        })
+                    } else {
+                        cont.resume(null)
+                    }
+                }
+                .addOnFailureListener { e ->
+                    Log.e(TAG, "Login failed: ${e.message}", e)
+                    cont.resume(null)
+                }
+        } catch (e: Exception) {
+            Log.e(TAG, "Login exception: ${e.message}", e)
+            cont.resume(null)
+        }
+    }
+    
+    /**
+     * Login with username and password
+     * First looks up the email by username, then logs in with email
+     */
+    suspend fun loginWithUsername(username: String, password: String): Player? {
+        try {
+            // Find player by username to get their email
+            val player = getPlayerByUsername(username)
+            if (player == null) {
+                Log.e(TAG, "No player found with username: $username")
+                return null
+            }
+            
+            // Now login with the email
+            return loginWithEmail(player.email, password)
+        } catch (e: Exception) {
+            Log.e(TAG, "Login with username exception: ${e.message}", e)
+            return null
+        }
+    }
+    
+    /**
+     * Send password reset email
+     */
+    suspend fun sendPasswordResetEmail(email: String): Boolean = suspendCancellableCoroutine { cont ->
+        try {
+            val firebaseAuth = auth
+            if (firebaseAuth == null) {
                 cont.resume(false)
                 return@suspendCancellableCoroutine
             }
             
-            val gameLeaderboardRef = ref.child(score.gameType.name).child(score.playerId)
-            
-            gameLeaderboardRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val existingScore = snapshot.child("score").getValue(Long::class.java) ?: 0L
-                    val shouldUpdate = when (score.gameType) {
-                        GameType.REACTION_TIME -> score.score < existingScore || existingScore == 0L
-                        GameType.MEMORY_FLIP -> score.score < existingScore || existingScore == 0L // Lower moves is better
-                        else -> score.score > existingScore
-                    }
-                    
-                    if (shouldUpdate) {
-                        val scoreId = gameLeaderboardRef.push().key ?: score.playerId
-                        val scoreWithId = score.copy(id = scoreId)
-                        gameLeaderboardRef.setValue(scoreWithId.toMap())
-                            .addOnSuccessListener { cont.resume(true) }
-                            .addOnFailureListener { cont.resume(false) }
-                    } else {
-                        cont.resume(true) // No update needed, but not a failure
-                    }
+            firebaseAuth.sendPasswordResetEmail(email)
+                .addOnSuccessListener {
+                    Log.d(TAG, "Password reset email sent to: $email")
+                    cont.resume(true)
                 }
-                override fun onCancelled(error: DatabaseError) {
+                .addOnFailureListener { e ->
+                    Log.e(TAG, "Failed to send password reset email", e)
                     cont.resume(false)
                 }
-            })
         } catch (e: Exception) {
-            Log.e("FirebaseRepository", "Save score exception", e)
             cont.resume(false)
         }
     }
     
+    /**
+     * Sign out current user
+     */
+    fun signOut() {
+        auth?.signOut()
+    }
+    
+    /**
+     * Get current authenticated user's UID
+     */
+    fun getCurrentUserId(): String? = auth?.currentUser?.uid
+    
+    /**
+     * Check if user is logged in
+     */
+    fun isLoggedIn(): Boolean = auth?.currentUser != null
+    
+    // ==================== PLAYER MANAGEMENT ====================
+    
+    /**
+     * Saves score directly to player record - only updates if it's a better score.
+     * For Reaction Time & Memory Flip: lower is better
+     * For all other games: higher is better
+     */
+    suspend fun saveScore(score: GameScore): Boolean = suspendCancellableCoroutine { cont ->
+        try {
+            Log.d(TAG, "saveScore called: gameType=${score.gameType}, playerId=${score.playerId}, score=${score.score}")
+            
+            val ref = playersRef
+            if (ref == null) {
+                Log.e(TAG, "saveScore: playersRef is NULL!")
+                cont.resume(false)
+                return@suspendCancellableCoroutine
+            }
+            
+            // Map game type to field name in player record
+            val fieldName = when (score.gameType) {
+                GameType.REACTION_TIME -> "reactionTime"
+                GameType.MEMORY_FLIP -> "memoryFlip"
+                GameType.PATTERN_SNAP -> "patternSnap"
+                GameType.COLOR_CATCH -> "colorCatch"
+                GameType.WORD_SCRAMBLE -> "wordScramble"
+                GameType.RHYTHM_TAP -> "rhythmTap"
+            }
+            
+            Log.d(TAG, "saveScore: Updating players/${score.playerId}/$fieldName")
+            
+            val playerRef = ref.child(score.playerId)
+            
+            playerRef.child(fieldName).addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val existingScore = snapshot.getValue(Long::class.java) ?: 0L
+                    Log.d(TAG, "saveScore: existingScore=$existingScore, newScore=${score.score}")
+                    
+                    // Determine if we should update (0 means no score yet)
+                    val shouldUpdate = when (score.gameType) {
+                        GameType.REACTION_TIME -> existingScore == 0L || score.score < existingScore
+                        GameType.MEMORY_FLIP -> existingScore == 0L || score.score < existingScore
+                        else -> score.score > existingScore
+                    }
+                    
+                    Log.d(TAG, "saveScore: shouldUpdate=$shouldUpdate")
+                    
+                    if (shouldUpdate) {
+                        playerRef.child(fieldName).setValue(score.score)
+                            .addOnSuccessListener { 
+                                Log.d(TAG, "saveScore: SUCCESS! Updated $fieldName to ${score.score}")
+                                cont.resume(true) 
+                            }
+                            .addOnFailureListener { e ->
+                                Log.e(TAG, "saveScore: FAILED! ${e.message}", e)
+                                cont.resume(false) 
+                            }
+                    } else {
+                        Log.d(TAG, "saveScore: No update needed (existing score is better)")
+                        cont.resume(true)
+                    }
+                }
+                override fun onCancelled(error: DatabaseError) {
+                    Log.e(TAG, "saveScore: CANCELLED! ${error.message}")
+                    cont.resume(false)
+                }
+            })
+        } catch (e: Exception) {
+            Log.e(TAG, "saveScore exception: ${e.message}", e)
+            cont.resume(false)
+        }
+    }
+    
+    /**
+     * Get leaderboard for a specific game type by querying all players
+     * and sorting by their score for that game
+     */
     fun getLeaderboard(gameType: GameType, limit: Int = 10): Flow<List<GameScore>> {
-        val ref = try { leaderboardRef } catch (e: Exception) { null }
+        val ref = try { playersRef } catch (e: Exception) { null }
         if (ref == null) return flow { emit(emptyList()) }
+        
+        // Map game type to field name
+        val fieldName = when (gameType) {
+            GameType.REACTION_TIME -> "reactionTime"
+            GameType.MEMORY_FLIP -> "memoryFlip"
+            GameType.PATTERN_SNAP -> "patternSnap"
+            GameType.COLOR_CATCH -> "colorCatch"
+            GameType.WORD_SCRAMBLE -> "wordScramble"
+            GameType.RHYTHM_TAP -> "rhythmTap"
+        }
         
         return callbackFlow {
             try {
-                val query = if (gameType == GameType.REACTION_TIME) {
-                    ref.child(gameType.name).orderByChild("score").limitToFirst(limit)
-                } else {
-                    ref.child(gameType.name).orderByChild("score").limitToLast(limit)
-                }
-                
                 val listener = object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
-                        val scores = snapshot.children.mapNotNull { 
-                            it.getValue(GameScore::class.java) 
+                        val scores = snapshot.children.mapNotNull { playerSnapshot ->
+                            val player = playerSnapshot.getValue(Player::class.java)
+                            val score = player?.getScore(gameType) ?: 0L
+                            
+                            // Only include players who have a score > 0
+                            if (player != null && score > 0) {
+                                GameScore(
+                                    id = player.id,
+                                    playerId = player.id,
+                                    playerUsername = player.username,
+                                    playerAvatar = player.avatarEmoji,
+                                    gameType = gameType,
+                                    score = score
+                                )
+                            } else null
                         }.let { list ->
-                            if (gameType == GameType.REACTION_TIME) list else list.reversed()
+                            // Sort: lower is better for Reaction Time and Memory Flip
+                            when (gameType) {
+                                GameType.REACTION_TIME, GameType.MEMORY_FLIP -> 
+                                    list.sortedBy { it.score }.take(limit)
+                                else -> 
+                                    list.sortedByDescending { it.score }.take(limit)
+                            }
                         }
+                        
+                        Log.d(TAG, "getLeaderboard($gameType): Found ${scores.size} scores")
                         trySend(scores)
                     }
                     override fun onCancelled(error: DatabaseError) {
+                        Log.e(TAG, "getLeaderboard cancelled: ${error.message}")
                         trySend(emptyList())
                     }
                 }
                 
-                query.addValueEventListener(listener)
-                awaitClose { query.removeEventListener(listener) }
+                ref.addValueEventListener(listener)
+                awaitClose { ref.removeEventListener(listener) }
             } catch (e: Exception) {
+                Log.e(TAG, "getLeaderboard exception: ${e.message}", e)
                 trySend(emptyList())
                 close()
             }
+        }
+    }
+    
+    /**
+     * Get player's personal scores (refresh from Firebase)
+     */
+    suspend fun getPlayerScores(playerId: String): Player? = suspendCancellableCoroutine { cont ->
+        try {
+            playersRef?.child(playerId)?.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val player = snapshot.getValue(Player::class.java)
+                    Log.d(TAG, "getPlayerScores: $player")
+                    cont.resume(player)
+                }
+                override fun onCancelled(error: DatabaseError) {
+                    Log.e(TAG, "getPlayerScores cancelled: ${error.message}")
+                    cont.resume(null)
+                }
+            })
+        } catch (e: Exception) {
+            Log.e(TAG, "getPlayerScores exception: ${e.message}", e)
+            cont.resume(null)
         }
     }
     
@@ -265,15 +471,25 @@ class FirebaseRepository {
         }
     }
     
-    suspend fun updatePlayerStats(playerId: String, gamesPlayed: Int, totalScore: Long) {
+    /**
+     * Increment the games played counter for a player
+     */
+    suspend fun incrementGamesPlayed(playerId: String) {
         try {
-            playersRef?.child(playerId)?.updateChildren(
-                mapOf(
-                    "totalGamesPlayed" to gamesPlayed,
-                    "totalScore" to totalScore
-                )
-            )
-        } catch (e: Exception) {}
+            val playerRef = playersRef?.child(playerId)
+            playerRef?.child("totalGamesPlayed")?.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val currentCount = snapshot.getValue(Int::class.java) ?: 0
+                    playerRef.child("totalGamesPlayed").setValue(currentCount + 1)
+                    Log.d(TAG, "Games played updated: ${currentCount + 1}")
+                }
+                override fun onCancelled(error: DatabaseError) {
+                    Log.e(TAG, "Failed to increment games played", error.toException())
+                }
+            })
+        } catch (e: Exception) {
+            Log.e(TAG, "Increment games played error: ${e.message}", e)
+        }
     }
     
     suspend fun updatePlayerAvatar(playerId: String, avatarEmoji: String) {

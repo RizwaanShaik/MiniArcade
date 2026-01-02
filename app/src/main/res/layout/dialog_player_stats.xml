@@ -41,7 +41,7 @@
                 android:textSize="22sp"
                 android:textColor="@color/text_primary"
                 android:textStyle="bold"
-                android:fontFamily="@font/poppins_semibold"
+                android:fontFamily="sans-serif-medium"
                 android:layout_marginTop="12dp"
                 tools:text="Player Name"/>
 
@@ -52,7 +52,7 @@
                 android:textSize="14sp"
                 android:textColor="@color/game_yellow"
                 android:textStyle="bold"
-                android:fontFamily="@font/poppins_medium"
+                android:fontFamily="sans-serif-medium"
                 android:layout_marginTop="16dp"/>
 
             <!-- Best Scores Container -->
@@ -87,7 +87,7 @@
                         android:text="Reaction Time"
                         android:textSize="13sp"
                         android:textColor="@color/text_primary"
-                        android:fontFamily="@font/poppins"
+                        android:fontFamily="sans-serif"
                         android:paddingStart="10dp"/>
 
                     <TextView
@@ -97,7 +97,7 @@
                         android:textSize="13sp"
                         android:textColor="@color/game_cyan"
                         android:textStyle="bold"
-                        android:fontFamily="@font/poppins_medium"
+                        android:fontFamily="sans-serif-medium"
                         tools:text="245ms"/>
 
                 </LinearLayout>
@@ -124,7 +124,7 @@
                         android:text="Memory Flip"
                         android:textSize="13sp"
                         android:textColor="@color/text_primary"
-                        android:fontFamily="@font/poppins"
+                        android:fontFamily="sans-serif"
                         android:paddingStart="10dp"/>
 
                     <TextView
@@ -134,7 +134,7 @@
                         android:textSize="13sp"
                         android:textColor="@color/game_green"
                         android:textStyle="bold"
-                        android:fontFamily="@font/poppins_medium"
+                        android:fontFamily="sans-serif-medium"
                         tools:text="24 moves"/>
 
                 </LinearLayout>
@@ -161,7 +161,7 @@
                         android:text="Pattern Snap"
                         android:textSize="13sp"
                         android:textColor="@color/text_primary"
-                        android:fontFamily="@font/poppins"
+                        android:fontFamily="sans-serif"
                         android:paddingStart="10dp"/>
 
                     <TextView
@@ -171,7 +171,7 @@
                         android:textSize="13sp"
                         android:textColor="@color/game_orange"
                         android:textStyle="bold"
-                        android:fontFamily="@font/poppins_medium"
+                        android:fontFamily="sans-serif-medium"
                         tools:text="1250"/>
 
                 </LinearLayout>
@@ -198,7 +198,7 @@
                         android:text="Color Catch"
                         android:textSize="13sp"
                         android:textColor="@color/text_primary"
-                        android:fontFamily="@font/poppins"
+                        android:fontFamily="sans-serif"
                         android:paddingStart="10dp"/>
 
                     <TextView
@@ -208,7 +208,7 @@
                         android:textSize="13sp"
                         android:textColor="@color/game_yellow"
                         android:textStyle="bold"
-                        android:fontFamily="@font/poppins_medium"
+                        android:fontFamily="sans-serif-medium"
                         tools:text="980"/>
 
                 </LinearLayout>
@@ -235,7 +235,7 @@
                         android:text="Word Scramble"
                         android:textSize="13sp"
                         android:textColor="@color/text_primary"
-                        android:fontFamily="@font/poppins"
+                        android:fontFamily="sans-serif"
                         android:paddingStart="10dp"/>
 
                     <TextView
@@ -245,7 +245,7 @@
                         android:textSize="13sp"
                         android:textColor="@color/game_purple"
                         android:textStyle="bold"
-                        android:fontFamily="@font/poppins_medium"
+                        android:fontFamily="sans-serif-medium"
                         tools:text="150"/>
 
                 </LinearLayout>
@@ -272,7 +272,7 @@
                         android:text="Rhythm Tap"
                         android:textSize="13sp"
                         android:textColor="@color/text_primary"
-                        android:fontFamily="@font/poppins"
+                        android:fontFamily="sans-serif"
                         android:paddingStart="10dp"/>
 
                     <TextView
@@ -282,7 +282,7 @@
                         android:textSize="13sp"
                         android:textColor="@color/game_blue"
                         android:textStyle="bold"
-                        android:fontFamily="@font/poppins_medium"
+                        android:fontFamily="sans-serif-medium"
                         tools:text="2100"/>
 
                 </LinearLayout>
@@ -299,7 +299,7 @@
                 android:textSize="14sp"
                 android:textStyle="bold"
                 android:textColor="@color/white"
-                android:fontFamily="@font/poppins_medium"
+                android:fontFamily="sans-serif-medium"
                 android:background="@drawable/bg_button_primary"/>
 
         </LinearLayout>

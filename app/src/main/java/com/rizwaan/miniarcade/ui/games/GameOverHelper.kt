@@ -46,7 +46,7 @@ object GameOverHelper {
                 if (scores.isNotEmpty()) {
                     val score1 = scores[0]
                     dialogBinding.rank1Layout.visibility = View.VISIBLE
-                    dialogBinding.tvRank1Name.text = score1.playerNickname.replaceFirstChar { it.uppercase() }
+                    dialogBinding.tvRank1Name.text = score1.playerUsername.replaceFirstChar { it.uppercase() }
                     dialogBinding.tvRank1Score.text = formatScore(score1.score, gameType)
                 }
                 
@@ -54,7 +54,7 @@ object GameOverHelper {
                 if (scores.size > 1) {
                     val score2 = scores[1]
                     dialogBinding.rank2Layout.visibility = View.VISIBLE
-                    dialogBinding.tvRank2Name.text = score2.playerNickname.replaceFirstChar { it.uppercase() }
+                    dialogBinding.tvRank2Name.text = score2.playerUsername.replaceFirstChar { it.uppercase() }
                     dialogBinding.tvRank2Score.text = formatScore(score2.score, gameType)
                 }
                 
@@ -62,7 +62,7 @@ object GameOverHelper {
                 if (scores.size > 2) {
                     val score3 = scores[2]
                     dialogBinding.rank3Layout.visibility = View.VISIBLE
-                    dialogBinding.tvRank3Name.text = score3.playerNickname.replaceFirstChar { it.uppercase() }
+                    dialogBinding.tvRank3Name.text = score3.playerUsername.replaceFirstChar { it.uppercase() }
                     dialogBinding.tvRank3Score.text = formatScore(score3.score, gameType)
                 }
                 

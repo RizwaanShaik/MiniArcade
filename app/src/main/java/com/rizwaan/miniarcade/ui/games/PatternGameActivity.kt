@@ -503,14 +503,16 @@ class PatternGameActivity : AppCompatActivity() {
         
         val gameScore = GameScore(
             playerId = player.id,
-            playerNickname = player.nickname,
+            playerUsername = player.username,
             gameType = GameType.PATTERN_SNAP,
             score = score,
             extras = mapOf("level" to currentLevel)
         )
         
         lifecycleScope.launch {
-            firebaseRepo.saveScore(gameScore)
+            val saved = firebaseRepo.saveScore(gameScore)
+            android.util.Log.d("PatternGame", "Score saved: $saved, playerId: ${player.id}, username: ${player.username}, score: $score")
+            firebaseRepo.incrementGamesPlayed(player.id)
         }
     }
     

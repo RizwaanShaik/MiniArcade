@@ -34,6 +34,12 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize"/>
         
+        <!-- Register Screen -->
+        <activity
+            android:name=".ui.RegisterActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"/>
+        
         <!-- Home Screen -->
         <activity
             android:name=".ui.HomeActivity"

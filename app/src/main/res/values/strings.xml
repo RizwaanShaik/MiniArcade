@@ -5,13 +5,13 @@
     <!-- Welcome Screen -->
     <string name="welcome_title">Welcome to\nMini Arcade! 🎮</string>
     <string name="welcome_subtitle">Play fun mini games!</string>
-    <string name="enter_nickname">Enter your nickname</string>
-    <string name="nickname_hint">Your cool nickname</string>
+    <string name="enter_username">Enter your username</string>
+    <string name="username_hint">Your username</string>
     <string name="choose_avatar">Pick your avatar!</string>
     <string name="lets_play">Let\'s Play! 🚀</string>
-    <string name="nickname_taken">Oops! This nickname is taken 😅</string>
-    <string name="nickname_too_short">Nickname must be at least 3 characters</string>
-    <string name="nickname_invalid">Only letters and numbers allowed!</string>
+    <string name="username_taken">Oops! This username is taken 😅</string>
+    <string name="username_too_short">Username must be at least 3 characters</string>
+    <string name="username_invalid">Only letters, numbers and underscore allowed!</string>
     
     <!-- Home Screen -->
     <string name="hi_player">Hi, %s! 👋</string>

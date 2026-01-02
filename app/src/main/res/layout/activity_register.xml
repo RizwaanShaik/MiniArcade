@@ -13,14 +13,27 @@
         android:layout_height="match_parent"
         android:background="@drawable/bg_welcome_gradient"/>
 
+    <!-- Back Button -->
+    <ImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_margin="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_arrow_back"
+        android:contentDescription="Back"
+        android:tint="@color/text_primary"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
     <!-- Content -->
     <ScrollView
-        android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:fillViewport="true"
-        android:isScrollContainer="true"
-        android:scrollbars="none">
+        android:scrollbars="none"
+        app:layout_constraintTop_toBottomOf="@id/btnBack"
+        app:layout_constraintBottom_toBottomOf="parent">
         
         <LinearLayout
             android:layout_width="match_parent"
@@ -29,42 +42,35 @@
             android:gravity="center_horizontal"
             android:padding="24dp">
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="48dp"/>
-
-            <!-- Logo -->
+            <!-- Title -->
             <TextView
-                android:id="@+id/tvLogo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="🎮"
-                android:textSize="72sp"/>
+                android:textSize="56sp"/>
 
             <TextView
-                android:id="@+id/tvTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/app_name"
-                android:textSize="32sp"
+                android:text="Create Account"
+                android:textSize="28sp"
                 android:textColor="@color/text_primary"
                 android:textStyle="bold"
                 android:layout_marginTop="8dp"/>
 
             <TextView
-                android:id="@+id/tvSubtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Welcome back!"
-                android:textSize="16sp"
+                android:text="Join the arcade family!"
+                android:textSize="14sp"
                 android:textColor="@color/text_secondary"
                 android:layout_marginTop="4dp"/>
 
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="32dp"/>
+                android:layout_height="24dp"/>
 
-            <!-- Login Form Card -->
+            <!-- Avatar Selection Card -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -76,27 +82,52 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="20dp">
+                    android:padding="16dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Login to Play"
-                        android:textSize="18sp"
+                        android:text="Choose Your Avatar"
+                        android:textSize="14sp"
                         android:textColor="@color/text_primary"
                         android:textStyle="bold"/>
 
-                    <Space
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvAvatars"
                         android:layout_width="match_parent"
-                        android:layout_height="16dp"/>
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:clipToPadding="false"/>
 
-                    <!-- Email or Username Input -->
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="16dp"/>
+
+            <!-- Registration Form Card -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="20dp"
+                app:cardBackgroundColor="@color/surface_elevated"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <!-- Username Input -->
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/tilEmail"
+                        android:id="@+id/tilUsername"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Email or Username"
+                        android:hint="Username"
                         app:boxCornerRadiusTopStart="12dp"
                         app:boxCornerRadiusTopEnd="12dp"
                         app:boxCornerRadiusBottomStart="12dp"
@@ -106,10 +137,40 @@
                         app:startIconTint="@color/text_hint">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etUsername"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPersonName"
+                            android:maxLength="15"
+                            android:textColor="@color/text_primary"
+                            android:textSize="16sp"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="12dp"/>
+
+                    <!-- Email Input -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilEmail"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Email (for login &amp; recovery)"
+                        app:boxCornerRadiusTopStart="12dp"
+                        app:boxCornerRadiusTopEnd="12dp"
+                        app:boxCornerRadiusBottomStart="12dp"
+                        app:boxCornerRadiusBottomEnd="12dp"
+                        app:boxStrokeColor="@color/primary"
+                        app:startIconDrawable="@drawable/ic_email"
+                        app:startIconTint="@color/text_hint">
+
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etEmail"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="text"
+                            android:inputType="textEmailAddress"
                             android:textColor="@color/text_primary"
                             android:textSize="16sp"/>
 
@@ -125,7 +186,7 @@
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Password"
+                        android:hint="Password (6+ characters)"
                         app:boxCornerRadiusTopStart="12dp"
                         app:boxCornerRadiusTopEnd="12dp"
                         app:boxCornerRadiusBottomStart="12dp"
@@ -146,17 +207,36 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <!-- Forgot Password -->
-                    <TextView
-                        android:id="@+id/tvForgotPassword"
-                        android:layout_width="wrap_content"
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="12dp"/>
+
+                    <!-- Confirm Password Input -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilConfirmPassword"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Forgot Password?"
-                        android:textSize="13sp"
-                        android:textColor="@color/primary"
-                        android:padding="8dp"
-                        android:layout_gravity="end"
-                        android:layout_marginTop="4dp"/>
+                        android:hint="Confirm Password"
+                        app:boxCornerRadiusTopStart="12dp"
+                        app:boxCornerRadiusTopEnd="12dp"
+                        app:boxCornerRadiusBottomStart="12dp"
+                        app:boxCornerRadiusBottomEnd="12dp"
+                        app:boxStrokeColor="@color/primary"
+                        app:startIconDrawable="@drawable/ic_lock"
+                        app:startIconTint="@color/text_hint"
+                        app:passwordToggleEnabled="true"
+                        app:passwordToggleTint="@color/text_hint">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etConfirmPassword"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPassword"
+                            android:textColor="@color/text_primary"
+                            android:textSize="16sp"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <!-- Error Text -->
                     <TextView
@@ -167,7 +247,7 @@
                         android:textSize="13sp"
                         android:visibility="gone"
                         android:layout_marginTop="8dp"
-                        tools:text="Invalid email or password"
+                        tools:text="Error message"
                         tools:visibility="visible"/>
 
                 </LinearLayout>
@@ -178,12 +258,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="24dp"/>
 
-            <!-- Login Button -->
+            <!-- Create Account Button -->
             <Button
-                android:id="@+id/btnLogin"
+                android:id="@+id/btnCreateAccount"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:text="Login"
+                android:text="Create Account"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="@color/white"
@@ -193,12 +273,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="16dp"/>
 
-            <!-- Create Account Link -->
+            <!-- Already have account -->
             <TextView
-                android:id="@+id/tvCreateAccount"
+                android:id="@+id/tvAlreadyHaveAccount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Don't have an account? Create one"
+                android:text="Already have an account? Login"
                 android:textSize="14sp"
                 android:textColor="@color/primary"
                 android:padding="8dp"/>
@@ -230,3 +310,4 @@
     </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+

@@ -619,14 +619,16 @@ class WordGameActivity : AppCompatActivity() {
         
         val gameScore = GameScore(
             playerId = player.id,
-            playerNickname = player.nickname,
+            playerUsername = player.username,
             gameType = GameType.WORD_SCRAMBLE,
             score = score,
             extras = mapOf("wordsGuessed" to wordsGuessed)
         )
         
         lifecycleScope.launch {
-            firebaseRepo.saveScore(gameScore)
+            val saved = firebaseRepo.saveScore(gameScore)
+            android.util.Log.d("WordGame", "Score saved: $saved, playerId: ${player.id}, username: ${player.username}, score: $score")
+            firebaseRepo.incrementGamesPlayed(player.id)
         }
     }
     

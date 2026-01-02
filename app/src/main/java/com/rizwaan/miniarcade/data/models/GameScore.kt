@@ -6,20 +6,22 @@ import com.google.firebase.database.IgnoreExtraProperties
 data class GameScore(
     val id: String = "",
     val playerId: String = "",
-    val playerNickname: String = "",
+    val playerUsername: String = "",
+    val playerAvatar: String = "🎮",   // Avatar emoji
     val gameType: GameType = GameType.REACTION_TIME,
     val score: Long = 0,
     val timestamp: Long = System.currentTimeMillis(),
     val extras: Map<String, Any> = emptyMap()
 ) {
     // No-argument constructor required for Firebase
-    constructor() : this("", "", "", GameType.REACTION_TIME, 0, 0L, emptyMap())
+    constructor() : this("", "", "", "🎮", GameType.REACTION_TIME, 0, 0L, emptyMap())
     
     fun toMap(): Map<String, Any?> {
         return mapOf(
             "id" to id,
             "playerId" to playerId,
-            "playerNickname" to playerNickname,
+            "playerUsername" to playerUsername,
+            "playerAvatar" to playerAvatar,
             "gameType" to gameType.name,
             "score" to score,
             "timestamp" to timestamp,
