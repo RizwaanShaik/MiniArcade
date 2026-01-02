@@ -469,7 +469,7 @@ class WordGameActivity : AppCompatActivity() {
             soundManager.playCorrect()
             
             val bonusText = if (hintUsedThisWord) "(no time bonus)" else ""
-            showFeedback(true, "✓ +$wordPoints pts! $bonusText")
+            showFeedback(true, "+$wordPoints pts! $bonusText")
             
             binding.root.postDelayed({
                 startRound()
@@ -480,12 +480,12 @@ class WordGameActivity : AppCompatActivity() {
             soundManager.playLoseLife()
             
             if (lives <= 0) {
-                showFeedback(false, "✗ The word was: $currentWord")
+                showFeedback(false, "The word was: $currentWord")
                 binding.root.postDelayed({
                     showGameOver()
                 }, 2000)
             } else {
-                showFeedback(false, "✗ Wrong! \n The word was: $currentWord\n❤️ $lives lives left")
+                showFeedback(false, "Wrong! \n The word was: $currentWord\n❤️ $lives lives left")
                 binding.root.postDelayed({
                     startRound()
                 }, 2000)
@@ -610,6 +610,9 @@ class WordGameActivity : AppCompatActivity() {
         }
         
         dialogBinding.tvScore.text = "Score: $totalScore"
+        
+        // Show badges using helper function
+        GameOverHelper.showBadges(dialogBinding, GameType.WORD_SCRAMBLE, totalScore, previousHighScore, this)
         
         dialogBinding.statsLayout.visibility = View.VISIBLE
         dialogBinding.tvStat1Label.text = "Words Solved"

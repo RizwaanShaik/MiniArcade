@@ -285,6 +285,9 @@ class MemoryGameActivity : AppCompatActivity() {
         dialogBinding.tvTitle.text = if (isWin) "Memory Master!" else "Game Over!"
         dialogBinding.tvScore.text = "Score: $finalScore"
         
+        // Show badges using helper function
+        GameOverHelper.showBadges(dialogBinding, GameType.MEMORY_FLIP, finalScore, previousHighScore, this)
+        
         dialogBinding.statsLayout.visibility = View.VISIBLE
         dialogBinding.tvStat1Label.text = "Rounds"
         dialogBinding.tvStat1Value.text = "$currentLevel"

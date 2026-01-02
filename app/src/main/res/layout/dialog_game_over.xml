@@ -26,6 +26,44 @@
             android:textColor="#FF000000"
             tools:text="🏆"/>
 
+        <!-- New High Score Badge - Show BEFORE title if new highscore -->
+        <TextView
+            android:id="@+id/tvNewHighScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🏆 NEW HIGH SCORE! 🏆"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:fontFamily="@font/poppins_bold"
+            android:layout_marginTop="12dp"
+            android:visibility="gone"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="10dp"
+            android:background="@drawable/bg_card_rounded"
+            android:backgroundTint="@color/game_yellow"
+            android:elevation="8dp"
+            tools:visibility="visible"/>
+
+        <!-- Personal Best Badge - Show if personal best but not new highscore -->
+        <TextView
+            android:id="@+id/tvPersonalBest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="⭐ PERSONAL BEST! ⭐"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:fontFamily="@font/poppins_bold"
+            android:layout_marginTop="12dp"
+            android:visibility="gone"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="10dp"
+            android:background="@drawable/bg_card_rounded"
+            android:backgroundTint="@color/game_orange"
+            android:elevation="8dp"
+            tools:visibility="gone"/>
+
         <!-- Title -->
         <TextView
             android:id="@+id/tvTitle"

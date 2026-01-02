@@ -134,6 +134,22 @@ class PatternGameActivity : AppCompatActivity() {
     private fun clearAllSelections() {
         if (userSelection.isEmpty()) return
         
+        // Animate button press
+        binding.btnClear.animate()
+            .scaleX(0.9f)
+            .scaleY(0.9f)
+            .setDuration(100)
+            .withEndAction {
+                binding.btnClear.animate()
+                    .scaleX(1f)
+                    .scaleY(1f)
+                    .setDuration(100)
+                    .start()
+            }
+            .start()
+        
+        soundManager.playTap()
+        
         // Restore all used options
         for (info in selectionInfoList) {
             if (info.optionIndex < optionViews.size) {
@@ -416,7 +432,7 @@ class PatternGameActivity : AppCompatActivity() {
         } else {
             lives--
             mistakes++  // Track mistakes for scoring
-            soundManager.playFail()
+            soundManager.playLoseLife()
             
             binding.tvInstruction.text = getString(R.string.wrong)
             binding.tvInstruction.setTextColor(getColor(R.color.game_red))
@@ -483,6 +499,9 @@ class PatternGameActivity : AppCompatActivity() {
             else -> "Good Try!"
         }
         dialogBinding.tvScore.text = "Score: $finalScore"
+        
+        // Show badges using helper function
+        GameOverHelper.showBadges(dialogBinding, GameType.PATTERN_SNAP, finalScore, previousHighScore, this)
         
         dialogBinding.statsLayout.visibility = View.VISIBLE
         dialogBinding.tvStat1Label.text = "Level Reached"

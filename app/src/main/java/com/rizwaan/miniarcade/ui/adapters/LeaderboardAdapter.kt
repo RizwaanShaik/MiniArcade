@@ -86,13 +86,14 @@ class LeaderboardAdapter(
         }
         
         private fun formatScore(score: GameScore): Pair<String, String> {
-            return when (gameType) {
-                GameType.REACTION_TIME -> Pair("${score.score}", "ms")
-                GameType.MEMORY_FLIP -> Pair("${score.score}", "moves")
-                GameType.PATTERN_SNAP -> Pair("${score.score}", "pts")
-                GameType.COLOR_CATCH -> Pair("${score.score}", "pts")
-                GameType.WORD_SCRAMBLE -> Pair("${score.score}", "pts")
-                GameType.RHYTHM_TAP -> Pair("${score.score}", "pts")
+            // Check if this is a combined score (has gamesPlayed in extras)
+            val isCombined = score.extras?.containsKey("gamesPlayed") == true
+            
+            return when {
+                isCombined -> Pair("${score.score}", "pts")
+                gameType == GameType.REACTION_TIME -> Pair("${score.score}", "ms")
+                gameType == GameType.MEMORY_FLIP -> Pair("${score.score}", "moves")
+                else -> Pair("${score.score}", "pts")
             }
         }
     }

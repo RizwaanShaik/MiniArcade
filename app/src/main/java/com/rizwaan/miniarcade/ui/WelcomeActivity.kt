@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
 import android.view.View
+import android.view.WindowManager
 import android.view.animation.OvershootInterpolator
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -55,7 +56,32 @@ class WelcomeActivity : AppCompatActivity() {
         
         setupInputValidation()
         setupClickListeners()
+        setupKeyboardHandling()
         animateEntrance()
+    }
+    
+    private fun setupKeyboardHandling() {
+        // Use adjustPan to move screen up when keyboard appears
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
+        
+        // Also add scroll behavior for better UX
+        binding.etEmail.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                binding.scrollView.postDelayed({
+                    val scrollY = binding.tilEmail.top - 100 // Scroll with some padding
+                    binding.scrollView.smoothScrollTo(0, scrollY.coerceAtLeast(0))
+                }, 100)
+            }
+        }
+        
+        binding.etPassword.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                binding.scrollView.postDelayed({
+                    val scrollY = binding.tilPassword.top - 100 // Scroll with some padding
+                    binding.scrollView.smoothScrollTo(0, scrollY.coerceAtLeast(0))
+                }, 100)
+            }
+        }
     }
     
     private fun animateEntrance() {

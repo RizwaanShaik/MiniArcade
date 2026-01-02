@@ -132,14 +132,27 @@
             android:layout_width="match_parent"
             android:layout_height="32dp"/>
 
-        <!-- Scrambled Letters - using FlexboxLayout to wrap on smaller screens -->
-        <com.google.android.flexbox.FlexboxLayout
-            android:id="@+id/scrambledLettersLayout"
+        <!-- Scrambled Letters - single line, no wrap, centered -->
+        <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:flexWrap="wrap"
-            app:justifyContent="center"
-            app:alignItems="center"/>
+            android:scrollbars="none"
+            android:fadeScrollbars="true"
+            android:fillViewport="true">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <com.google.android.flexbox.FlexboxLayout
+                    android:id="@+id/scrambledLettersLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:flexWrap="nowrap"
+                    app:justifyContent="center"
+                    app:alignItems="center"/>
+            </LinearLayout>
+        </HorizontalScrollView>
 
         <Space
             android:layout_width="match_parent"

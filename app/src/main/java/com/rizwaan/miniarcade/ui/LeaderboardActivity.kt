@@ -42,18 +42,27 @@ class LeaderboardActivity : AppCompatActivity() {
         val gameTypes = GameType.entries.toList()
         
         // Set up ViewPager2 with FragmentStateAdapter
+        // First tab is "Combined", then individual games
         binding.viewPager.adapter = object : FragmentStateAdapter(this) {
-            override fun getItemCount(): Int = gameTypes.size
+            override fun getItemCount(): Int = gameTypes.size + 1 // +1 for combined
             
             override fun createFragment(position: Int): Fragment {
-                return LeaderboardPageFragment.newInstance(gameTypes[position])
+                return if (position == 0) {
+                    CombinedLeaderboardFragment()
+                } else {
+                    LeaderboardPageFragment.newInstance(gameTypes[position - 1])
+                }
             }
         }
         
         // Connect TabLayout with ViewPager2
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
-            val gameType = gameTypes[position]
-            tab.text = "${gameType.emoji} ${gameType.displayName}"
+            if (position == 0) {
+                tab.text = "🏆 Total"
+            } else {
+                val gameType = gameTypes[position - 1]
+                tab.text = "${gameType.emoji} ${gameType.displayName}"
+            }
         }.attach()
     }
 }

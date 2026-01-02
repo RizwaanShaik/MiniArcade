@@ -342,7 +342,7 @@ class ColorGameActivity : AppCompatActivity() {
                 // Correct catch!
                 catches++
                 soundManager.playCorrect()
-                showFeedback(data.view, "✓", R.color.game_green)
+                showFeedback(data.view, "", R.color.game_green)
             }
             "bomb" -> {
                 // Hit a bomb - GAME OVER!
@@ -359,7 +359,7 @@ class ColorGameActivity : AppCompatActivity() {
                 // Wrong color - lose a life
                 lives--
                 soundManager.playLoseLife()
-                showFeedback(data.view, "✗", R.color.game_red)
+                showFeedback(data.view, "", R.color.game_red)
             }
         }
         
@@ -473,7 +473,19 @@ class ColorGameActivity : AppCompatActivity() {
             }
         }
         
-        dialogBinding.tvScore.text = if (ballsSpawned >= 20) "Score: $finalScore" else "Score: N/A (min 20 balls)"
+        // Show score even if less than 20 balls (show partial score)
+        if (ballsSpawned >= 20) {
+            dialogBinding.tvScore.text = "Score: $finalScore"
+            // Show badges using helper function
+            GameOverHelper.showBadges(dialogBinding, GameType.COLOR_CATCH, finalScore, previousHighScore, this)
+        } else {
+            // Show partial score for games with less than 20 balls
+            val partialScore = calculateScore() // Calculate anyway
+            dialogBinding.tvScore.text = "Score: $partialScore (Partial - $ballsSpawned balls)"
+            // Don't show badges for partial scores
+            dialogBinding.tvNewHighScore.visibility = View.GONE
+            dialogBinding.tvPersonalBest.visibility = View.GONE
+        }
         
         dialogBinding.statsLayout.visibility = View.VISIBLE
         dialogBinding.tvStat1Label.text = "Level"

@@ -225,7 +225,7 @@ class ReactionGameActivity : AppCompatActivity() {
         val reactionTime = System.currentTimeMillis() - startTime
         reactionTimes.add(reactionTime)
         
-        soundManager.playSuccess()
+        soundManager.playTap()
         gameState = GameState.SHOWING_RESULT
         
         // Keep green background for showing result
@@ -315,6 +315,11 @@ class ReactionGameActivity : AppCompatActivity() {
         }
         
         dialogBinding.tvScore.text = "Best: $best ms"
+        
+        // Show badges using helper function
+        // For reaction time, convert previousHighScore (Long.MAX_VALUE means no previous score)
+        val prevScore = if (previousHighScore == Long.MAX_VALUE) 0L else previousHighScore
+        GameOverHelper.showBadges(dialogBinding, GameType.REACTION_TIME, best, prevScore, this)
         
         dialogBinding.statsLayout.visibility = View.VISIBLE
         dialogBinding.tvStat1Label.text = "Best Time"

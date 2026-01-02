@@ -20,7 +20,8 @@
         android:layout_height="match_parent"
         android:fillViewport="true"
         android:isScrollContainer="true"
-        android:scrollbars="none">
+        android:scrollbars="none"
+        android:fitsSystemWindows="true">
         
         <LinearLayout
             android:layout_width="match_parent"

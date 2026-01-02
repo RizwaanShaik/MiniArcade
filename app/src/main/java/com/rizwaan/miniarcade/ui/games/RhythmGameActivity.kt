@@ -50,8 +50,8 @@ class RhythmGameActivity : AppCompatActivity() {
     private var previousHighScore = 0L  // Track previous high score for new high score detection
     
     // Difficulty - starts easy, gets harder over time
-    private var spawnInterval = 1500L  // Time between spawns
-    private var fallDuration = 3500L   // Time for shape to fall
+    private var spawnInterval = 1200L  // Time between spawns
+    private var fallDuration = 3000L   // Time for shape to fall
     
     private val activeShapes = mutableListOf<FallingShape>()
     
@@ -247,12 +247,17 @@ class RhythmGameActivity : AppCompatActivity() {
     }
     
     private fun adjustDifficulty() {
-        when {
-            score >= 1500 -> { spawnInterval = 500; fallDuration = 1300 }
-            score >= 800 -> { spawnInterval = 700; fallDuration = 1600 }
-            score >= 400 -> { spawnInterval = 900; fallDuration = 2000 }
-            else -> { spawnInterval = 1200; fallDuration = 3000 }
-        }
+        // Linear difficulty progression based on score
+        // Score range: 0 to 2000+
+        // Spawn interval: 1200ms (easy) down to 500ms (hard)
+        // Fall duration: 3000ms (slow) down to 1200ms (fast)
+        
+        val normalizedScore = score.coerceIn(0, 2000)
+        val progress = normalizedScore / 2000.0
+        
+        // Linear interpolation
+        spawnInterval = (1200 - (700 * progress)).toLong().coerceIn(500, 1200)
+        fallDuration = (3000 - (1800 * progress)).toLong().coerceIn(1200, 3000)
     }
     
     private fun spawnShape() {
@@ -533,9 +538,10 @@ class RhythmGameActivity : AppCompatActivity() {
     }
     
     private fun showGameOver() {
-        // Check if this is a new high score
-        val isNewHighScore = score > previousHighScore
-        if (isNewHighScore) {
+        // Check if this is a personal best (better than previous)
+        val isPersonalBest = score > previousHighScore
+        
+        if (isPersonalBest) {
             soundManager.playHighscore()
         } else {
             soundManager.playGameOver()
@@ -544,6 +550,9 @@ class RhythmGameActivity : AppCompatActivity() {
         saveScore(score)
         
         val dialogBinding = DialogGameOverBinding.inflate(layoutInflater)
+        
+        // Show badges using helper function
+        GameOverHelper.showBadges(dialogBinding, GameType.RHYTHM_TAP, score, previousHighScore, this)
         
         dialogBinding.tvResultEmoji.text = when {
             score > 500 -> "🎵"
