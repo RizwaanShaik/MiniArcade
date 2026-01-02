@@ -324,9 +324,10 @@ class FirebaseRepository {
                     Log.d(TAG, "saveScore: existingScore=$existingScore, newScore=${score.score}")
                     
                     // Determine if we should update (0 means no score yet)
+                    // Reaction Time: lower is better
+                    // All other games: higher is better
                     val shouldUpdate = when (score.gameType) {
                         GameType.REACTION_TIME -> existingScore == 0L || score.score < existingScore
-                        GameType.MEMORY_FLIP -> existingScore == 0L || score.score < existingScore
                         else -> score.score > existingScore
                     }
                     
@@ -396,9 +397,10 @@ class FirebaseRepository {
                                 )
                             } else null
                         }.let { list ->
-                            // Sort: lower is better for Reaction Time and Memory Flip
+                            // Sort: lower is better for Reaction Time only
+                            // All other games: higher is better
                             when (gameType) {
-                                GameType.REACTION_TIME, GameType.MEMORY_FLIP -> 
+                                GameType.REACTION_TIME -> 
                                     list.sortedBy { it.score }.take(limit)
                                 else -> 
                                     list.sortedByDescending { it.score }.take(limit)

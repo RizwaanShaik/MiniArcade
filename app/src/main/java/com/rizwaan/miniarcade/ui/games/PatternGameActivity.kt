@@ -36,6 +36,7 @@ class PatternGameActivity : AppCompatActivity() {
     private var currentLevel = 1
     private var score = 0L
     private var lives = 3
+    private var mistakes = 0  // Track total mistakes for scoring
     private var currentPattern = listOf<String>()
     private var userSelection = mutableListOf<String>()
     private var optionViews = mutableListOf<TextView>()
@@ -404,6 +405,7 @@ class PatternGameActivity : AppCompatActivity() {
             }, 1200)
         } else {
             lives--
+            mistakes++  // Track mistakes for scoring
             soundManager.playFail()
             
             binding.tvInstruction.text = getString(R.string.wrong)
@@ -445,7 +447,7 @@ class PatternGameActivity : AppCompatActivity() {
     }
     
     private fun showGameOver() {
-        saveScore(score)
+        saveScore()
         
         val dialogBinding = DialogGameOverBinding.inflate(layoutInflater)
         
@@ -461,7 +463,8 @@ class PatternGameActivity : AppCompatActivity() {
             else -> "Good Try!"
         }
         
-        dialogBinding.tvScore.text = "Score: $score"
+        val finalScore = calculateScore()
+        dialogBinding.tvScore.text = "Score: $finalScore"
         
         dialogBinding.statsLayout.visibility = View.VISIBLE
         dialogBinding.tvStat1Label.text = "Level Reached"
@@ -498,20 +501,28 @@ class PatternGameActivity : AppCompatActivity() {
         dialog.show()
     }
     
-    private fun saveScore(score: Long) {
+    private fun calculateScore(): Long {
+        // New scoring: (level * 100) - (mistakes * 50), floor at 0
+        val rawScore = (currentLevel * 100) - (mistakes * 50)
+        return maxOf(0, rawScore).toLong()
+    }
+    
+    private fun saveScore() {
         val player = prefsManager.currentPlayer ?: return
+        
+        val finalScore = calculateScore()
         
         val gameScore = GameScore(
             playerId = player.id,
             playerUsername = player.username,
             gameType = GameType.PATTERN_SNAP,
-            score = score,
-            extras = mapOf("level" to currentLevel)
+            score = finalScore,
+            extras = mapOf("level" to currentLevel, "mistakes" to mistakes)
         )
         
         lifecycleScope.launch {
             val saved = firebaseRepo.saveScore(gameScore)
-            android.util.Log.d("PatternGame", "Score saved: $saved, playerId: ${player.id}, username: ${player.username}, score: $score")
+            android.util.Log.d("PatternGame", "Score saved: $saved, level: $currentLevel, mistakes: $mistakes, score: $finalScore")
             firebaseRepo.incrementGamesPlayed(player.id)
         }
     }

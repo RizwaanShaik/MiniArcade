@@ -250,7 +250,7 @@ class MemoryGameActivity : AppCompatActivity() {
         
         dialogBinding.btnMenu.setOnClickListener {
             dialog.dismiss()
-            saveScore(totalMoves.toLong())
+            saveScore()
             finish()
         }
         
@@ -258,13 +258,14 @@ class MemoryGameActivity : AppCompatActivity() {
     }
     
     private fun showGameOver(isWin: Boolean) {
-        saveScore(totalMoves.toLong())
+        saveScore()
         
         val dialogBinding = DialogGameOverBinding.inflate(layoutInflater)
         
+        val finalScore = calculateScore()
         dialogBinding.tvResultEmoji.text = if (isWin) "🏆" else "😅"
         dialogBinding.tvTitle.text = if (isWin) "Memory Master!" else "Game Over!"
-        dialogBinding.tvScore.text = "Total Moves: $totalMoves"
+        dialogBinding.tvScore.text = "Score: $finalScore"
         
         dialogBinding.statsLayout.visibility = View.VISIBLE
         dialogBinding.tvStat1Label.text = "Rounds"
@@ -294,21 +295,49 @@ class MemoryGameActivity : AppCompatActivity() {
         dialog.show()
     }
     
-    private fun saveScore(moves: Long) {
+    private fun calculateScore(): Long {
+        // Calculate total pairs matched across all levels
+        val totalPairsMatched = calculateTotalPairs()
+        
+        // New scoring: (pairs * 100) + (level * 500) - (moves * 10)
+        // Higher is better, floor at 0
+        val score = (totalPairsMatched * 100) + (currentLevel * 500) - (totalMoves * 10)
+        return maxOf(0, score).toLong()
+    }
+    
+    private fun calculateTotalPairs(): Int {
+        // Sum pairs from all completed levels
+        var total = 0
+        for (level in 1..currentLevel) {
+            val gridSize = when (level) {
+                1 -> Pair(3, 4)  // 6 pairs
+                2 -> Pair(4, 4)  // 8 pairs
+                3 -> Pair(4, 5)  // 10 pairs
+                4 -> Pair(5, 6)  // 15 pairs
+                else -> Pair(6, 6) // 18 pairs
+            }
+            total += (gridSize.first * gridSize.second) / 2
+        }
+        return total
+    }
+    
+    private fun saveScore() {
         val player = prefsManager.currentPlayer ?: return
         
-        // For Memory Flip, lower moves is better
+        // New composite score: higher is better
+        val score = calculateScore()
+        
         val gameScore = GameScore(
             playerId = player.id,
             playerUsername = player.username,
             gameType = GameType.MEMORY_FLIP,
-            score = moves,
-            extras = mapOf("rounds" to currentLevel)
+            score = score,
+            extras = mapOf("rounds" to currentLevel, "totalMoves" to totalMoves)
         )
         
         lifecycleScope.launch {
             val saved = firebaseRepo.saveScore(gameScore)
-            android.util.Log.d("MemoryGame", "Score saved: $saved, playerId: ${player.id}, username: ${player.username}, moves: $moves")
+            android.util.Log.d("MemoryGame", "Score saved: $saved, score: $score, rounds: $currentLevel, moves: $totalMoves")
             firebaseRepo.incrementGamesPlayed(player.id)
         }
     }

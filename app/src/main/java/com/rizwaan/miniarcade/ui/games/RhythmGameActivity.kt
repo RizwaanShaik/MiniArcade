@@ -44,7 +44,10 @@ class RhythmGameActivity : AppCompatActivity() {
     private var combo = 0
     private var maxCombo = 0
     private var lives = 3
+    private var missedCount = 0  // Track missed shapes - 3 misses = 1 life
+    private var consecutiveMisses = 0  // Anti-AFK: 5 consecutive misses = 1 life
     private var gameStartTime = 0L
+    private var previousHighScore = 0L  // Track previous high score for new high score detection
     
     // Difficulty - starts easy, gets harder over time
     private var spawnInterval = 1500L  // Time between spawns
@@ -86,6 +89,7 @@ class RhythmGameActivity : AppCompatActivity() {
         setupGestureDetector()
         setupGame()
         setupClickListeners()
+        loadPreviousHighScore()
     }
     
     private fun setupGestureDetector() {
@@ -127,11 +131,21 @@ class RhythmGameActivity : AppCompatActivity() {
         combo = 0
         maxCombo = 0
         lives = 3
-        spawnInterval = 1500L
-        fallDuration = 3500L
+        missedCount = 0
+        consecutiveMisses = 0
+        spawnInterval = 1200L
+        fallDuration = 3000L
         isPlaying = false
         activeShapes.clear()
         updateUI()
+    }
+    
+    private fun loadPreviousHighScore() {
+        lifecycleScope.launch {
+            val player = prefsManager.currentPlayer ?: return@launch
+            val playerData = firebaseRepo.getPlayerScores(player.id)
+            previousHighScore = playerData?.getScore(GameType.RHYTHM_TAP) ?: 0L
+        }
     }
     
     private fun setupClickListeners() {
@@ -154,12 +168,60 @@ class RhythmGameActivity : AppCompatActivity() {
     }
     
     private fun startGame() {
-        binding.startOverlay.visibility = View.GONE
-        isPlaying = true
-        gameStartTime = System.currentTimeMillis()
+        binding.btnStart.isEnabled = false
+        binding.startContent.visibility = View.GONE
+        binding.tvCountdown.visibility = View.VISIBLE
         
-        startSpawning()
-        startDifficultyIncrease()
+        startCountdown()
+    }
+    
+    private fun startCountdown() {
+        val countdownTexts = listOf("3", "2", "1", "GO!")
+        var countdownIndex = 0
+        
+        // Play countdown sound once at the start (it contains 3-2-1-GO)
+        soundManager.playCountdown()
+        
+        fun showNextCountdown() {
+            if (countdownIndex >= countdownTexts.size) {
+                // Countdown complete - start the game
+                binding.startOverlay.visibility = View.GONE
+                binding.tvCountdown.visibility = View.GONE
+                isPlaying = true
+                gameStartTime = System.currentTimeMillis()
+                startSpawning()
+                return
+            }
+            
+            binding.tvCountdown.text = countdownTexts[countdownIndex]
+            binding.tvCountdown.alpha = 1f
+            binding.tvCountdown.scaleX = 0.5f
+            binding.tvCountdown.scaleY = 0.5f
+            
+            // Animate countdown with slight delay before starting
+            handler.postDelayed({
+                binding.tvCountdown.animate()
+                    .scaleX(1.2f)
+                    .scaleY(1.2f)
+                    .alpha(1f)
+                    .setDuration(200)
+                    .withEndAction {
+                        binding.tvCountdown.animate()
+                            .scaleX(1f)
+                            .scaleY(1f)
+                            .alpha(0.3f)
+                            .setDuration(300)
+                            .withEndAction {
+                                countdownIndex++
+                                handler.postDelayed({ showNextCountdown() }, 200)
+                            }
+                            .start()
+                    }
+                    .start()
+            }, 150) // Small delay before animation starts
+        }
+        
+        showNextCountdown()
     }
     
     private fun stopGame() {
@@ -184,20 +246,13 @@ class RhythmGameActivity : AppCompatActivity() {
         }, spawnInterval)
     }
     
-    private fun startDifficultyIncrease() {
-        if (!isPlaying) return
-        
-        // Gradually increase difficulty every 3 seconds
-        handler.postDelayed({
-            if (isPlaying) {
-                // Slowly decrease spawn interval (more shapes)
-                spawnInterval = (spawnInterval * 0.97).toLong().coerceAtLeast(600L)
-                // Slowly decrease fall duration (faster falling)
-                fallDuration = (fallDuration * 0.98).toLong().coerceAtLeast(1500L)
-                
-                startDifficultyIncrease()
-            }
-        }, 3000L)
+    private fun adjustDifficulty() {
+        when {
+            score >= 1500 -> { spawnInterval = 500; fallDuration = 1300 }
+            score >= 800 -> { spawnInterval = 700; fallDuration = 1600 }
+            score >= 400 -> { spawnInterval = 900; fallDuration = 2000 }
+            else -> { spawnInterval = 1200; fallDuration = 3000 }
+        }
     }
     
     private fun spawnShape() {
@@ -210,8 +265,13 @@ class RhythmGameActivity : AppCompatActivity() {
             return
         }
         
-        // After score 100, occasionally spawn 2 shapes at once
-        val shapesToSpawn = if (score >= 100 && Random.nextFloat() < 0.3f) 2 else 1
+        // Deterministic multi-spawn based on score
+        val shapesToSpawn = when {
+            score >= 1200 -> 3
+            score >= 600 -> if (Random.nextBoolean()) 2 else 3
+            score >= 200 -> 2
+            else -> 1
+        }
         
         repeat(shapesToSpawn) { index ->
             handler.postDelayed({
@@ -320,22 +380,43 @@ class RhythmGameActivity : AppCompatActivity() {
         shape.animator.cancel()
         soundManager.playCorrect()
         
+        // Reset anti-AFK counter on correct swipe
+        consecutiveMisses = 0
+        
         combo++
         maxCombo = maxOf(maxCombo, combo)
-        score += 10L
         
-        // Show feedback
-        showFeedback(shape.view, "✓", R.color.game_green)
+        // Play combo sound at certain thresholds
+        when (combo) {
+            5, 10, 15, 20, 25, 30, 40, 50 -> soundManager.playCombo()
+        }
+        
+        // Softer combo curve scoring
+        val cappedCombo = minOf(combo, 50)
+        val multiplier = if (combo <= 20) {
+            1.0 + cappedCombo / 10.0
+        } else {
+            3.0 + (cappedCombo - 20) / 20.0
+        }
+        val points = (10 * multiplier).toLong()
+        score += points
+        
+        // Show feedback with points
+        showFeedback(shape.view, "+$points", R.color.game_green)
         
         // Remove shape with animation
         removeShape(shape)
+        
+        // Adjust difficulty based on score
+        adjustDifficulty()
+        
         updateUI()
     }
     
     private fun handleWrongSwipe() {
         combo = 0
         lives--
-        soundManager.playWrong()
+        soundManager.playLoseLife()  // Play lose life sound
         
         // Flash feedback
         binding.tvLives.animate()
@@ -351,6 +432,9 @@ class RhythmGameActivity : AppCompatActivity() {
             }
             .start()
         
+        // Adjust difficulty based on score
+        adjustDifficulty()
+        
         updateUI()
         checkGameOver()
     }
@@ -359,13 +443,33 @@ class RhythmGameActivity : AppCompatActivity() {
         if (!isPlaying || shape.handled) return
         
         shape.handled = true
-        combo = 0
-        lives--
         
-        showFeedback(shape.view, "✗", R.color.game_red)
+        // Missed shape: reset combo and increment miss counters
+        combo = 0
+        missedCount++
+        consecutiveMisses++
+        
+        // Anti-AFK: 5 consecutive misses = lose 1 life immediately
+        if (consecutiveMisses >= 5) {
+            consecutiveMisses = 0
+            lives--
+            soundManager.playLoseLife()  // Play lose life sound
+            showFeedback(shape.view, "⚠️ AFK! -1 Life", R.color.game_red)
+            checkGameOver()
+        }
+        // Every 3 misses = lose 1 life
+        else if (missedCount >= 3) {
+            missedCount = 0
+            lives--
+            soundManager.playLoseLife()  // Play lose life sound
+            showFeedback(shape.view, "💔 -1 Life", R.color.game_red)
+            checkGameOver()
+        } else {
+            showFeedback(shape.view, "Miss (${3 - missedCount} left)", R.color.game_orange)
+        }
+        
         removeShape(shape)
         updateUI()
-        checkGameOver()
     }
     
     private fun showFeedback(anchorView: View, text: String, colorRes: Int) {
@@ -425,6 +529,14 @@ class RhythmGameActivity : AppCompatActivity() {
     }
     
     private fun showGameOver() {
+        // Check if this is a new high score
+        val isNewHighScore = score > previousHighScore
+        if (isNewHighScore) {
+            soundManager.playHighscore()
+        } else {
+            soundManager.playGameOver()
+        }
+        
         saveScore(score)
         
         val dialogBinding = DialogGameOverBinding.inflate(layoutInflater)
@@ -461,6 +573,8 @@ class RhythmGameActivity : AppCompatActivity() {
             dialog.dismiss()
             setupGame()
             binding.startOverlay.visibility = View.VISIBLE
+            binding.startContent.visibility = View.VISIBLE
+            binding.btnStart.isEnabled = true
         }
         
         dialogBinding.btnMenu.setOnClickListener {
@@ -494,3 +608,4 @@ class RhythmGameActivity : AppCompatActivity() {
         stopGame()
     }
 }
+

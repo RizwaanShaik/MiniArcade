@@ -102,7 +102,20 @@
         android:layout_height="match_parent"
         android:background="#CC000000">
 
+        <TextView
+            android:id="@+id/tvCountdown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="120sp"
+            android:textColor="@color/game_yellow"
+            android:textStyle="bold"
+            android:fontFamily="@font/poppins"
+            android:visibility="gone"
+            android:gravity="center"/>
+
         <LinearLayout
+            android:id="@+id/startContent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

@@ -46,6 +46,10 @@ class ColorGameActivity : AppCompatActivity() {
     private var gameStartTime = 0L
     private val activeObjects = mutableListOf<ObjectData>()
     
+    // Tracking for improved scoring
+    private var ballsSpawned = 0  // Total balls spawned (excluding bombs)
+    private var catches = 0        // Successful catches of target color
+    
     data class ObjectData(
         val view: View,
         val type: String, // "target", "other", "bomb"
@@ -90,6 +94,8 @@ class ColorGameActivity : AppCompatActivity() {
         spawnDelay = 1200L
         fallDuration = 3000L
         isPlaying = false
+        ballsSpawned = 0
+        catches = 0
         activeObjects.clear()
         updateUI()
     }
@@ -217,6 +223,11 @@ class ColorGameActivity : AppCompatActivity() {
         
         binding.gameArea.addView(objectView)
         
+        // Track balls spawned (excluding bombs)
+        if (objectType != "bomb") {
+            ballsSpawned++
+        }
+        
         // Animate falling
         val animator = animateObject(objectView, objectSize, objectType)
         val objectData = ObjectData(objectView, objectType, animator)
@@ -268,8 +279,8 @@ class ColorGameActivity : AppCompatActivity() {
         
         when (data.type) {
             "target" -> {
-                // Correct!
-                score += 10 * currentLevel
+                // Correct catch!
+                catches++
                 soundManager.playCorrect()
                 showFeedback(data.view, "✓", R.color.game_green)
             }
@@ -364,38 +375,41 @@ class ColorGameActivity : AppCompatActivity() {
     }
     
     private fun updateUI() {
-        binding.tvScore.text = getString(R.string.score, score.toInt())
+        // Show catches count instead of old score
+        binding.tvScore.text = "Catches: $catches"
         binding.tvMisses.text = "❤️".repeat(lives)
     }
     
     private fun showGameOver(hitBomb: Boolean) {
-        saveScore(score)
+        saveScore()
         
         val dialogBinding = DialogGameOverBinding.inflate(layoutInflater)
+        val finalScore = calculateScore()
+        val accuracy = if (ballsSpawned > 0) (catches.toDouble() / ballsSpawned * 100).toInt() else 0
         
         if (hitBomb) {
             dialogBinding.tvResultEmoji.text = "💥"
             dialogBinding.tvTitle.text = "BOOM! Hit a bomb!"
         } else {
             dialogBinding.tvResultEmoji.text = when {
-                score > 500 -> "🌈"
-                score > 200 -> "🎨"
+                accuracy > 80 -> "🌈"
+                accuracy > 50 -> "🎨"
                 else -> "👍"
             }
             dialogBinding.tvTitle.text = when {
-                score > 500 -> "Color Master!"
-                score > 200 -> "Great Catching!"
+                accuracy > 80 -> "Color Master!"
+                accuracy > 50 -> "Great Catching!"
                 else -> "Good Try!"
             }
         }
         
-        dialogBinding.tvScore.text = "Score: $score"
+        dialogBinding.tvScore.text = if (ballsSpawned >= 20) "Score: $finalScore" else "Score: N/A (min 20 balls)"
         
         dialogBinding.statsLayout.visibility = View.VISIBLE
         dialogBinding.tvStat1Label.text = "Level"
         dialogBinding.tvStat1Value.text = "$currentLevel"
-        dialogBinding.tvStat2Label.text = "Caught"
-        dialogBinding.tvStat2Value.text = "${score / 10}"
+        dialogBinding.tvStat2Label.text = "Accuracy"
+        dialogBinding.tvStat2Value.text = "$catches/$ballsSpawned ($accuracy%)"
         
         // Load top 3 leaderboard
         GameOverHelper.loadLeaderboard(dialogBinding, GameType.COLOR_CATCH)
@@ -419,20 +433,40 @@ class ColorGameActivity : AppCompatActivity() {
         dialog.show()
     }
     
-    private fun saveScore(score: Long) {
+    private fun calculateScore(): Long {
+        // Only calculate if minimum balls spawned
+        if (ballsSpawned < 20) return 0L
+        
+        // New scoring: (catches / ballsSpawned) * level * 1000
+        val accuracy = catches.toDouble() / ballsSpawned.toDouble()
+        return (accuracy * currentLevel * 1000).toLong()
+    }
+    
+    private fun saveScore() {
         val player = prefsManager.currentPlayer ?: return
+        
+        // Only save if minimum threshold met
+        if (ballsSpawned < 20) {
+            android.util.Log.d("ColorGame", "Score not saved: ballsSpawned=$ballsSpawned < 20")
+            lifecycleScope.launch {
+                firebaseRepo.incrementGamesPlayed(player.id)
+            }
+            return
+        }
+        
+        val finalScore = calculateScore()
         
         val gameScore = GameScore(
             playerId = player.id,
             playerUsername = player.username,
             gameType = GameType.COLOR_CATCH,
-            score = score,
-            extras = mapOf("level" to currentLevel)
+            score = finalScore,
+            extras = mapOf("level" to currentLevel, "catches" to catches, "ballsSpawned" to ballsSpawned)
         )
         
         lifecycleScope.launch {
             val saved = firebaseRepo.saveScore(gameScore)
-            android.util.Log.d("ColorGame", "Score saved: $saved, playerId: ${player.id}, username: ${player.username}, score: $score")
+            android.util.Log.d("ColorGame", "Score saved: $saved, catches: $catches/$ballsSpawned, level: $currentLevel, score: $finalScore")
             firebaseRepo.incrementGamesPlayed(player.id)
         }
     }

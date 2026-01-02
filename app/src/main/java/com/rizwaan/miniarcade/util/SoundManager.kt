@@ -1,6 +1,7 @@
 package com.rizwaan.miniarcade.util
 
 import android.content.Context
+import android.content.res.AssetFileDescriptor
 import android.media.AudioAttributes
 import android.media.SoundPool
 import android.os.Build
@@ -8,6 +9,7 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
 import com.rizwaan.miniarcade.data.local.PreferencesManager
+import java.io.IOException
 
 /**
  * Manages sound effects and haptic feedback for the game
@@ -45,6 +47,10 @@ class SoundManager(private val context: Context) {
     private var correctSoundId: Int = 0
     private var wrongSoundId: Int = 0
     private var gameOverSoundId: Int = 0
+    private var comboSoundId: Int = 0
+    private var highscoreSoundId: Int = 0
+    private var loselifeSoundId: Int = 0
+    private var countdownSoundId: Int = 0
     
     private var isLoaded = false
     
@@ -54,18 +60,19 @@ class SoundManager(private val context: Context) {
     
     private fun loadSounds() {
         try {
-            // Try to load custom sounds from raw folder
-            // If files don't exist, we'll use haptic feedback only
-            val resources = context.resources
-            val packageName = context.packageName
+            // First try to load from assets folder
+            comboSoundId = tryLoadSoundFromAssets("combo.mp3")
+            highscoreSoundId = tryLoadSoundFromAssets("highscore.mp3")
+            loselifeSoundId = tryLoadSoundFromAssets("loselife.mp3")
+            countdownSoundId = tryLoadSoundFromAssets("countdown.mp3")
             
-            // These will return 0 if resource doesn't exist
-            tapSoundId = tryLoadSound("tap")
-            successSoundId = tryLoadSound("success")
-            failSoundId = tryLoadSound("fail")
-            correctSoundId = tryLoadSound("correct")
-            wrongSoundId = tryLoadSound("wrong")
-            gameOverSoundId = tryLoadSound("game_over")
+            // Then try to load from raw folder (for backward compatibility)
+            tapSoundId = tryLoadSoundFromRaw("tap")
+            successSoundId = tryLoadSoundFromRaw("success")
+            failSoundId = tryLoadSoundFromRaw("fail")
+            correctSoundId = tryLoadSoundFromRaw("correct")
+            wrongSoundId = tryLoadSoundFromRaw("wrong")
+            gameOverSoundId = tryLoadSoundFromRaw("game_over")
             
             soundPool.setOnLoadCompleteListener { _, _, status ->
                 if (status == 0) isLoaded = true
@@ -75,7 +82,19 @@ class SoundManager(private val context: Context) {
         }
     }
     
-    private fun tryLoadSound(name: String): Int {
+    private fun tryLoadSoundFromAssets(filename: String): Int {
+        return try {
+            val assetManager = context.assets
+            val afd: AssetFileDescriptor = assetManager.openFd(filename)
+            soundPool.load(afd, 1)
+        } catch (e: IOException) {
+            0
+        } catch (e: Exception) {
+            0
+        }
+    }
+    
+    private fun tryLoadSoundFromRaw(name: String): Int {
         return try {
             val resId = context.resources.getIdentifier(name, "raw", context.packageName)
             if (resId != 0) soundPool.load(context, resId, 1) else 0
@@ -124,6 +143,34 @@ class SoundManager(private val context: Context) {
             soundPool.play(gameOverSoundId, 0.8f, 0.8f, 1, 0, 1f)
         }
         vibrateGameOver()
+    }
+    
+    fun playCombo() {
+        if (prefsManager.soundEnabled && comboSoundId != 0) {
+            soundPool.play(comboSoundId, 0.7f, 0.7f, 1, 0, 1f)
+        }
+        vibrateSuccess()
+    }
+    
+    fun playHighscore() {
+        if (prefsManager.soundEnabled && highscoreSoundId != 0) {
+            soundPool.play(highscoreSoundId, 0.9f, 0.9f, 1, 0, 1f)
+        }
+        vibrateSuccess()
+    }
+    
+    fun playLoseLife() {
+        if (prefsManager.soundEnabled && loselifeSoundId != 0) {
+            soundPool.play(loselifeSoundId, 0.8f, 0.8f, 1, 0, 1f)
+        }
+        vibrateFail()
+    }
+    
+    fun playCountdown() {
+        if (prefsManager.soundEnabled && countdownSoundId != 0) {
+            soundPool.play(countdownSoundId, 0.8f, 0.8f, 1, 0, 1f)
+        }
+        vibrateLight()
     }
     
     // Haptic feedback methods

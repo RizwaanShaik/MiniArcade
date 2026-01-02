@@ -34,6 +34,7 @@ class WordGameActivity : AppCompatActivity() {
     
     private var timer: CountDownTimer? = null
     private var wordsGuessed = 0
+    private var totalScore = 0L  // Accumulated score
     private var currentWord = ""
     private var currentHint = ""
     private var timeLeft = 30
@@ -45,6 +46,7 @@ class WordGameActivity : AppCompatActivity() {
     // Hint system - max 3 hints per game
     private var hintsRemaining = 3
     private val maxHints = 3
+    private var hintUsedThisWord = false  // Track if hint was used for current word (kills time bonus)
     
     // Lives system - 3 lives per game
     private var lives = 3
@@ -83,6 +85,7 @@ class WordGameActivity : AppCompatActivity() {
     
     private fun setupGame() {
         wordsGuessed = 0
+        totalScore = 0L
         hintsRemaining = maxHints
         lives = maxLives
         updateUI()
@@ -149,6 +152,7 @@ class WordGameActivity : AppCompatActivity() {
         allLetters.clear()
         answerSlots = arrayOfNulls(20)
         isProcessingClick = false
+        hintUsedThisWord = false  // Reset hint flag for new word
         
         // Get word based on words guessed (difficulty increases)
         val level = wordsGuessed + 1
@@ -445,9 +449,17 @@ class WordGameActivity : AppCompatActivity() {
         
         if (isCorrect) {
             wordsGuessed++
+            
+            // New scoring: (wordLength * 10) + min(timeLeft * 2, 50)
+            // Time bonus is 0 if hint was used for this word
+            val timeBonus = if (hintUsedThisWord) 0 else minOf(timeLeft * 2, 50)
+            val wordPoints = (currentWord.length * 10) + timeBonus
+            totalScore += wordPoints
+            
             soundManager.playSuccess()
             
-            showFeedback(true, "✓ Correct!")
+            val bonusText = if (hintUsedThisWord) "(no time bonus)" else ""
+            showFeedback(true, "✓ +$wordPoints pts! $bonusText")
             
             binding.root.postDelayed({
                 startRound()
@@ -494,6 +506,7 @@ class WordGameActivity : AppCompatActivity() {
         if (hintsRemaining <= 0) return
         
         hintsRemaining--
+        hintUsedThisWord = true  // Mark hint used - kills time bonus
         updateHintButton()
         
         binding.tvHint.text = "💡 $currentHint"
@@ -553,9 +566,8 @@ class WordGameActivity : AppCompatActivity() {
     }
     
     private fun updateUI() {
-        val score = wordsGuessed * 10
         binding.tvLevel.text = "❤️".repeat(lives) + "🖤".repeat(maxLives - lives)
-        binding.tvScore.text = "Score: $score"
+        binding.tvScore.text = "Score: $totalScore"
         binding.tvStreak.text = if (wordsGuessed > 0) "🔥 $wordsGuessed" else ""
         binding.tvTimer.setTextColor(getColor(R.color.game_yellow))
     }
@@ -563,8 +575,7 @@ class WordGameActivity : AppCompatActivity() {
     private fun showGameOver() {
         timer?.cancel()
         
-        val score = (wordsGuessed * 10).toLong()
-        saveScore(score)
+        saveScore()
         
         val dialogBinding = DialogGameOverBinding.inflate(layoutInflater)
         
@@ -580,13 +591,13 @@ class WordGameActivity : AppCompatActivity() {
             else -> "Good Try!"
         }
         
-        dialogBinding.tvScore.text = "Score: $score"
+        dialogBinding.tvScore.text = "Score: $totalScore"
         
         dialogBinding.statsLayout.visibility = View.VISIBLE
         dialogBinding.tvStat1Label.text = "Words Solved"
         dialogBinding.tvStat1Value.text = "$wordsGuessed"
         dialogBinding.tvStat2Label.text = "Score"
-        dialogBinding.tvStat2Value.text = "$score"
+        dialogBinding.tvStat2Value.text = "$totalScore"
         
         // Load top 3 leaderboard
         GameOverHelper.loadLeaderboard(dialogBinding, GameType.WORD_SCRAMBLE)
@@ -614,20 +625,20 @@ class WordGameActivity : AppCompatActivity() {
         dialog.show()
     }
     
-    private fun saveScore(score: Long) {
+    private fun saveScore() {
         val player = prefsManager.currentPlayer ?: return
         
         val gameScore = GameScore(
             playerId = player.id,
             playerUsername = player.username,
             gameType = GameType.WORD_SCRAMBLE,
-            score = score,
+            score = totalScore,
             extras = mapOf("wordsGuessed" to wordsGuessed)
         )
         
         lifecycleScope.launch {
             val saved = firebaseRepo.saveScore(gameScore)
-            android.util.Log.d("WordGame", "Score saved: $saved, playerId: ${player.id}, username: ${player.username}, score: $score")
+            android.util.Log.d("WordGame", "Score saved: $saved, wordsGuessed: $wordsGuessed, score: $totalScore")
             firebaseRepo.incrementGamesPlayed(player.id)
         }
     }
