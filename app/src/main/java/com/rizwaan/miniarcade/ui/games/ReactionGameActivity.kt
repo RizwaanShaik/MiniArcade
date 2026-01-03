@@ -230,8 +230,8 @@ class ReactionGameActivity : AppCompatActivity() {
             .setDuration(200)
             .start()
         
-        // Show penalty for this round only (always 50ms per tap)
-        binding.tvPenalty.text = "+50ms penalty"
+        // Show penalty for this round only (10ms per tap, added to average)
+        binding.tvPenalty.text = "+10ms penalty"
         binding.penaltyLayout.visibility = View.VISIBLE
         binding.penaltyLayout.alpha = 0f
         binding.penaltyLayout.scaleX = 0.5f
@@ -243,6 +243,9 @@ class ReactionGameActivity : AppCompatActivity() {
             .setDuration(300)
             .setInterpolator(OvershootInterpolator(1.5f))
             .start()
+        
+        // Update average immediately to show penalty effect
+        updateStats()
         
         // Shake animation for instruction
         binding.tvInstruction.animate()
@@ -274,13 +277,10 @@ class ReactionGameActivity : AppCompatActivity() {
     
     private fun recordReaction() {
         val rawReactionTime = System.currentTimeMillis() - startTime
-        // Add penalty for early taps in this round (50ms per early tap)
-        val penalty = earlyTapsForCurrentRound * 50L
-        val reactionTimeWithPenalty = rawReactionTime + penalty
+        // Don't add penalty to individual rounds - we'll add it directly to average later
+        android.util.Log.d("ReactionGame", "recordReaction: round=$currentRound, rawTime=$rawReactionTime, earlyTaps=$earlyTapsForCurrentRound")
         
-        android.util.Log.d("ReactionGame", "recordReaction: round=$currentRound, rawTime=$rawReactionTime, earlyTaps=$earlyTapsForCurrentRound, penalty=$penalty, finalTime=$reactionTimeWithPenalty")
-        
-        reactionTimes.add(reactionTimeWithPenalty)
+        reactionTimes.add(rawReactionTime)
         
         soundManager.playCorrect()
         gameState = GameState.SHOWING_RESULT
@@ -291,8 +291,8 @@ class ReactionGameActivity : AppCompatActivity() {
         binding.tvSubtext.visibility = View.GONE
         binding.penaltyLayout.visibility = View.GONE
         binding.tvTryAgain.visibility = View.GONE
-        // Show the reaction time with penalty already included
-        binding.tvReactionTime.text = "$reactionTimeWithPenalty"
+        // Show the raw reaction time (no penalty shown here)
+        binding.tvReactionTime.text = "$rawReactionTime"
         binding.tvReactionTime.visibility = View.VISIBLE
         binding.tvReactionLabel.visibility = View.VISIBLE
         
@@ -339,16 +339,23 @@ class ReactionGameActivity : AppCompatActivity() {
     private fun updateStats() {
         if (reactionTimes.isNotEmpty()) {
             val best = reactionTimes.minOrNull() ?: 0
-            // Average already includes penalties (they're added to each reaction time)
-            // Use proper rounding instead of truncation
-            val avg = kotlin.math.round(reactionTimes.average()).toLong()
+            // Calculate average without penalties (penalties added at the end)
+            val rawAvg = kotlin.math.round(reactionTimes.average()).toLong()
+            // Add penalty directly to average: 10ms per early tap
+            val penalty = totalEarlyTaps * 10L
+            val avg = rawAvg + penalty
             
-            android.util.Log.d("ReactionGame", "updateStats: reactionTimes=$reactionTimes, avg=$avg, best=$best")
+            android.util.Log.d("ReactionGame", "updateStats: reactionTimes=$reactionTimes, rawAvg=$rawAvg, totalEarlyTaps=$totalEarlyTaps, penalty=$penalty, finalAvg=$avg, best=$best")
             
             binding.tvBestTime.text = "$best"
             binding.tvAvgTime.text = "$avg"
+        } else if (totalEarlyTaps > 0) {
+            // Show penalty even if no rounds completed yet
+            val penalty = totalEarlyTaps * 10L
+            binding.tvBestTime.text = "---"
+            binding.tvAvgTime.text = "+$penalty"
         } else {
-            // Safety check: shouldn't happen, but handle gracefully
+            // No reaction times and no penalties
             binding.tvBestTime.text = "---"
             binding.tvAvgTime.text = "---"
         }
@@ -362,9 +369,13 @@ class ReactionGameActivity : AppCompatActivity() {
         }
         
         val best = reactionTimes.minOrNull() ?: 0
-        // Average already includes penalties (they're added to each reaction time)
-        // Use proper rounding instead of truncation
-        val avg = kotlin.math.round(reactionTimes.average()).toLong()
+        // Calculate average without penalties first, then add penalty directly to average
+        val rawAvg = kotlin.math.round(reactionTimes.average()).toLong()
+        // Add penalty directly to average: 10ms per early tap
+        val penalty = totalEarlyTaps * 10L
+        val avg = rawAvg + penalty
+        
+        android.util.Log.d("ReactionGame", "showGameOver: reactionTimes=$reactionTimes, rawAvg=$rawAvg, totalEarlyTaps=$totalEarlyTaps, penalty=$penalty, finalAvg=$avg")
         
         // Check if this is a new best average (lower is better for reaction time)
         // Only count as high score if there was a previous score AND we beat it

@@ -474,15 +474,14 @@ class ColorGameActivity : AppCompatActivity() {
             }
         }
         
-        // Show score even if less than 20 balls (show partial score)
+        // Show score even if less than 20 balls
         if (ballsSpawned >= 20) {
             dialogBinding.tvScore.text = "Score: $finalScore"
             // Show badges using helper function
             GameOverHelper.showBadges(dialogBinding, GameType.COLOR_CATCH, finalScore, previousHighScore, this)
         } else {
-            // Show partial score for games with less than 20 balls
-            val partialScore = calculateScore() // Calculate anyway
-            dialogBinding.tvScore.text = "Score: $partialScore (Partial - $ballsSpawned balls)"
+            // Show score for games with less than 20 balls (score will be 0)
+            dialogBinding.tvScore.text = "Score: $finalScore"
             // Don't show badges for partial scores
             dialogBinding.tvNewHighScore.visibility = View.GONE
             dialogBinding.tvPersonalBest.visibility = View.GONE

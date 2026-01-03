@@ -47,16 +47,65 @@ class PatternGameActivity : AppCompatActivity() {
     data class SelectionInfo(val emoji: String, val optionIndex: Int, val view: View)
     private var selectionInfoList = mutableListOf<SelectionInfo>()
     
-    // Pattern lengths: 3,3,4,4,5,5,6,6,7,7,7...
-    private val patternLengths = listOf(3, 3, 4, 4, 5, 5, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8, 8, 8, 9, 9, 9, 9, 10, 10, 10, 10, 10 )
+    /**
+     * Calculate pattern length dynamically based on level
+     * Progression: Starts at 3, gradually increases with smoother curve
+     * Formula: baseLength + floor((level - 1) / 2)
+     * This gives: 3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10...
+     * After level 20, caps at 10 (max for 2-line display)
+     */
+    private fun getPatternLength(): Int {
+        val baseLength = 3
+        val calculatedLength = baseLength + ((currentLevel - 1) / 2)
+        return minOf(calculatedLength, 10) // Cap at 10 for display constraints
+    }
     
-    private val emojiSets = listOf(
-        listOf("🍎", "🍊", "🍋", "🍇", "🍓", "🍒", "🥝", "🍑"),
-        listOf("🐶", "🐱", "🐼", "🦁", "🐯", "🐸", "🦊", "🐰"),
-        listOf("⭐", "🌙", "☀️", "🌈", "❤️", "💎", "🔥", "💫"),
-        listOf("🚀", "✈️", "🚗", "🚲", "⚽", "🏀", "🎸", "🎮"),
-        listOf("🌸", "🌺", "🌻", "🌷", "🌹", "💐", "🍀", "🌴")
-    )
+    /**
+     * Expanded emoji sets with more variety
+     * Each set has 10 emojis for better variety in longer patterns
+     */
+private val emojiSets = listOf(
+
+    listOf("🍎","🐶","🚗","⭐","📱","⚽","☀️","🎸","💎","🧠","🏠","✈️","🔥","⌚","🎁"),
+
+    listOf("🍕","🐱","🚀","❤️","💡","🏀","🌙","🎮","👜","🦋","🚲","❄️","📷","🎈","🪙"),
+
+    listOf("🍌","🦁","🚕","🌈","🖥️","🎾","🌧️","🎧","🔑","🐠","🏀","📦","🔥","⌨️","🎉"),
+
+    listOf("🍓","🐸","🛵","💥","📺","🏈","☁️","🎤","🧲","🦊","🚆","🌊","💰","⌚","🎯"),
+
+    listOf("🍔","🐼","🚓","✨","📡","⚾","⛈️","🎹","🧯","🦉","🚁","🌵","🧾","🕶️","🎁"),
+
+    listOf("🍩","🐯","🏎️","💖","💻","🏓","🌬️","🎻","🔋","🐙","🚢","🏔️","📕","🪜","🎊"),
+
+    listOf("🍉","🦊","🚌","⚡","📱","🥊","❄️","🎷","🧪","🐬","🚜","🌴","📎","👓","🎈"),
+
+    listOf("🍪","🐻","🚚","🔔","🖱️","🏸","🌪️","🎺","🔩","🦈","🚄","🌋","📘","🧢","🎯"),
+
+    listOf("🍰","🐵","🚲","❣️","⌨️","⚽","🌨️","🥁","🧰","🐧","🛥️","🌄","📙","🧤","🎁"),
+
+    listOf("🍟","🐰","🚗","⭐","📷","🏀","☀️","🎸","🔐","🐢","✈️","🌊","📒","🧥","🎉"),
+
+    listOf("🥝","🦁","🚕","💫","📞","🎾","🌙","🎮","🔦","🦅","🚆","🌵","📗","🎒","🎈"),
+
+    listOf("🍒","🐶","🚀","🔥","🖥️","🏈","🌧️","🎧","🧲","🐠","🚢","🌴","📓","🧢","🎊"),
+
+    listOf("🍎","🐼","🛵","✨","📺","⚾","☁️","🎤","🧯","🦉","🚁","🏔️","📔","🧣","🎯"),
+
+    listOf("🍕","🐸","🚓","⚡","💻","🏓","⛈️","🎹","🔋","🐙","🚜","🌋","📕","👟","🎁"),
+
+    listOf("🍌","🐯","🏎️","💎","📡","🥊","❄️","🎻","🧪","🐬","🚄","🌄","📘","🧦","🎉"),
+
+    listOf("🍓","🦊","🚌","❤️","🖱️","🏸","🌬️","🎷","🧰","🦈","🚲","🌴","📙","🎩","🎈"),
+
+    listOf("🍔","🐻","🚚","🔔","⌨️","⚽","🌪️","🎺","🔩","🐧","🛥️","🌊","📒","🧢","🎊"),
+
+    listOf("🍩","🐵","🚗","❣️","📷","🏀","🌨️","🥁","🧲","🐢","✈️","🏔️","📓","🧥","🎯"),
+
+    listOf("🍉","🐰","🚕","⭐","📱","🎾","☀️","🎸","🔐","🦅","🚆","🌵","📔","🎒","🎁"),
+
+    listOf("🍪","🦁","🚀","💥","💡","🏈","🌙","🎮","🔦","🐠","🚢","🌴","📕","👓","🎉")
+)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -229,14 +278,6 @@ class PatternGameActivity : AppCompatActivity() {
         }
     }
     
-    private fun getPatternLength(): Int {
-        return if (currentLevel <= patternLengths.size) {
-            patternLengths[currentLevel - 1]
-        } else {
-            7 // Max pattern length
-        }
-    }
-    
     private fun startRound() {
         binding.btnStart.visibility = View.GONE
         userSelection.clear()
@@ -246,7 +287,12 @@ class PatternGameActivity : AppCompatActivity() {
         
         // Generate pattern based on level
         val patternLength = getPatternLength()
-        val emojiSet = emojiSets[(currentLevel - 1) % emojiSets.size]
+        // Rotate through emoji sets, changing every 3 levels for variety
+        val emojiSetIndex = ((currentLevel - 1) / 3) % emojiSets.size
+        val emojiSet = emojiSets[emojiSetIndex]
+        
+        // Generate pattern with random emoji selection (repetition allowed)
+        // Each emoji is randomly selected from the set, so the same emoji can appear multiple times
         currentPattern = (1..patternLength).map { emojiSet.random() }
         
         showPattern()
