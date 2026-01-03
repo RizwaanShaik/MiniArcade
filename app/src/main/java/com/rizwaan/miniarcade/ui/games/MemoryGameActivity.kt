@@ -382,7 +382,8 @@ class MemoryGameActivity : AppCompatActivity() {
         
         val dialog = AlertDialog.Builder(this, R.style.Theme_MiniArcade)
             .setView(dialogBinding.root)
-            .setCancelable(false)
+            .setCancelable(true)
+            .setOnCancelListener { finish() }
             .create()
         
         dialogBinding.btnPlayAgain.setOnClickListener {
