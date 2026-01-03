@@ -48,7 +48,7 @@ class PatternGameActivity : AppCompatActivity() {
     private var selectionInfoList = mutableListOf<SelectionInfo>()
     
     // Pattern lengths: 3,3,4,4,5,5,6,6,7,7,7...
-    private val patternLengths = listOf(3, 3, 4, 4, 5, 5, 6, 6, 7, 7)
+    private val patternLengths = listOf(3, 3, 4, 4, 5, 5, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8, 8, 8, 9, 9, 9, 9, 10, 10, 10, 10, 10 )
     
     private val emojiSets = listOf(
         listOf("🍎", "🍊", "🍋", "🍇", "🍓", "🍒", "🥝", "🍑"),
@@ -282,6 +282,7 @@ class PatternGameActivity : AppCompatActivity() {
             textSize = 36f
             gravity = Gravity.CENTER
             setTextColor(0xFF000000.toInt())
+            typeface = resources.getFont(R.font.poppins)
             layoutParams = FlexboxLayout.LayoutParams(size, size).apply {
                 setMargins(margin, margin, margin, margin)
             }
@@ -326,6 +327,7 @@ class PatternGameActivity : AppCompatActivity() {
                 textSize = 36f
                 gravity = Gravity.CENTER
                 setTextColor(0xFF000000.toInt())
+                typeface = resources.getFont(R.font.poppins)
                 layoutParams = FlexboxLayout.LayoutParams(size, size).apply {
                     setMargins(margin, margin, margin, margin)
                 }
@@ -480,7 +482,7 @@ class PatternGameActivity : AppCompatActivity() {
         if (isNewHighScore) {
             soundManager.playHighscore()
         } else {
-            soundManager.playGameOver()
+            soundManager.playDefeat()  // Lost all lives - defeat sound
         }
         
         saveScore()

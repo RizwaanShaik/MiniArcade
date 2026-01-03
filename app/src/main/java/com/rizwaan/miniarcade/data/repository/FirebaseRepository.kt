@@ -318,9 +318,11 @@ class FirebaseRepository {
             
             val playerRef = ref.child(score.playerId)
             
-            playerRef.child(fieldName).addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val existingScore = snapshot.getValue(Long::class.java) ?: 0L
+            // First, get the full player data to calculate total score
+            playerRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(playerSnapshot: DataSnapshot) {
+                    val player = playerSnapshot.getValue(Player::class.java)
+                    val existingScore = playerSnapshot.child(fieldName).getValue(Long::class.java) ?: 0L
                     Log.d(TAG, "saveScore: existingScore=$existingScore, newScore=${score.score}")
                     
                     // Determine if we should update (0 means no score yet)
@@ -334,9 +336,21 @@ class FirebaseRepository {
                     Log.d(TAG, "saveScore: shouldUpdate=$shouldUpdate")
                     
                     if (shouldUpdate) {
-                        playerRef.child(fieldName).setValue(score.score)
+                        // Update the game score
+                        val updates = mutableMapOf<String, Any>()
+                        updates[fieldName] = score.score
+                        
+                        // Calculate new total score
+                        val newTotalScore = calculateTotalScore(
+                            player = player,
+                            updatedGameType = score.gameType,
+                            newScore = score.score
+                        )
+                        updates["totalScore"] = newTotalScore
+                        
+                        playerRef.updateChildren(updates)
                             .addOnSuccessListener { 
-                                Log.d(TAG, "saveScore: SUCCESS! Updated $fieldName to ${score.score}")
+                                Log.d(TAG, "saveScore: SUCCESS! Updated $fieldName to ${score.score}, totalScore to $newTotalScore")
                                 cont.resume(true) 
                             }
                             .addOnFailureListener { e ->
@@ -356,6 +370,84 @@ class FirebaseRepository {
         } catch (e: Exception) {
             Log.e(TAG, "saveScore exception: ${e.message}", e)
             cont.resume(false)
+        }
+    }
+    
+    /**
+     * Calculate total score from all game scores
+     * Reaction Time: converts to points (10000 - time) since lower is better
+     * Other games: uses score directly (higher is better)
+     */
+    private fun calculateTotalScore(player: Player?, updatedGameType: GameType, newScore: Long): Long {
+        val reactionTime = if (updatedGameType == GameType.REACTION_TIME) newScore else (player?.reactionTime ?: 0L)
+        val memoryFlip = if (updatedGameType == GameType.MEMORY_FLIP) newScore else (player?.memoryFlip ?: 0L)
+        val patternSnap = if (updatedGameType == GameType.PATTERN_SNAP) newScore else (player?.patternSnap ?: 0L)
+        val colorCatch = if (updatedGameType == GameType.COLOR_CATCH) newScore else (player?.colorCatch ?: 0L)
+        val wordScramble = if (updatedGameType == GameType.WORD_SCRAMBLE) newScore else (player?.wordScramble ?: 0L)
+        val rhythmTap = if (updatedGameType == GameType.RHYTHM_TAP) newScore else (player?.rhythmTap ?: 0L)
+        
+        // Convert Reaction Time to points (lower time = higher points)
+        val reactionPoints = if (reactionTime > 0) 10000L - reactionTime else 0L
+        
+        // Sum all scores
+        return reactionPoints + memoryFlip + patternSnap + colorCatch + wordScramble + rhythmTap
+    }
+    
+    /**
+     * Get leaderboard for total score (combined across all games)
+     */
+    fun getTotalLeaderboard(limit: Int = 50): Flow<List<GameScore>> {
+        val ref = try { playersRef } catch (e: Exception) { null }
+        if (ref == null) return flow { emit(emptyList()) }
+        
+        return callbackFlow {
+            try {
+                val listener = object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val scores = snapshot.children.mapNotNull { playerSnapshot ->
+                            val player = playerSnapshot.getValue(Player::class.java)
+                            val totalScore = player?.totalScore ?: 0L
+                            
+                            // Only include players who have a total score > 0
+                            if (player != null && totalScore > 0) {
+                                // Count games played
+                                val gamesPlayed = listOf(
+                                    player.reactionTime,
+                                    player.memoryFlip,
+                                    player.patternSnap,
+                                    player.colorCatch,
+                                    player.wordScramble,
+                                    player.rhythmTap
+                                ).count { it > 0 }
+                                
+                                GameScore(
+                                    id = player.id,
+                                    playerId = player.id,
+                                    playerUsername = player.username,
+                                    playerAvatar = player.avatarEmoji,
+                                    gameType = GameType.REACTION_TIME, // Placeholder for total
+                                    score = totalScore,
+                                    extras = mapOf("gamesPlayed" to gamesPlayed)
+                                )
+                            } else null
+                        }.sortedByDescending { it.score }.take(limit)
+                        
+                        Log.d(TAG, "getTotalLeaderboard: Found ${scores.size} scores")
+                        trySend(scores)
+                    }
+                    override fun onCancelled(error: DatabaseError) {
+                        Log.e(TAG, "getTotalLeaderboard cancelled: ${error.message}")
+                        trySend(emptyList())
+                    }
+                }
+                
+                ref.addValueEventListener(listener)
+                awaitClose { ref.removeEventListener(listener) }
+            } catch (e: Exception) {
+                Log.e(TAG, "getTotalLeaderboard exception: ${e.message}", e)
+                trySend(emptyList())
+                close()
+            }
         }
     }
     

@@ -51,6 +51,8 @@ class SoundManager(private val context: Context) {
     private var highscoreSoundId: Int = 0
     private var loselifeSoundId: Int = 0
     private var countdownSoundId: Int = 0
+    private var victorySoundId: Int = 0
+    private var defeatSoundId: Int = 0
     
     private var isLoaded = false
     
@@ -66,6 +68,8 @@ class SoundManager(private val context: Context) {
             loselifeSoundId = tryLoadSoundFromAssets("loselife.mp3")
             countdownSoundId = tryLoadSoundFromAssets("countdown.mp3")
             correctSoundId = tryLoadSoundFromAssets("correct.mp3")
+            victorySoundId = tryLoadSoundFromAssets("victory.mp3")
+            defeatSoundId = tryLoadSoundFromAssets("defeat.mp3")
             
             // Then try to load from raw folder (for backward compatibility)
             tapSoundId = tryLoadSoundFromRaw("tap")
@@ -176,6 +180,20 @@ class SoundManager(private val context: Context) {
             soundPool.play(countdownSoundId, 0.8f, 0.8f, 1, 0, 1f)
         }
         vibrateLight()
+    }
+    
+    fun playVictory() {
+        if (prefsManager.soundEnabled && victorySoundId != 0) {
+            soundPool.play(victorySoundId, 0.9f, 0.9f, 1, 0, 1f)
+        }
+        vibrateSuccess()
+    }
+    
+    fun playDefeat() {
+        if (prefsManager.soundEnabled && defeatSoundId != 0) {
+            soundPool.play(defeatSoundId, 0.8f, 0.8f, 1, 0, 1f)
+        }
+        vibrateGameOver()
     }
     
     // Haptic feedback methods

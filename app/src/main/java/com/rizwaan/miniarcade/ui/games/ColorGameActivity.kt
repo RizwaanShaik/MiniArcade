@@ -392,6 +392,7 @@ class ColorGameActivity : AppCompatActivity() {
             this.text = text
             textSize = 20f
             setTextColor(getColor(colorRes))
+            typeface = resources.getFont(R.font.poppins_bold)
             layoutParams = FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.WRAP_CONTENT,
                 FrameLayout.LayoutParams.WRAP_CONTENT
@@ -449,7 +450,7 @@ class ColorGameActivity : AppCompatActivity() {
         if (isNewHighScore) {
             soundManager.playHighscore()
         } else {
-            soundManager.playGameOver()
+            soundManager.playDefeat()  // Lost all lives - defeat sound
         }
         
         saveScore()

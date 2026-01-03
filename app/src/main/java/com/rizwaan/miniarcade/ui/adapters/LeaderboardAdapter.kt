@@ -90,10 +90,9 @@ class LeaderboardAdapter(
             val isCombined = score.extras?.containsKey("gamesPlayed") == true
             
             return when {
-                isCombined -> Pair("${score.score}", "pts")
+                isCombined -> Pair("${score.score}", "")
                 gameType == GameType.REACTION_TIME -> Pair("${score.score}", "ms")
-                gameType == GameType.MEMORY_FLIP -> Pair("${score.score}", "moves")
-                else -> Pair("${score.score}", "pts")
+                else -> Pair("${score.score}", "")
             }
         }
     }

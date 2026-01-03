@@ -309,7 +309,7 @@ class RhythmGameActivity : AppCompatActivity() {
             gravity = Gravity.CENTER
             setTextColor(arrowColor)
             setShadowLayer(8f, 0f, 0f, 0x88000000.toInt()) // Shadow for depth
-            setTypeface(typeface, android.graphics.Typeface.BOLD)
+            typeface = resources.getFont(R.font.poppins_bold)
             
             layoutParams = FrameLayout.LayoutParams(shapeSize, shapeSize).apply {
                 leftMargin = startX
@@ -544,7 +544,7 @@ class RhythmGameActivity : AppCompatActivity() {
         if (isPersonalBest) {
             soundManager.playHighscore()
         } else {
-            soundManager.playGameOver()
+            soundManager.playDefeat()  // Lost all lives - defeat sound
         }
         
         saveScore(score)

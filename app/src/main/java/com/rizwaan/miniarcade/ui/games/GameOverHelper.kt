@@ -208,7 +208,6 @@ object GameOverHelper {
     private fun formatScore(score: Long, gameType: GameType): String {
         return when (gameType) {
             GameType.REACTION_TIME -> "${score}ms"
-            GameType.MEMORY_FLIP -> "$score moves"
             else -> "$score"
         }
     }

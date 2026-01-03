@@ -236,6 +236,7 @@
                 android:textSize="28sp"
                 android:textColor="@color/text_primary"
                 android:textStyle="bold"
+                android:fontFamily="@font/poppins"
                 android:layout_marginTop="16dp"/>
 
             <TextView
@@ -244,6 +245,7 @@
                 android:text="Unscramble the letters!"
                 android:textSize="16sp"
                 android:textColor="@color/text_secondary"
+                android:fontFamily="@font/poppins"
                 android:layout_marginTop="8dp"/>
 
             <Button

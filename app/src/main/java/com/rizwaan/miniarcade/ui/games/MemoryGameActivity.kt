@@ -35,6 +35,7 @@ class MemoryGameActivity : AppCompatActivity() {
     
     private var currentLevel = 1
     private val maxLevel = 5  // Only 5 rounds now
+    private var completedLevels = 0  // Track completed levels for scoring
     private var pairsFound = 0
     private var totalPairs = 0
     private var moves = 0
@@ -43,6 +44,28 @@ class MemoryGameActivity : AppCompatActivity() {
     private var isChecking = false
     private var isGameStarted = false
     private var previousHighScore = 0L  // Track previous high score for new high score detection
+    
+    // Improved scoring tracking
+    data class LevelStats(
+        val level: Int,
+        val pairs: Int,
+        val moves: Int,
+        val mismatches: Int,
+        val perfectMoves: Int // pairs * 2 (minimum moves needed)
+    )
+    private val levelStatsList = mutableListOf<LevelStats>()
+    private var currentLevelMismatches = 0
+    private var currentCombo = 0
+    private var totalComboBonus = 0L
+    
+    // Level difficulty weights (harder levels worth more)
+    private val levelWeights = mapOf(
+        1 to 1.0,
+        2 to 1.2,
+        3 to 1.4,
+        4 to 1.7,
+        5 to 2.0
+    )
     
     private val emojis = listOf(
         "🍎", "🍊", "🍋", "🍇", "🍓", "🍒", "🥝", "🍑",
@@ -85,7 +108,12 @@ class MemoryGameActivity : AppCompatActivity() {
     
     private fun resetGame() {
         currentLevel = 1
+        completedLevels = 0
         totalMoves = 0
+        levelStatsList.clear()
+        currentLevelMismatches = 0
+        currentCombo = 0
+        totalComboBonus = 0L
         updateUI()
     }
     
@@ -124,6 +152,8 @@ class MemoryGameActivity : AppCompatActivity() {
     private fun setupLevel() {
         pairsFound = 0
         moves = 0
+        currentLevelMismatches = 0
+        currentCombo = 0  // Reset combo for new level
         firstCard = null
         isChecking = false
         
@@ -191,14 +221,28 @@ class MemoryGameActivity : AppCompatActivity() {
             val card2Emoji = getCardEmoji(pos2)
             
             if (card1Emoji == card2Emoji) {
+                // Match found - increase combo and add bonus
+                currentCombo++
+                // Combo bonus: each consecutive match adds more points
+                totalComboBonus += (currentCombo * 20)
+                
                 cardAdapter.matchCards(pos1, pos2)
                 pairsFound++
-                soundManager.playCorrect()
+                
+                // Play streak sound if 2+ consecutive matches, otherwise play correct sound
+                if (currentCombo > 1) {
+                    soundManager.playCombo()  // Streak sound for consecutive matches
+                } else {
+                    soundManager.playCorrect()  // First match sound
+                }
                 
                 if (pairsFound >= totalPairs) {
                     levelComplete()
                 }
             } else {
+                // Mismatch - reset combo and track mismatch
+                currentCombo = 0
+                currentLevelMismatches++
                 cardAdapter.flipCard(pos1, false)
                 cardAdapter.flipCard(pos2, false)
                 soundManager.playWrong()
@@ -225,6 +269,26 @@ class MemoryGameActivity : AppCompatActivity() {
     }
     
     private fun levelComplete() {
+        completedLevels = currentLevel  // Mark current level as completed
+        
+        // Save level stats for scoring
+        // Perfect moves = number of pairs (each pair requires 1 match check)
+        val perfectMoves = totalPairs
+        val levelStats = LevelStats(
+            level = currentLevel,
+            pairs = totalPairs,
+            moves = moves,
+            mismatches = currentLevelMismatches,
+            perfectMoves = perfectMoves
+        )
+        levelStatsList.add(levelStats)
+        
+        // Play victory sound after each round completion
+        soundManager.playVictory()
+        
+        // Save score after each level completion so partial progress is saved
+        saveScore()
+        
         if (currentLevel >= maxLevel) {
             showGameOver(true)
         } else {
@@ -235,15 +299,28 @@ class MemoryGameActivity : AppCompatActivity() {
     private fun showLevelComplete() {
         val dialogBinding = DialogGameOverBinding.inflate(layoutInflater)
         
-        dialogBinding.tvResultEmoji.text = "🎉"
-        dialogBinding.tvTitle.text = "Round $currentLevel Complete!"
-        dialogBinding.tvScore.text = "Moves this level: $moves"
+        val isPerfectLevel = currentLevelMismatches == 0
+        val perfectMoves = totalPairs
+        val excessMoves = maxOf(0, moves - perfectMoves)
+        
+        dialogBinding.tvResultEmoji.text = if (isPerfectLevel) "⭐" else "🎉"
+        dialogBinding.tvTitle.text = if (isPerfectLevel) {
+            "Perfect Round $currentLevel!"
+        } else {
+            "Round $currentLevel Complete!"
+        }
+        
+        val currentScore = calculateScore()
+        dialogBinding.tvScore.text = "Score: $currentScore"
+        
+        // Show "Perfect" text under score if perfect level
+        dialogBinding.tvPerfect.visibility = if (isPerfectLevel) View.VISIBLE else View.GONE
         
         dialogBinding.statsLayout.visibility = View.VISIBLE
-        dialogBinding.tvStat1Label.text = "Pairs"
-        dialogBinding.tvStat1Value.text = "$pairsFound"
-        dialogBinding.tvStat2Label.text = "Total Moves"
-        dialogBinding.tvStat2Value.text = "$totalMoves"
+        dialogBinding.tvStat1Label.text = "Moves"
+        dialogBinding.tvStat1Value.text = "$moves"  // Just show the number
+        dialogBinding.tvStat2Label.text = "Mismatches"
+        dialogBinding.tvStat2Value.text = "$currentLevelMismatches"
         
         dialogBinding.btnPlayAgain.text = "Next Round"
         
@@ -260,7 +337,7 @@ class MemoryGameActivity : AppCompatActivity() {
         
         dialogBinding.btnMenu.setOnClickListener {
             dialog.dismiss()
-            saveScore()
+            // Score already saved in levelComplete(), just finish
             finish()
         }
         
@@ -270,13 +347,19 @@ class MemoryGameActivity : AppCompatActivity() {
     private fun showGameOver(isWin: Boolean) {
         val finalScore = calculateScore()
         
+        // Calculate stats for display
+        val totalPerfectMoves = levelStatsList.sumOf { it.perfectMoves }
+        val totalExcessMoves = maxOf(0, totalMoves - totalPerfectMoves)
+        val perfectLevels = levelStatsList.count { it.mismatches == 0 }
+        
         // Check if this is a new high score
         val isNewHighScore = finalScore > previousHighScore
         if (isNewHighScore) {
             soundManager.playHighscore()
-        } else {
-            soundManager.playGameOver()
+        } else if (!isWin) {
+            soundManager.playGameOver()  // Quit early - game over sound
         }
+        // Note: Victory sound already played in levelComplete() for each round
         
         saveScore()
         
@@ -290,9 +373,9 @@ class MemoryGameActivity : AppCompatActivity() {
         
         dialogBinding.statsLayout.visibility = View.VISIBLE
         dialogBinding.tvStat1Label.text = "Rounds"
-        dialogBinding.tvStat1Value.text = "$currentLevel"
-        dialogBinding.tvStat2Label.text = "Total Moves"
-        dialogBinding.tvStat2Value.text = "$totalMoves"
+        dialogBinding.tvStat1Value.text = "$completedLevels"
+        dialogBinding.tvStat2Label.text = "Perfect Levels"
+        dialogBinding.tvStat2Value.text = "$perfectLevels/$completedLevels"
         
         // Load top 3 leaderboard
         GameOverHelper.loadLeaderboard(dialogBinding, GameType.MEMORY_FLIP)
@@ -317,29 +400,41 @@ class MemoryGameActivity : AppCompatActivity() {
     }
     
     private fun calculateScore(): Long {
-        // Calculate total pairs matched across all levels
-        val totalPairsMatched = calculateTotalPairs()
+        if (levelStatsList.isEmpty()) return 0L
         
-        // New scoring: (pairs * 100) + (level * 500) - (moves * 10)
-        // Higher is better, floor at 0
-        val score = (totalPairsMatched * 100) + (currentLevel * 500) - (totalMoves * 10)
-        return maxOf(0, score).toLong()
+        var totalScore = 0L
+        
+        // Calculate score per level with improved formula
+        levelStatsList.forEach { stats ->
+            val levelWeight = levelWeights[stats.level] ?: 1.0
+            
+            // Perfect moves = number of pairs (each pair requires 1 match check)
+            val excessMoves = maxOf(0, stats.moves - stats.perfectMoves)
+            
+            // Perfect level bonus (no mismatches)
+            val perfectLevelBonus = if (stats.mismatches == 0) 300L else 0L
+            
+            // Level score with difficulty weighting
+            // Formula: (pairs * basePoints * weight) + perfectBonus - (excessMoves * penalty)
+            val levelScore = (stats.pairs * 150 * levelWeight).toLong() +
+                    perfectLevelBonus -
+                    (excessMoves * 20)
+            
+            totalScore += levelScore
+        }
+        
+        // Add completion bonus (one-time bonus for finishing rounds)
+        totalScore += (completedLevels * 100)
+        
+        // Add combo bonus (rewards consecutive matches)
+        totalScore += totalComboBonus
+        
+        return maxOf(0, totalScore)
     }
     
     private fun calculateTotalPairs(): Int {
-        // Sum pairs from all completed levels
-        var total = 0
-        for (level in 1..currentLevel) {
-            val gridSize = when (level) {
-                1 -> Pair(3, 4)  // 6 pairs
-                2 -> Pair(4, 4)  // 8 pairs
-                3 -> Pair(4, 5)  // 10 pairs
-                4 -> Pair(5, 6)  // 15 pairs
-                else -> Pair(6, 6) // 18 pairs
-            }
-            total += (gridSize.first * gridSize.second) / 2
-        }
-        return total
+        // Sum pairs from completed levels only
+        return levelStatsList.sumOf { it.pairs }
     }
     
     private fun saveScore() {
@@ -353,7 +448,7 @@ class MemoryGameActivity : AppCompatActivity() {
             playerUsername = player.username,
             gameType = GameType.MEMORY_FLIP,
             score = score,
-            extras = mapOf("rounds" to currentLevel, "totalMoves" to totalMoves)
+            extras = mapOf("rounds" to completedLevels, "totalMoves" to totalMoves)
         )
         
         lifecycleScope.launch {

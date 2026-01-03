@@ -92,14 +92,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Pattern Display Area - Used when showing the pattern -->
+    <!-- Pattern Display Area - Fixed height for 2 lines (5 tiles per line = 10 max) -->
+    <!-- This area is used when showing the pattern -->
     <com.google.android.flexbox.FlexboxLayout
         android:id="@+id/patternDisplayArea"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_xl"
+        android:layout_height="160dp"
+        android:layout_marginTop="@dimen/spacing_sm"
         android:layout_marginHorizontal="@dimen/spacing_lg"
-        android:padding="@dimen/spacing_sm"
+        android:paddingVertical="@dimen/spacing_md"
+        android:paddingHorizontal="@dimen/spacing_md"
+        android:gravity="center"
+        android:clipToPadding="false"
+        android:clipChildren="false"
         app:flexWrap="wrap"
         app:justifyContent="center"
         app:alignItems="center"
@@ -108,53 +113,61 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- User Selection Area (ABOVE options - selected emojis go here) - HEIGHT FOR 2 LINES -->
+    <!-- User Selection Area (selected emojis go here) - Same position as pattern display -->
+    <!-- This area overlaps with patternDisplayArea and is shown during input phase -->
     <com.google.android.flexbox.FlexboxLayout
         android:id="@+id/userSelectionArea"
         android:layout_width="match_parent"
-        android:layout_height="130dp"
-        android:layout_marginTop="@dimen/spacing_lg"
+        android:layout_height="160dp"
+        android:layout_marginTop="@dimen/spacing_sm"
         android:layout_marginHorizontal="@dimen/spacing_lg"
-        android:padding="@dimen/spacing_sm"
+        android:paddingVertical="@dimen/spacing_md"
+        android:paddingHorizontal="@dimen/spacing_sm"
         android:visibility="gone"
+        android:clipToPadding="false"
+        android:clipChildren="false"
         app:flexWrap="wrap"
         app:justifyContent="center"
         app:alignItems="center"
         app:alignContent="center"
-        app:layout_constraintTop_toBottomOf="@id/patternDisplayArea"
+        app:layout_constraintTop_toBottomOf="@id/tvInstruction"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Clear Button - enhanced with better styling -->
+    <!-- Clear Button - positioned below user selection with consistent spacing -->
     <Button
         android:id="@+id/btnClear"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="@dimen/spacing_lg"
         android:text="🗑️ Clear"
-        android:textSize="14sp"
+        android:textSize="12sp"
         android:textColor="@color/white"
         android:textStyle="bold"
         android:fontFamily="@font/poppins"
         android:background="@drawable/bg_card_rounded"
         android:backgroundTint="@color/game_red"
-        android:paddingHorizontal="20dp"
-        android:paddingVertical="10dp"
+        android:paddingHorizontal="14dp"
+        android:paddingVertical="0dp"
+        android:minHeight="0dp"
         android:visibility="gone"
-        android:elevation="4dp"
+        android:elevation="2dp"
         app:layout_constraintTop_toBottomOf="@id/userSelectionArea"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Options Grid (BELOW selection area - scrambled options stay here) -->
+    <!-- Options Grid - Fixed height for 2 lines (5 tiles per line = 10 max) -->
+    <!-- Positioned below clear button with same spacing -->
     <com.google.android.flexbox.FlexboxLayout
         android:id="@+id/optionsGrid"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spacing_md"
+        android:layout_height="160dp"
+        android:layout_marginTop="@dimen/spacing_lg"
         android:layout_marginHorizontal="@dimen/spacing_lg"
         android:padding="@dimen/spacing_md"
         android:visibility="gone"
+        android:clipToPadding="false"
+        android:clipChildren="false"
         app:flexWrap="wrap"
         app:justifyContent="center"
         app:alignItems="center"
@@ -201,7 +214,8 @@
                 android:layout_marginTop="8dp"
                 android:text="Remember and repeat the pattern!"
                 android:textColor="@color/text_secondary"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:fontFamily="@font/poppins" />
 
             <Button
                 android:id="@+id/btnStart"

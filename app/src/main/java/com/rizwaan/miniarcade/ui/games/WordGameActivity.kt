@@ -286,6 +286,7 @@ class WordGameActivity : AppCompatActivity() {
             textSize = letterTextSize
             gravity = Gravity.CENTER
             setTextColor(getColor(R.color.text_hint))
+            typeface = resources.getFont(R.font.poppins)
             
             layoutParams = FlexboxLayout.LayoutParams(letterSize, letterSize).apply {
                 setMargins(margin, margin, margin, margin)
@@ -308,6 +309,7 @@ class WordGameActivity : AppCompatActivity() {
             gravity = Gravity.CENTER
             setTextColor(getColor(R.color.white))
             textAlignment = View.TEXT_ALIGNMENT_CENTER
+            typeface = resources.getFont(R.font.poppins_bold)
             
             layoutParams = FlexboxLayout.LayoutParams(letterSize, letterSize).apply {
                 setMargins(margin, margin, margin, margin)
@@ -653,7 +655,7 @@ class WordGameActivity : AppCompatActivity() {
         if (isNewHighScore) {
             soundManager.playHighscore()
         } else {
-            soundManager.playGameOver()
+            soundManager.playDefeat()  // Lost all lives - defeat sound
         }
         
         saveScore()

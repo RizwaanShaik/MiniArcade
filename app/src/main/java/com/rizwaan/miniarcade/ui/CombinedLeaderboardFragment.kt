@@ -56,74 +56,19 @@ class CombinedLeaderboardFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             try {
-                // Get all game types
-                val allGameTypes = GameType.entries.toList()
-                
-                // Collect scores from all games
-                val allScores = mutableMapOf<String, CombinedPlayerScore>()
-                
-                allGameTypes.forEach { gameType ->
-                    val scores = firebaseRepo.getLeaderboard(gameType, 100).firstOrNull() ?: emptyList()
-                    scores.forEach { gameScore ->
-                        val playerId = gameScore.playerId
-                        val existing = allScores[playerId]
-                        
-                        // For Reaction Time, lower is better - convert to points (10000 - time)
-                        // For Memory Flip, lower is better - convert to points (10000 - moves)
-                        // For others, higher is better - use score directly
-                        val points = when (gameType) {
-                            GameType.REACTION_TIME -> {
-                                if (gameScore.score > 0) 10000L - gameScore.score else 0L
-                            }
-                            GameType.MEMORY_FLIP -> {
-                                if (gameScore.score > 0) 10000L - gameScore.score else 0L
-                            }
-                            else -> gameScore.score
-                        }
-                        
-                        if (existing != null) {
-                            existing.totalScore += points
-                            existing.gamesPlayed++
-                        } else {
-                            allScores[playerId] = CombinedPlayerScore(
-                                playerId = playerId,
-                                playerUsername = gameScore.playerUsername,
-                                playerAvatar = gameScore.playerAvatar,
-                                totalScore = points,
-                                gamesPlayed = 1
-                            )
-                        }
+                // Use the stored totalScore from Firebase instead of computing it
+                firebaseRepo.getTotalLeaderboard(50).collectLatest { combinedScores ->
+                    binding.progressBar.visibility = View.GONE
+                    
+                    if (combinedScores.isEmpty()) {
+                        binding.emptyState.visibility = View.VISIBLE
+                        binding.rvLeaderboard.visibility = View.GONE
+                    } else {
+                        binding.emptyState.visibility = View.GONE
+                        binding.rvLeaderboard.visibility = View.VISIBLE
+                        leaderboardAdapter.updateGameType(GameType.REACTION_TIME)
+                        leaderboardAdapter.submitList(combinedScores)
                     }
-                }
-                
-                // Convert to list and sort by total score (descending)
-                val combinedScores = allScores.values
-                    .sortedByDescending { it.totalScore }
-                    .take(50) // Top 50 players
-                    .mapIndexed { index, combined ->
-                        // Convert back to GameScore format for adapter
-                        com.rizwaan.miniarcade.data.models.GameScore(
-                            id = combined.playerId,
-                            playerId = combined.playerId,
-                            playerUsername = combined.playerUsername,
-                            playerAvatar = combined.playerAvatar,
-                            gameType = GameType.REACTION_TIME, // Use as placeholder for combined
-                            score = combined.totalScore,
-                            timestamp = System.currentTimeMillis(),
-                            extras = mapOf("gamesPlayed" to combined.gamesPlayed)
-                        )
-                    }
-                
-                binding.progressBar.visibility = View.GONE
-                
-                if (combinedScores.isEmpty()) {
-                    binding.emptyState.visibility = View.VISIBLE
-                    binding.rvLeaderboard.visibility = View.GONE
-                } else {
-                    binding.emptyState.visibility = View.GONE
-                    binding.rvLeaderboard.visibility = View.VISIBLE
-                    leaderboardAdapter.updateGameType(GameType.REACTION_TIME)
-                    leaderboardAdapter.submitList(combinedScores)
                 }
             } catch (e: Exception) {
                 binding.progressBar.visibility = View.GONE
@@ -132,14 +77,6 @@ class CombinedLeaderboardFragment : Fragment() {
             }
         }
     }
-    
-    private data class CombinedPlayerScore(
-        val playerId: String,
-        val playerUsername: String,
-        val playerAvatar: String,
-        var totalScore: Long,
-        var gamesPlayed: Int
-    )
 
     override fun onDestroyView() {
         super.onDestroyView()

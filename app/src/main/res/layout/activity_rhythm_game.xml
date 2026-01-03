@@ -145,6 +145,7 @@
                 android:textSize="16sp"
                 android:textColor="@color/text_secondary"
                 android:gravity="center"
+                android:fontFamily="@font/poppins"
                 android:layout_marginTop="8dp"/>
 
             <Button

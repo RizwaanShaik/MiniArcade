@@ -10,6 +10,7 @@ data class Player(
     val avatarEmoji: String = "🎮",
     val createdAt: Long = System.currentTimeMillis(),
     val totalGamesPlayed: Int = 0,
+    val totalScore: Long = 0,        // Combined total score across all games
     
     // Best scores for each game (stored directly in player record)
     val reactionTime: Long = 0,      // Best reaction time in ms (lower is better)
@@ -20,7 +21,7 @@ data class Player(
     val rhythmTap: Long = 0          // Best score (higher is better)
 ) {
     // No-argument constructor required for Firebase
-    constructor() : this("", "", "", "🎮", 0L, 0, 0L, 0L, 0L, 0L, 0L, 0L)
+    constructor() : this("", "", "", "🎮", 0L, 0, 0L, 0L, 0L, 0L, 0L, 0L, 0L)
     
     fun toMap(): Map<String, Any?> {
         return mapOf(
@@ -30,6 +31,7 @@ data class Player(
             "avatarEmoji" to avatarEmoji,
             "createdAt" to createdAt,
             "totalGamesPlayed" to totalGamesPlayed,
+            "totalScore" to totalScore,
             "reactionTime" to reactionTime,
             "memoryFlip" to memoryFlip,
             "patternSnap" to patternSnap,

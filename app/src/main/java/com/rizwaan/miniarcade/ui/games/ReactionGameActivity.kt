@@ -35,7 +35,9 @@ class ReactionGameActivity : AppCompatActivity() {
     private var currentRound = 0
     private val totalRounds = 5
     private val reactionTimes = mutableListOf<Long>()
-    private var previousHighScore = Long.MAX_VALUE  // Track previous best time (lower is better)
+    private var earlyTapsForCurrentRound = 0  // Track early taps for current round only
+    private var totalEarlyTaps = 0  // Track total early taps for display
+    private var previousHighScore = Long.MAX_VALUE  // Track previous average time (lower is better)
     
     private var pendingGoRunnable: Runnable? = null
     private var pendingResetRunnable: Runnable? = null
@@ -75,9 +77,10 @@ class ReactionGameActivity : AppCompatActivity() {
         lifecycleScope.launch {
             val player = prefsManager.currentPlayer ?: return@launch
             val playerData = firebaseRepo.getPlayerScores(player.id)
-            val previousBest = playerData?.getScore(GameType.REACTION_TIME) ?: 0L
+            val previousAvg = playerData?.getScore(GameType.REACTION_TIME) ?: 0L
             // For reaction time, 0 means no previous score, so use MAX_VALUE
-            previousHighScore = if (previousBest > 0) previousBest else Long.MAX_VALUE
+            // Lower is better for reaction time (average)
+            previousHighScore = if (previousAvg > 0) previousAvg else Long.MAX_VALUE
         }
     }
     
@@ -86,6 +89,8 @@ class ReactionGameActivity : AppCompatActivity() {
         
         currentRound = 0
         reactionTimes.clear()
+        earlyTapsForCurrentRound = 0
+        totalEarlyTaps = 0
         gameState = GameState.IDLE
         
         setRedBackground()
@@ -94,6 +99,8 @@ class ReactionGameActivity : AppCompatActivity() {
         binding.tvSubtext.visibility = View.VISIBLE
         binding.tvReactionTime.visibility = View.GONE
         binding.tvReactionLabel.visibility = View.GONE
+        binding.penaltyLayout.visibility = View.GONE
+        binding.tvTryAgain.visibility = View.GONE
         binding.tvRound.text = "0/$totalRounds"
         binding.tvBestTime.text = "---"
         binding.tvAvgTime.text = "---"
@@ -122,7 +129,7 @@ class ReactionGameActivity : AppCompatActivity() {
             GameState.IDLE -> startRound()
             GameState.WAITING -> tooEarly()
             GameState.GO -> recordReaction()
-            GameState.TOO_EARLY -> startRound()
+            GameState.TOO_EARLY -> retryRound()  // Don't reset early taps when retrying
             GameState.SHOWING_RESULT -> { /* Ignore */ }
             GameState.FINISHED -> { /* Ignore */ }
         }
@@ -132,8 +139,23 @@ class ReactionGameActivity : AppCompatActivity() {
         cancelAllPendingActions()
         
         currentRound++
+        earlyTapsForCurrentRound = 0  // Reset early taps for new round
         gameState = GameState.WAITING
         
+        setupRoundUI()
+    }
+    
+    private fun retryRound() {
+        // Retry the same round after early tap - DON'T reset earlyTapsForCurrentRound
+        cancelAllPendingActions()
+        
+        // Don't increment currentRound or reset earlyTapsForCurrentRound
+        gameState = GameState.WAITING
+        
+        setupRoundUI()
+    }
+    
+    private fun setupRoundUI() {
         binding.tvRound.text = "$currentRound/$totalRounds"
         
         setRedBackground()
@@ -141,6 +163,8 @@ class ReactionGameActivity : AppCompatActivity() {
         binding.tvSubtext.visibility = View.VISIBLE
         binding.tvReactionTime.visibility = View.GONE
         binding.tvReactionLabel.visibility = View.GONE
+        binding.penaltyLayout.visibility = View.GONE
+        binding.tvTryAgain.visibility = View.GONE
         
         // Random delay between 1.5 and 4 seconds
         val delay = Random.nextLong(1500, 4000)
@@ -167,6 +191,8 @@ class ReactionGameActivity : AppCompatActivity() {
         binding.tvInstruction.text = "TAP NOW!"
         binding.tvSubtext.text = "As fast as you can!"
         binding.tvSubtext.visibility = View.VISIBLE
+        binding.penaltyLayout.visibility = View.GONE
+        binding.tvTryAgain.visibility = View.GONE
         
         // Pulse animation with overshoot
         binding.tvInstruction.scaleX = 0.7f
@@ -185,15 +211,40 @@ class ReactionGameActivity : AppCompatActivity() {
         cancelAllPendingActions()
         gameState = GameState.TOO_EARLY
         
+        // Track early tap for this round
+        earlyTapsForCurrentRound++
+        totalEarlyTaps++
+        
         soundManager.playLoseLife()
         setRedBackground()
         binding.tvInstruction.text = "TOO EARLY!"
-        binding.tvSubtext.text = "Tap to try again"
-        binding.tvSubtext.visibility = View.VISIBLE
+        binding.tvSubtext.visibility = View.GONE
         binding.tvReactionTime.visibility = View.GONE
         binding.tvReactionLabel.visibility = View.GONE
         
-        // Shake animation
+        // Show "Tap to try again" with different font
+        binding.tvTryAgain.visibility = View.VISIBLE
+        binding.tvTryAgain.alpha = 0f
+        binding.tvTryAgain.animate()
+            .alpha(1f)
+            .setDuration(200)
+            .start()
+        
+        // Show penalty for this round only (always 50ms per tap)
+        binding.tvPenalty.text = "+50ms penalty"
+        binding.penaltyLayout.visibility = View.VISIBLE
+        binding.penaltyLayout.alpha = 0f
+        binding.penaltyLayout.scaleX = 0.5f
+        binding.penaltyLayout.scaleY = 0.5f
+        binding.penaltyLayout.animate()
+            .alpha(1f)
+            .scaleX(1f)
+            .scaleY(1f)
+            .setDuration(300)
+            .setInterpolator(OvershootInterpolator(1.5f))
+            .start()
+        
+        // Shake animation for instruction
         binding.tvInstruction.animate()
             .translationX(-15f)
             .setDuration(50)
@@ -222,17 +273,26 @@ class ReactionGameActivity : AppCompatActivity() {
     }
     
     private fun recordReaction() {
-        val reactionTime = System.currentTimeMillis() - startTime
-        reactionTimes.add(reactionTime)
+        val rawReactionTime = System.currentTimeMillis() - startTime
+        // Add penalty for early taps in this round (50ms per early tap)
+        val penalty = earlyTapsForCurrentRound * 50L
+        val reactionTimeWithPenalty = rawReactionTime + penalty
         
-        soundManager.playTap()
+        android.util.Log.d("ReactionGame", "recordReaction: round=$currentRound, rawTime=$rawReactionTime, earlyTaps=$earlyTapsForCurrentRound, penalty=$penalty, finalTime=$reactionTimeWithPenalty")
+        
+        reactionTimes.add(reactionTimeWithPenalty)
+        
+        soundManager.playCorrect()
         gameState = GameState.SHOWING_RESULT
         
         // Keep green background for showing result
         setGreenBackground()
         binding.tvInstruction.text = "NICE!"
         binding.tvSubtext.visibility = View.GONE
-        binding.tvReactionTime.text = "$reactionTime"
+        binding.penaltyLayout.visibility = View.GONE
+        binding.tvTryAgain.visibility = View.GONE
+        // Show the reaction time with penalty already included
+        binding.tvReactionTime.text = "$reactionTimeWithPenalty"
         binding.tvReactionTime.visibility = View.VISIBLE
         binding.tvReactionLabel.visibility = View.VISIBLE
         
@@ -261,6 +321,8 @@ class ReactionGameActivity : AppCompatActivity() {
                 binding.tvSubtext.visibility = View.VISIBLE
                 binding.tvReactionTime.visibility = View.GONE
                 binding.tvReactionLabel.visibility = View.GONE
+                binding.penaltyLayout.visibility = View.GONE
+                binding.tvTryAgain.visibility = View.GONE
             }
             handler.postDelayed(pendingResetRunnable!!, 1500)
         }
@@ -277,49 +339,66 @@ class ReactionGameActivity : AppCompatActivity() {
     private fun updateStats() {
         if (reactionTimes.isNotEmpty()) {
             val best = reactionTimes.minOrNull() ?: 0
-            val avg = reactionTimes.average().toLong()
+            // Average already includes penalties (they're added to each reaction time)
+            // Use proper rounding instead of truncation
+            val avg = kotlin.math.round(reactionTimes.average()).toLong()
+            
+            android.util.Log.d("ReactionGame", "updateStats: reactionTimes=$reactionTimes, avg=$avg, best=$best")
             
             binding.tvBestTime.text = "$best"
             binding.tvAvgTime.text = "$avg"
+        } else {
+            // Safety check: shouldn't happen, but handle gracefully
+            binding.tvBestTime.text = "---"
+            binding.tvAvgTime.text = "---"
         }
     }
     
     private fun showGameOver() {
-        val best = reactionTimes.minOrNull() ?: 0
-        val avg = reactionTimes.average().toLong()
+        // Safety check: ensure we have reaction times
+        if (reactionTimes.isEmpty()) {
+            android.util.Log.e("ReactionGame", "showGameOver called with no reaction times!")
+            return
+        }
         
-        // Check if this is a new best time (lower is better for reaction time)
-        val isNewHighScore = best > 0 && (previousHighScore == Long.MAX_VALUE || best < previousHighScore)
+        val best = reactionTimes.minOrNull() ?: 0
+        // Average already includes penalties (they're added to each reaction time)
+        // Use proper rounding instead of truncation
+        val avg = kotlin.math.round(reactionTimes.average()).toLong()
+        
+        // Check if this is a new best average (lower is better for reaction time)
+        // Only count as high score if there was a previous score AND we beat it
+        val isNewHighScore = avg > 0 && previousHighScore != Long.MAX_VALUE && avg < previousHighScore
         if (isNewHighScore) {
             soundManager.playHighscore()
         } else {
-            soundManager.playGameOver()
+            soundManager.playVictory()  // Completed all rounds - victory sound
         }
         
-        saveScore(best)
+        saveScore(avg)
         
         val dialogBinding = DialogGameOverBinding.inflate(layoutInflater)
         
         dialogBinding.tvResultEmoji.text = when {
-            best < 200 -> "🚀"
-            best < 300 -> "⚡"
-            best < 400 -> "👍"
+            avg < 200 -> "🚀"
+            avg < 300 -> "⚡"
+            avg < 400 -> "👍"
             else -> "🐢"
         }
         
         dialogBinding.tvTitle.text = when {
-            best < 200 -> "Lightning Fast!"
-            best < 300 -> "Great Reflexes!"
-            best < 400 -> "Good Job!"
+            avg < 200 -> "Lightning Fast!"
+            avg < 300 -> "Great Reflexes!"
+            avg < 400 -> "Good Job!"
             else -> "Keep Practicing!"
         }
         
-        dialogBinding.tvScore.text = "Best: $best ms"
+        dialogBinding.tvScore.text = "Average: $avg ms"
         
         // Show badges using helper function
         // For reaction time, convert previousHighScore (Long.MAX_VALUE means no previous score)
         val prevScore = if (previousHighScore == Long.MAX_VALUE) 0L else previousHighScore
-        GameOverHelper.showBadges(dialogBinding, GameType.REACTION_TIME, best, prevScore, this)
+        GameOverHelper.showBadges(dialogBinding, GameType.REACTION_TIME, avg, prevScore, this)
         
         dialogBinding.statsLayout.visibility = View.VISIBLE
         dialogBinding.tvStat1Label.text = "Best Time"
@@ -348,20 +427,23 @@ class ReactionGameActivity : AppCompatActivity() {
         dialog.show()
     }
     
-    private fun saveScore(bestTime: Long) {
+    private fun saveScore(averageTime: Long) {
         val player = prefsManager.currentPlayer ?: return
         
         val score = GameScore(
             playerId = player.id,
             playerUsername = player.username,
             gameType = GameType.REACTION_TIME,
-            score = bestTime,
-            extras = mapOf("average" to reactionTimes.average().toLong())
+            score = averageTime,
+            extras = mapOf(
+                "best" to (reactionTimes.minOrNull() ?: 0L),
+                "earlyTaps" to totalEarlyTaps.toLong()
+            )
         )
         
         lifecycleScope.launch {
             val saved = firebaseRepo.saveScore(score)
-            android.util.Log.d("ReactionGame", "Score saved: $saved, playerId: ${player.id}, username: ${player.username}, score: $bestTime")
+            android.util.Log.d("ReactionGame", "Score saved: $saved, playerId: ${player.id}, username: ${player.username}, average: $averageTime")
             firebaseRepo.incrementGamesPlayed(player.id)
         }
     }

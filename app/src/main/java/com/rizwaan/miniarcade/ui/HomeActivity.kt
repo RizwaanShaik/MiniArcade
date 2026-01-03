@@ -3,6 +3,8 @@ package com.rizwaan.miniarcade.ui
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.view.GestureDetector
+import android.view.MotionEvent
 import android.view.animation.OvershootInterpolator
 import androidx.activity.enableEdgeToEdge
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -30,6 +32,12 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var prefsManager: PreferencesManager
     private lateinit var gameAdapter: GameAdapter
     private val firebaseRepository = FirebaseRepository()
+    
+    // Easter egg: Swipe pattern detection (any 4 unique directions)
+    private lateinit var gestureDetector: GestureDetector
+    private val allDirections = setOf("UP", "DOWN", "LEFT", "RIGHT")
+    private val currentPattern = mutableListOf<String>()
+    private var lastSwipeTime = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,6 +75,7 @@ class HomeActivity : AppCompatActivity() {
         setupGamesGrid()
         setupLeaderboardButton()
         setupLogoutButton()
+        setupEasterEgg()
         animateEntrance()
     }
     
@@ -191,7 +200,7 @@ class HomeActivity : AppCompatActivity() {
                     
                     // Display scores (0 means no score yet, show "-")
                     dialogBinding.tvReactionScore.text = if (freshPlayer.reactionTime > 0) "${freshPlayer.reactionTime}ms" else "-"
-                    dialogBinding.tvMemoryScore.text = if (freshPlayer.memoryFlip > 0) "${freshPlayer.memoryFlip} moves" else "-"
+                    dialogBinding.tvMemoryScore.text = if (freshPlayer.memoryFlip > 0) "${freshPlayer.memoryFlip}" else "-"
                     dialogBinding.tvPatternScore.text = if (freshPlayer.patternSnap > 0) "${freshPlayer.patternSnap}" else "-"
                     dialogBinding.tvColorScore.text = if (freshPlayer.colorCatch > 0) "${freshPlayer.colorCatch}" else "-"
                     dialogBinding.tvWordScore.text = if (freshPlayer.wordScramble > 0) "${freshPlayer.wordScramble}" else "-"
@@ -294,5 +303,83 @@ class HomeActivity : AppCompatActivity() {
         }
         startActivity(intent)
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+    }
+    
+    private fun setupEasterEgg() {
+        gestureDetector = GestureDetector(this, object : GestureDetector.SimpleOnGestureListener() {
+            private val SWIPE_THRESHOLD = 100
+            private val SWIPE_VELOCITY_THRESHOLD = 100
+            
+            override fun onFling(
+                e1: MotionEvent?,
+                e2: MotionEvent,
+                velocityX: Float,
+                velocityY: Float
+            ): Boolean {
+                if (e1 == null) return false
+                
+                val diffX = e2.x - e1.x
+                val diffY = e2.y - e1.y
+                
+                val direction = when {
+                    kotlin.math.abs(diffX) > kotlin.math.abs(diffY) -> {
+                        if (kotlin.math.abs(diffX) > SWIPE_THRESHOLD && kotlin.math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+                            if (diffX > 0) "RIGHT" else "LEFT"
+                        } else null
+                    }
+                    else -> {
+                        if (kotlin.math.abs(diffY) > SWIPE_THRESHOLD && kotlin.math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
+                            if (diffY > 0) "DOWN" else "UP"
+                        } else null
+                    }
+                }
+                
+                direction?.let { handleSecretSwipe(it) }
+                return direction != null
+            }
+        })
+    }
+    
+    private fun handleSecretSwipe(direction: String) {
+        val currentTime = System.currentTimeMillis()
+        
+        // Reset pattern if too much time passed (3 seconds)
+        if (currentTime - lastSwipeTime > 3000) {
+            currentPattern.clear()
+        }
+        lastSwipeTime = currentTime
+        
+        currentPattern.add(direction)
+        
+        // Check if pattern matches (any 4 unique directions)
+        if (currentPattern.size == 4) {
+            if (currentPattern.toSet() == allDirections) {
+                showEasterEggDialog()
+            }
+            currentPattern.clear()
+        } else if (currentPattern.size > 4) {
+            currentPattern.clear()
+        }
+    }
+    
+    private fun showEasterEggDialog() {
+        MaterialAlertDialogBuilder(this, R.style.Theme_MiniArcade_Dialog)
+            .setTitle("🕵️ Secret Found!")
+            .setMessage(
+                "Aha! You found the secret!\n\n" +
+                "No Cheating Ayaan, Aleena, Aaliya, Sana and Farah! \n\n" +
+                "Play fair, have fun, and may the best cousin win! 🏆\n\n" +
+                "Highest Scorer wins a secret reward\n\n" +
+                "Made by Rizwaan Bhaiya"
+            )
+            .setPositiveButton("I Promise! 🤞") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+    
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        gestureDetector.onTouchEvent(ev)
+        return super.dispatchTouchEvent(ev)
     }
 }

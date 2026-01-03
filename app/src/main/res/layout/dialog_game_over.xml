@@ -88,6 +88,25 @@
             android:layout_marginTop="4dp"
             tools:text="Score: 1,250"/>
 
+        <!-- Perfect Badge - Show under score for perfect rounds -->
+        <TextView
+            android:id="@+id/tvPerfect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="✨ PERFECT ✨"
+            android:textSize="14sp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:fontFamily="@font/poppins_bold"
+            android:layout_marginTop="8dp"
+            android:visibility="gone"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="6dp"
+            android:background="@drawable/bg_card_rounded"
+            android:backgroundTint="@color/game_green"
+            android:elevation="4dp"
+            tools:visibility="gone"/>
+
         <!-- Stats Container -->
         <LinearLayout
             android:id="@+id/statsLayout"
@@ -117,7 +136,10 @@
                     android:textColor="@color/game_cyan"
                     android:textStyle="bold"
                     android:fontFamily="@font/poppins_semibold"
-                    tools:text="10"/>
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    tools:text="180"/>
 
                 <TextView
                     android:id="@+id/tvStat1Label"
@@ -153,7 +175,10 @@
                     android:textColor="@color/game_orange"
                     android:textStyle="bold"
                     android:fontFamily="@font/poppins_semibold"
-                    tools:text="5"/>
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    tools:text="312"/>
 
                 <TextView
                     android:id="@+id/tvStat2Label"
