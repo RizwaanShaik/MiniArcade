@@ -36,6 +36,8 @@ object WordDictionary {
     /**
      * Initialize the dictionary from the JSON file
      * Call this once from Application or first Activity
+     * 
+     * Note: words.json is pre-ordered so the first word matches the hint
      */
     fun initialize(context: Context) {
         if (isLoaded) return
@@ -44,8 +46,8 @@ object WordDictionary {
             val jsonString = context.assets.open("words.json").bufferedReader().use { it.readText() }
             val jsonObject = JSONObject(jsonString)
             
-            // Parse each word length category
-            for (length in 3..7) {
+            // Parse each word length category (support all lengths 3-14)
+            for (length in 3..14) {
                 val lengthKey = length.toString()
                 if (jsonObject.has(lengthKey)) {
                     val wordArray = jsonObject.getJSONArray(lengthKey)
@@ -64,6 +66,7 @@ object WordDictionary {
                         }
                         
                         if (words.isNotEmpty()) {
+                            // First word is guaranteed to match the hint (pre-ordered)
                             val group = WordGroup(
                                 words = words,
                                 hint = hint,
@@ -91,29 +94,92 @@ object WordDictionary {
     
     /**
      * Get a random word group for a given level
-     * Level 1-2: 3 letters
-     * Level 3-4: 4 letters
-     * Level 5-6: 5 letters
-     * Level 7-8: 6 letters
-     * Level 9+: 7 letters
+     * 
+     * Difficulty progression:
+     * - Levels 1-3: 3 letters (easy start)
+     * - Levels 4-7: 4 letters (gradual increase)
+     * - Levels 8-12: 5 letters (moderate)
+     * - Levels 13-18: 6 letters (challenging)
+     * - Levels 19-25: 7 letters (hard)
+     * - Levels 26-35: 8 letters (very hard)
+     * - Levels 36-50: 9-10 letters (expert)
+     * - Levels 51+: 11-14 letters (master)
+     * 
+     * Uses smooth progression with some randomness for variety
      */
     fun getWordForLevel(level: Int): Pair<String, String> {
-        val wordLength = when {
-            level <= 2 -> 3
-            level <= 4 -> 4
-            level <= 6 -> 5
-            level <= 8 -> 6
-            else -> 7
-        }
+        // Calculate base word length with smooth progression
+        val wordLength = calculateWordLength(level)
         
+        // Get available groups for this length
         val groups = wordsByLength[wordLength]
         if (groups.isNullOrEmpty()) {
-            // Fallback if dictionary not loaded
-            return "CAT" to "A pet that meows 🐱"
+            // Try to find the closest available length
+            val availableLengths = wordsByLength.keys.sorted()
+            if (availableLengths.isEmpty()) {
+                // Fallback if dictionary not loaded
+                return "CAT" to "A pet that meows 🐱"
+            }
+            
+            // Find closest available length
+            val closestLength = availableLengths.minByOrNull { 
+                kotlin.math.abs(it - wordLength) 
+            } ?: availableLengths.first()
+            
+            val fallbackGroups = wordsByLength[closestLength]
+            if (fallbackGroups.isNullOrEmpty()) {
+                return "CAT" to "A pet that meows 🐱"
+            }
+            
+            val group = fallbackGroups.random()
+            return group.primaryWord to group.hint
         }
         
         val group = groups.random()
         return group.primaryWord to group.hint
+    }
+    
+    /**
+     * Calculate word length based on level with smooth progression
+     */
+    private fun calculateWordLength(level: Int): Int {
+        return when {
+            // Early levels: 3 letters (levels 1-3)
+            level <= 3 -> 3
+            
+            // Easy progression: 4 letters (levels 4-7)
+            level <= 7 -> 4
+            
+            // Moderate: 5 letters (levels 8-12)
+            level <= 12 -> 5
+            
+            // Challenging: 6 letters (levels 13-18)
+            level <= 18 -> 6
+            
+            // Hard: 7 letters (levels 19-25)
+            level <= 25 -> 7
+            
+            // Very hard: 8 letters (levels 26-35)
+            level <= 35 -> 8
+            
+            // Expert: 9-10 letters (levels 36-50)
+            level <= 50 -> {
+                // Mix of 9 and 10 letter words
+                if (level % 2 == 0) 9 else 10
+            }
+            
+            // Master: 11-14 letters (levels 51+)
+            else -> {
+                // Gradually increase from 11 to 14
+                val extraLevels = level - 50
+                when {
+                    extraLevels <= 10 -> 11
+                    extraLevels <= 20 -> 12
+                    extraLevels <= 30 -> 13
+                    else -> 14
+                }
+            }
+        }
     }
     
     /**

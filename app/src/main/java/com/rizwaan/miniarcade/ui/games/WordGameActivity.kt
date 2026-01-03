@@ -7,6 +7,7 @@ import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.OvershootInterpolator
 import android.widget.TextView
+import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayout
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
@@ -176,8 +177,16 @@ class WordGameActivity : AppCompatActivity() {
             allLetters.add(LetterInfo(char, index))
         }
         
-        // Set time based on word length
-        timeLeft = 12 + (currentWord.length * 3)
+        // Set time based on word length with better scaling for longer words
+        // Formula: base time + (length * multiplier)
+        // Longer words get more time but with diminishing returns
+        timeLeft = when {
+            currentWord.length <= 4 -> 12 + (currentWord.length * 3)  // 21-24 seconds
+            currentWord.length <= 6 -> 15 + (currentWord.length * 3)  // 27-33 seconds
+            currentWord.length <= 8 -> 18 + (currentWord.length * 3)  // 39-42 seconds
+            currentWord.length <= 10 -> 20 + (currentWord.length * 2) // 36-40 seconds
+            else -> 25 + (currentWord.length * 2)  // 47+ seconds for 11+ letters
+        }
         
         binding.tvHint.visibility = View.GONE
         
@@ -190,10 +199,42 @@ class WordGameActivity : AppCompatActivity() {
         binding.answerSlotsLayout.removeAllViews()
         binding.scrambledLettersLayout.removeAllViews()
         
+        // Show word length indicator for words ≥8 letters
+        val isLongWord = currentWord.length >= 8
+        if (isLongWord) {
+            binding.tvWordLength.text = "${currentWord.length} letters"
+            binding.tvWordLength.visibility = View.VISIBLE
+            binding.tvWordLength.alpha = 0f
+            binding.tvWordLength.animate()
+                .alpha(1f)
+                .setDuration(200)
+                .start()
+        } else {
+            binding.tvWordLength.visibility = View.GONE
+        }
+        
+        // Set flexWrap based on word length
+        // For words ≥8 letters, allow wrapping to create balanced rows
+        binding.answerSlotsLayout.flexWrap = if (isLongWord) {
+            FlexWrap.WRAP
+        } else {
+            FlexWrap.NOWRAP
+        }
+        
+        // Calculate balanced row split for long words
+        val lettersPerRow = if (isLongWord) {
+            // Split into two balanced rows
+            (currentWord.length + 1) / 2  // Round up for odd numbers
+        } else {
+            currentWord.length  // Single row for short words
+        }
+        
         // Create answer slots
         for (i in currentWord.indices) {
-            val slot = createSlotView()
+            val shouldWrapBefore = isLongWord && i == lettersPerRow
+            val slot = createSlotView(shouldWrapBefore)
             slot.tag = i
+            
             binding.answerSlotsLayout.addView(slot)
             
             slot.alpha = 0f
@@ -207,7 +248,7 @@ class WordGameActivity : AppCompatActivity() {
                 .start()
         }
         
-        // Create scrambled letters
+        // Create scrambled letters (always single line with scroll)
         allLetters.forEachIndexed { index, letterInfo ->
             val letterView = createLetterView(letterInfo.char.toString())
             letterInfo.view = letterView
@@ -234,10 +275,11 @@ class WordGameActivity : AppCompatActivity() {
         }
     }
     
-    private fun createSlotView(): TextView {
+    private fun createSlotView(wrapBefore: Boolean = false): TextView {
         // Adjust size based on word length to fit on screen
         val letterSize = getAdaptiveLetterSize()
         val letterTextSize = getAdaptiveTextSize()
+        val margin = getAdaptiveMargin()
         
         return TextView(this).apply {
             text = ""
@@ -246,7 +288,8 @@ class WordGameActivity : AppCompatActivity() {
             setTextColor(getColor(R.color.text_hint))
             
             layoutParams = FlexboxLayout.LayoutParams(letterSize, letterSize).apply {
-                setMargins(4, 4, 4, 4)
+                setMargins(margin, margin, margin, margin)
+                this.isWrapBefore = wrapBefore
             }
             
             setBackgroundResource(R.drawable.bg_word_slot)
@@ -257,6 +300,7 @@ class WordGameActivity : AppCompatActivity() {
         // Adjust size based on word length to fit on screen
         val letterSize = getAdaptiveLetterSize()
         val letterTextSize = getAdaptiveTextSize()
+        val margin = getAdaptiveMargin()
         
         return TextView(this).apply {
             this.text = text
@@ -266,7 +310,7 @@ class WordGameActivity : AppCompatActivity() {
             textAlignment = View.TEXT_ALIGNMENT_CENTER
             
             layoutParams = FlexboxLayout.LayoutParams(letterSize, letterSize).apply {
-                setMargins(4, 4, 4, 4)
+                setMargins(margin, margin, margin, margin)
             }
             
             setBackgroundResource(R.drawable.bg_word_letter)
@@ -277,20 +321,39 @@ class WordGameActivity : AppCompatActivity() {
         // Smaller letters for longer words to fit on screen
         val baseSize = resources.getDimensionPixelSize(R.dimen.word_letter_size)
         return when {
-            currentWord.length >= 7 -> (baseSize * 0.8).toInt()
-            currentWord.length >= 6 -> (baseSize * 0.85).toInt()
-            currentWord.length >= 5 -> (baseSize * 0.9).toInt()
-            else -> baseSize
+            currentWord.length >= 14 -> (baseSize * 0.4).toInt()   // Extra small for 14+ letters
+            currentWord.length >= 13 -> (baseSize * 0.45).toInt()    // Extra small for 13 letters
+            currentWord.length >= 12 -> (baseSize * 0.5).toInt()     // Very small for 12 letters
+            currentWord.length >= 10 -> (baseSize * 0.6).toInt()    // Small for 10-11 letters
+            currentWord.length >= 8 -> (baseSize * 0.65).toInt()    // Medium-small for 8-9 letters
+            currentWord.length >= 7 -> (baseSize * 0.75).toInt()    // Medium for 7 letters
+            currentWord.length >= 6 -> (baseSize * 0.85).toInt()   // Slightly smaller for 6 letters
+            currentWord.length >= 5 -> (baseSize * 0.9).toInt()     // Slightly smaller for 5 letters
+            else -> baseSize  // Full size for 3-4 letters
         }
     }
     
     private fun getAdaptiveTextSize(): Float {
         // Smaller text for longer words
         return when {
-            currentWord.length >= 7 -> 20f
-            currentWord.length >= 6 -> 22f
-            currentWord.length >= 5 -> 24f
-            else -> 26f
+            currentWord.length >= 14 -> 12f   // Extra small for 14+ letters
+            currentWord.length >= 13 -> 13f   // Extra small for 13 letters
+            currentWord.length >= 12 -> 14f   // Very small for 12 letters
+            currentWord.length >= 10 -> 16f   // Small for 10-11 letters
+            currentWord.length >= 8 -> 18f    // Medium-small for 8-9 letters
+            currentWord.length >= 7 -> 20f    // Medium for 7 letters
+            currentWord.length >= 6 -> 22f    // Slightly smaller for 6 letters
+            currentWord.length >= 5 -> 24f    // Slightly smaller for 5 letters
+            else -> 26f  // Full size for 3-4 letters
+        }
+    }
+    
+    private fun getAdaptiveMargin(): Int {
+        // Smaller margins for longer words to fit more on screen
+        return when {
+            currentWord.length >= 13 -> 2  // 2dp margin for 13+ letters
+            currentWord.length >= 10 -> 3  // 3dp margin for 10-12 letters
+            else -> 4  // 4dp margin for shorter words
         }
     }
     
@@ -480,12 +543,12 @@ class WordGameActivity : AppCompatActivity() {
             soundManager.playLoseLife()
             
             if (lives <= 0) {
-                showFeedback(false, "The word was: $currentWord")
+                showFeedback(false, "Word: $currentWord\nHint: $currentHint")
                 binding.root.postDelayed({
                     showGameOver()
                 }, 2000)
             } else {
-                showFeedback(false, "Wrong! \n The word was: $currentWord\n❤️ $lives lives left")
+                showFeedback(false, "Wrong!\n\nWord: $currentWord\nHint: $currentHint\n\n❤️ $lives lives left")
                 binding.root.postDelayed({
                     startRound()
                 }, 2000)
@@ -561,12 +624,12 @@ class WordGameActivity : AppCompatActivity() {
                 updateUI()
                 
                 if (lives <= 0) {
-                    showFeedback(false, "⏱️ Time's up! The word was: $currentWord")
+                    showFeedback(false, "Time's up!\n\nWord: $currentWord\nHint: $currentHint")
                     binding.root.postDelayed({
                         showGameOver()
                     }, 1500)
                 } else {
-                    showFeedback(false, "⏱️ Time's up! The word was: $currentWord\n❤️ $lives lives left")
+                    showFeedback(false, "Time's up!\n\nWord: $currentWord\nHint: $currentHint\n\n❤️ $lives lives left")
                     binding.root.postDelayed({
                         startRound()
                     }, 1500)

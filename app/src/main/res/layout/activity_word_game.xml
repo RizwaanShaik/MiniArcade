@@ -119,14 +119,29 @@
             tools:visibility="visible"
             tools:text="💡 A red fruit 🍎"/>
 
-        <!-- Answer Slots - using FlexboxLayout to wrap on smaller screens -->
+        <!-- Word Length Indicator (shown for long words) -->
+        <TextView
+            android:id="@+id/tvWordLength"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@color/game_yellow"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:visibility="gone"
+            android:layout_marginBottom="8dp"
+            tools:text="8 letters"
+            tools:visibility="visible"/>
+
+        <!-- Answer Slots - wrap for long words (≥8 letters) -->
         <com.google.android.flexbox.FlexboxLayout
             android:id="@+id/answerSlotsLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:flexWrap="wrap"
             app:justifyContent="center"
-            app:alignItems="center"/>
+            app:alignItems="center"
+            app:alignContent="center"/>
 
         <Space
             android:layout_width="match_parent"
